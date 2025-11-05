@@ -1,0 +1,401 @@
+/* Artist Profile Enhanced Styles */
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Profile Header Enhancements */
+.bg-white {
+  transition: box-shadow 0.3s ease;
+}
+
+/* Avatar hover effect */
+.rounded-full.object-cover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.rounded-full.object-cover:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Verified badge pulse */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(59, 130, 246, 0);
+  }
+}
+
+.bg-blue-500.rounded-full {
+  animation: pulse-glow 2s infinite;
+}
+
+/* Button hover effects */
+button {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Primary button styles */
+.bg-blue-500 {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.bg-blue-500:hover {
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Stats counter animation */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.text-2xl.font-bold {
+  animation: countUp 0.6s ease-out;
+}
+
+/* Stats hover effect */
+.text-center:hover .text-2xl {
+  color: #3b82f6;
+  transform: scale(1.1);
+  transition: all 0.3s ease;
+}
+
+/* Badge styles */
+.bg-purple-100 {
+  transition: all 0.3s ease;
+}
+
+.bg-purple-100:hover {
+  background-color: #c084fc;
+  color: white;
+  transform: scale(1.05);
+}
+
+/* Social links hover */
+.text-gray-600.hover\:text-pink-600,
+.text-gray-600.hover\:text-blue-500,
+.text-gray-600.hover\:text-purple-600 {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.text-gray-600.hover\:text-pink-600:hover,
+.text-gray-600.hover\:text-blue-500:hover,
+.text-gray-600.hover\:text-purple-600:hover {
+  transform: translateY(-3px) scale(1.2);
+}
+
+/* Tab navigation */
+.border-b-2 {
+  position: relative;
+}
+
+.border-b-2::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Tab button transition */
+button[class*="pb-3"] {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+button[class*="pb-3"]:hover {
+  transform: translateY(-2px);
+}
+
+/* View mode toggle */
+.p-2.rounded {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.p-2.rounded:hover {
+  transform: rotate(5deg) scale(1.1);
+}
+
+.bg-gray-900 {
+  background: linear-gradient(135deg, #111827 0%, #374151 100%);
+}
+
+/* Artwork grid animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.grid > * {
+  animation: fadeInUp 0.5s ease-out backwards;
+}
+
+.grid > *:nth-child(1) { animation-delay: 0.1s; }
+.grid > *:nth-child(2) { animation-delay: 0.2s; }
+.grid > *:nth-child(3) { animation-delay: 0.3s; }
+.grid > *:nth-child(4) { animation-delay: 0.4s; }
+.grid > *:nth-child(5) { animation-delay: 0.5s; }
+.grid > *:nth-child(6) { animation-delay: 0.6s; }
+
+/* Artwork card hover effects */
+.bg-white.rounded-lg.shadow-md {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.bg-white.rounded-lg.shadow-md:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.bg-white.rounded-lg.shadow-md::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.bg-white.rounded-lg.shadow-md:hover::after {
+  opacity: 1;
+}
+
+/* Artwork images */
+.object-cover.rounded {
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.object-cover.rounded::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.object-cover.rounded:hover::before {
+  opacity: 1;
+}
+
+.object-cover.rounded:hover {
+  transform: scale(1.1);
+}
+
+/* Analytics cards */
+.bg-white.rounded-lg.shadow-md.p-6 {
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  border: 1px solid rgba(229, 231, 235, 0.5);
+  transition: all 0.3s ease;
+}
+
+.bg-white.rounded-lg.shadow-md.p-6:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15);
+  transform: translateY(-5px);
+}
+
+/* Icon animations */
+.w-5.h-5,
+.w-4.h-4 {
+  transition: all 0.3s ease;
+}
+
+.w-5.h-5:hover,
+.w-4.h-4:hover {
+  transform: scale(1.2) rotate(5deg);
+}
+
+/* Empty state animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.w-16.h-16.text-gray-300 {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Modal backdrop */
+.fixed.inset-0.bg-black.bg-opacity-50 {
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal content */
+.bg-white.rounded-lg.max-w-md {
+  animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Text gradient effect */
+.text-3xl.font-bold.text-gray-900 {
+  background: linear-gradient(135deg, #111827 0%, #374151 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Price tag enhancement */
+.text-green-600 {
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(22, 163, 74, 0.2);
+  transition: all 0.3s ease;
+}
+
+.text-green-600:hover {
+  transform: scale(1.05);
+  text-shadow: 0 4px 8px rgba(22, 163, 74, 0.3);
+}
+
+/* Commission badge glow */
+.text-green-600.font-medium {
+  position: relative;
+  animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px rgba(22, 163, 74, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(22, 163, 74, 0.8));
+  }
+}
+
+/* Smooth page transitions */
+.min-h-screen {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  button {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .text-3xl {
+    font-size: 1.875rem;
+  }
+}
+
+/* Accessibility focus states */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Loading state improvements */
+.animate-spin {
+  border-color: #e5e7eb;
+  border-top-color: #3b82f6;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+}

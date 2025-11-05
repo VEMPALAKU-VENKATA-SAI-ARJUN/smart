@@ -1,0 +1,363 @@
+/* ============================= */
+/* Home Page Styles              */
+/* ============================= */
+
+.home-container {
+  background-color: #f9fafc;
+  color: #222;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ========== Hero Section ========== */
+.hero-section {
+  position: relative;
+  height: 520px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.8);
+  z-index: 1;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(83, 0, 128, 0.459), rgba(136, 64, 224, 0.4));
+  z-index: 2;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  color: #fff;
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+  backdrop-filter: blur(5px);
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.hero-title span {
+  background: linear-gradient(90deg, #ffffff, #ffffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-subtext {
+  max-width: 600px;
+  margin: 0 auto 24px;
+  color: #f1f1f1;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.btn-primary,
+.btn-outline {
+  padding: 10px 20px;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: #fff;
+  color: teal;
+  border: none;
+}
+
+.btn-primary:hover {
+  background: #e9f9f9;
+}
+
+.btn-outline {
+  border: 2px solid #fff;
+  color: #fff;
+  background: transparent;
+}
+
+.btn-outline:hover {
+  background: #fff;
+  color: teal;
+}
+
+/* ========== Filters Section ========== */
+.filters-section {
+  padding: 40px 10%;
+}
+
+.filters-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tabs {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.tab {
+  background: #eee;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s;
+}
+
+.tab.active {
+  background: linear-gradient(90deg, teal, turquoise);
+  color: #fff;
+}
+
+.dropdowns {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.dropdown select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.category-pills {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.pill {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #bbb;
+  background: #f7f7f7;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.pill.active {
+  background: linear-gradient(90deg, teal, turquoise);
+  color: #fff;
+  border: none;
+}
+
+/* ========== Artwork Cards ========== */
+.artwork-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  padding: 20px 10%;
+  animation: slideUp 1s ease forwards;
+}
+
+.art-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  animation: scaleIn 0.6s ease;
+}
+
+.art-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.art-img {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+}
+
+.art-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ai-badge,
+.category-badge {
+  position: absolute;
+  top: 10px;
+  padding: 4px 10px;
+  border-radius: 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.ai-badge {
+  right: 10px;
+  background: teal;
+  color: #fff;
+}
+
+.category-badge {
+  left: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  color: #333;
+}
+
+.art-info {
+  padding: 14px;
+  text-align: center;
+}
+
+.art-info h3 {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+  color: #222;
+}
+
+.art-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  color: #666;
+  font-weight: 600;
+}
+
+.load-more {
+  text-align: center;
+  margin: 40px 0;
+}
+
+/* ========== Loading, Error & Empty States ========== */
+.loading-section,
+.error-section,
+.empty-section {
+  padding: 60px 10%;
+  text-align: center;
+}
+
+.loading-content,
+.error-content,
+.empty-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  color: teal;
+  animation: spin 1s linear infinite;
+}
+
+.empty-icon {
+  width: 60px;
+  height: 60px;
+  color: #ccc;
+}
+
+.error-content p,
+.empty-content p {
+  color: #666;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.empty-content h3 {
+  color: #333;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.error-content button,
+.empty-content .btn-primary {
+  margin-top: 10px;
+}
+
+/* ========== Animations ========== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
