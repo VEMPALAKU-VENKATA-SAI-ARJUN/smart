@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Bell, Check, CheckCheck, Trash2, User, Heart, MessageCircle, UserPlus, Award, Filter, Settings } from 'lucide-react';
+import {
+  Bell, Check, CheckCheck, Trash2, Heart, MessageCircle,
+  UserPlus, Award, Filter, Settings
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
+import '../styles/Notifications.css';
 
 function Notifications() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('all'); // all, unread
+  const [filter, setFilter] = useState('all');
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
@@ -24,9 +28,7 @@ function Notifications() {
       });
 
       const response = await fetch(`${API_URL}/api/notifications?${params}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
 
       const data = await response.json();
@@ -46,28 +48,21 @@ function Notifications() {
     }
   };
 
-  const markAsRead = async (notificationId) => {
+  const markAsRead = async (id) => {
     try {
       const token = localStorage.getItem('auth_token');
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await fetch(`${API_URL}/api/notifications/${notificationId}/read`, {
+      const res = await fetch(`${API_URL}/api/notifications/${id}/read`, {
         method: 'PATCH',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
-
-      if (response.ok) {
+      if (res.ok) {
         setNotifications(prev =>
-          prev.map(notif =>
-            notif._id === notificationId
-              ? { ...notif, isRead: true, readAt: new Date() }
-              : notif
-          )
+          prev.map(n => n._id === id ? { ...n, isRead: true, readAt: new Date() } : n)
         );
       }
-    } catch (error) {
-      console.error('Error marking notification as read:', error);
+    } catch (e) {
+      console.error('Error marking as read:', e);
     }
   };
 
@@ -75,83 +70,79 @@ function Notifications() {
     try {
       const token = localStorage.getItem('auth_token');
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await fetch(`${API_URL}/api/notifications/mark-all-read`, {
+      const res = await fetch(`${API_URL}/api/notifications/mark-all-read`, {
         method: 'PATCH',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
-
-      if (response.ok) {
-        setNotifications(prev =>
-          prev.map(notif => ({ ...notif, isRead: true, readAt: new Date() }))
-        );
+      if (res.ok) {
+        setNotifications(prev => prev.map(n => ({ ...n, isRead: true, readAt: new Date() })));
       }
-    } catch (error) {
-      console.error('Error marking all notifications as read:', error);
+    } catch (e) {
+      console.error('Error marking all read:', e);
     }
   };
 
-  const deleteNotification = async (notificationId) => {
+  const deleteNotification = async (id) => {
     try {
       const token = localStorage.getItem('auth_token');
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await fetch(`${API_URL}/api/notifications/${notificationId}`, {
+      const res = await fetch(`${API_URL}/api/notifications/${id}`, {
         method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
-
-      if (response.ok) {
-        setNotifications(prev => prev.filter(notif => notif._id !== notificationId));
-      }
-    } catch (error) {
-      console.error('Error deleting notification:', error);
+      if (res.ok) setNotifications(prev => prev.filter(n => n._id !== id));
+    } catch (e) {
+      console.error('Error deleting notification:', e);
     }
   };
 
   const getNotificationIcon = (type) => {
-    const iconStyle = { width: '20px', height: '20px' };
     switch (type) {
-      case 'follow':
-        return <UserPlus style={{ ...iconStyle, color: 'white' }} />;
-      case 'like':
-        return <Heart style={{ ...iconStyle, color: 'white' }} />;
-      case 'comment':
-        return <MessageCircle style={{ ...iconStyle, color: 'white' }} />;
-      case 'artwork_approved':
-        return <Award style={{ ...iconStyle, color: 'white' }} />;
-      default:
-        return <Bell style={{ ...iconStyle, color: 'white' }} />;
+      case 'follow': return <UserPlus />;
+      case 'like': return <Heart />;
+      case 'comment': return <MessageCircle />;
+      case 'artwork_approved': return <Award />;
+      default: return <Bell />;
     }
   };
 
-  const getIconBackground = (type) => {
+  const getIconClassName = (type) => {
     switch (type) {
-      case 'follow':
-        return 'linear-gradient(135deg, var(--primary-500), var(--primary-600))';
+      case 'follow': return 'notification-icon icon-follow';
+      case 'like': return 'notification-icon icon-like';
+      case 'comment': return 'notification-icon icon-comment';
+      case 'artwork_approved': return 'notification-icon icon-artwork-approved';
+      default: return 'notification-icon icon-default';
+    }
+  };
+
+  const getNotificationMessage = (n) => {
+    if (!n) return 'New notification';
+    const sender = n.relatedUser?.username || n.sender?.username || 'Someone';
+
+    switch (n.type) {
       case 'like':
-        return 'linear-gradient(135deg, var(--error-500), var(--error-600))';
+        return `${sender} liked your artwork "${n.relatedArtwork?.title || 'Untitled'}"`;
       case 'comment':
-        return 'linear-gradient(135deg, var(--success-500), var(--success-600))';
+        return `${sender} commented on "${n.relatedArtwork?.title || 'your artwork'}"`;
+      case 'follow':
+        return `${sender} started following you`;
       case 'artwork_approved':
-        return 'linear-gradient(135deg, var(--warning-500), var(--warning-600))';
+        return `Your artwork "${n.relatedArtwork?.title || 'Untitled'}" was approved by moderator`;
       default:
-        return 'linear-gradient(135deg, var(--gray-500), var(--gray-600))';
+        return n.content?.message || n.message || 'New notification received';
     }
   };
 
   const formatTimeAgo = (date) => {
     const now = new Date();
-    const notifDate = new Date(date);
-    const diffInSeconds = Math.floor((now - notifDate) / 1000);
-
-    if (diffInSeconds < 60) return 'Just now';
-    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
-    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
-    return notifDate.toLocaleDateString();
+    const d = new Date(date);
+    const diff = Math.floor((now - d) / 1000);
+    if (diff < 60) return 'Just now';
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`;
+    return d.toLocaleDateString();
   };
 
   const unreadCount = notifications.filter(n => !n.isRead).length;
@@ -166,267 +157,91 @@ function Notifications() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--gray-50)', paddingTop: 'var(--space-8)' }}>
-      <div className="container">
-        {/* Page Header */}
-        <div className="page-header" style={{ marginBottom: 'var(--space-8)', borderRadius: 'var(--radius-2xl)' }}>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div style={{ 
-                background: 'rgba(255, 255, 255, 0.2)', 
-                padding: 'var(--space-4)', 
-                borderRadius: 'var(--radius-xl)' 
-              }}>
-                <Bell style={{ width: '32px', height: '32px', color: 'white' }} />
+    <div className="notifications-page">
+      <div className="notifications-container">
+        {/* Header */}
+        <div className="notifications-header">
+          <div className="header-content">
+            <div className="header-left">
+              <div className="header-icon-wrapper">
+                <Bell size={32} />
               </div>
-              <div>
-                <h1 style={{ fontSize: 'var(--text-4xl)', fontWeight: 'var(--font-bold)', marginBottom: 'var(--space-2)' }}>
-                  Notifications
-                </h1>
-                <p style={{ fontSize: 'var(--text-lg)', opacity: 0.9 }}>
-                  {unreadCount > 0 ? `${unreadCount} unread notifications` : 'All caught up! 🎉'}
-                </p>
+              <div className="header-text">
+                <h1>Notifications</h1>
+                <p>{unreadCount > 0 ? `${unreadCount} unread` : 'All caught up 🎉'}</p>
               </div>
             </div>
-            
-            <div className="flex items-center space-x-3">
-              <Link 
-                to="/settings/notifications" 
-                className="btn btn-secondary"
-                style={{ background: 'rgba(255, 255, 255, 0.2)', border: '1px solid rgba(255, 255, 255, 0.3)' }}
-              >
-                <Settings style={{ width: '16px', height: '16px' }} />
-                Settings
+            <div className="header-actions">
+              <Link to="/settings/notifications" className="btn-settings">
+                <Settings size={16} /> Settings
               </Link>
-              
               {unreadCount > 0 && (
-                <button
-                  onClick={markAllAsRead}
-                  className="btn btn-primary"
-                  style={{ background: 'white', color: 'var(--primary-600)' }}
-                >
-                  <CheckCheck style={{ width: '16px', height: '16px' }} />
-                  Mark all read
+                <button onClick={markAllAsRead} className="btn-mark-all-read">
+                  <CheckCheck size={16} /> Mark all read
                 </button>
               )}
             </div>
           </div>
         </div>
 
-        {/* Filter Tabs */}
-        <div className="card" style={{ marginBottom: 'var(--space-6)' }}>
-          <div className="card-body" style={{ padding: 'var(--space-4) var(--space-6)' }}>
-            <div className="flex items-center justify-between">
-              <div className="flex space-x-6">
-                <button
-                  onClick={() => setFilter('all')}
-                  className={`flex items-center space-x-2 pb-3 border-b-2 font-medium transition-colors ${
-                    filter === 'all'
-                      ? 'border-primary-500 text-primary-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700'
-                  }`}
-                  style={{
-                    borderBottomColor: filter === 'all' ? 'var(--primary-500)' : 'transparent',
-                    color: filter === 'all' ? 'var(--primary-600)' : 'var(--gray-500)'
-                  }}
-                >
-                  <Bell style={{ width: '16px', height: '16px' }} />
-                  <span>All Notifications</span>
-                  <span className="badge badge-primary" style={{ fontSize: 'var(--text-xs)' }}>
-                    {notifications.length}
-                  </span>
-                </button>
-                
-                <button
-                  onClick={() => setFilter('unread')}
-                  className={`flex items-center space-x-2 pb-3 border-b-2 font-medium transition-colors ${
-                    filter === 'unread'
-                      ? 'border-primary-500 text-primary-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700'
-                  }`}
-                  style={{
-                    borderBottomColor: filter === 'unread' ? 'var(--primary-500)' : 'transparent',
-                    color: filter === 'unread' ? 'var(--primary-600)' : 'var(--gray-500)'
-                  }}
-                >
-                  <Filter style={{ width: '16px', height: '16px' }} />
-                  <span>Unread</span>
-                  {unreadCount > 0 && (
-                    <span className="badge badge-error" style={{ fontSize: 'var(--text-xs)' }}>
-                      {unreadCount}
-                    </span>
-                  )}
-                </button>
-              </div>
-            </div>
+        {/* Filter */}
+        <div className="filter-card">
+          <div className="filter-tabs">
+            <button
+              onClick={() => setFilter('all')}
+              className={`filter-tab ${filter === 'all' ? 'active' : ''}`}>
+              <Bell size={16} /> All
+              <span className="filter-badge">{notifications.length}</span>
+            </button>
+            <button
+              onClick={() => setFilter('unread')}
+              className={`filter-tab ${filter === 'unread' ? 'active' : ''}`}>
+              <Filter size={16} /> Unread
+              {unreadCount > 0 && <span className="filter-badge error">{unreadCount}</span>}
+            </button>
           </div>
         </div>
 
-        {/* Notifications List */}
-        <div className="space-y-3">
+        {/* Notifications */}
+        <div className="notifications-list">
           {notifications.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-state-icon">
-                <Bell style={{ width: '64px', height: '64px' }} />
-              </div>
+              <Bell size={64} />
               <h3>No notifications</h3>
-              <p>
-                {filter === 'unread' ? "You're all caught up! 🎉" : "You don't have any notifications yet."}
-              </p>
-              <Link to="/gallery" className="btn btn-primary">
-                Explore Gallery
-              </Link>
+              <p>{filter === 'unread' ? "You're all caught up 🎉" : "No notifications yet."}</p>
+              <Link to="/gallery" className="btn-explore">Explore Gallery</Link>
             </div>
           ) : (
-            notifications.map((notification) => (
+            notifications.map((n) => (
               <div
-                key={notification._id}
-                className="card transition"
-                style={{
-                  borderLeft: !notification.isRead ? '4px solid var(--primary-500)' : 'none',
-                  background: !notification.isRead ? 'var(--primary-50)' : 'white',
-                  cursor: 'pointer'
-                }}
-                onClick={() => !notification.isRead && markAsRead(notification._id)}
+                key={n._id}
+                className={`notification-card ${!n.isRead ? 'unread' : ''}`}
+                onClick={() => !n.isRead && markAsRead(n._id)}
               >
-                <div className="card-body" style={{ padding: 'var(--space-5)' }}>
-                  <div className="flex items-start space-x-4">
-                    {/* Icon */}
-                    <div 
-                      className="flex-shrink-0"
-                      style={{
-                        background: getIconBackground(notification.type),
-                        padding: 'var(--space-3)',
-                        borderRadius: 'var(--radius-xl)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      {getNotificationIcon(notification.type)}
-                    </div>
+                <div className="notification-content-wrapper">
+                  <div className={getIconClassName(n.type)}>
+                    {getNotificationIcon(n.type)}
+                  </div>
 
-                    {/* Content */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-2 mb-1">
-                            <h4 style={{ 
-                              fontSize: 'var(--text-base)', 
-                              fontWeight: 'var(--font-semibold)', 
-                              color: 'var(--gray-900)',
-                              margin: 0
-                            }}>
-                              {notification.content.title}
-                            </h4>
-                            {!notification.isRead && (
-                              <div 
-                                style={{
-                                  width: '8px',
-                                  height: '8px',
-                                  background: 'var(--primary-500)',
-                                  borderRadius: '50%'
-                                }}
-                              />
-                            )}
-                          </div>
-                          
-                          <p style={{ 
-                            fontSize: 'var(--text-sm)', 
-                            color: 'var(--gray-600)',
-                            margin: '0 0 var(--space-3) 0',
-                            lineHeight: 'var(--leading-relaxed)'
-                          }}>
-                            {notification.content.message}
-                          </p>
-                          
-                          {/* Related User */}
-                          {notification.relatedUser && (
-                            <div className="flex items-center space-x-2" style={{ marginBottom: 'var(--space-2)' }}>
-                              <div className="avatar avatar-sm">
-                                {notification.relatedUser.profile?.avatar ? (
-                                  <img
-                                    src={notification.relatedUser.profile.avatar}
-                                    alt={notification.relatedUser.username}
-                                    style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }}
-                                  />
-                                ) : (
-                                  notification.relatedUser.username.charAt(0).toUpperCase()
-                                )}
-                              </div>
-                              <Link
-                                to={`/profile/${notification.relatedUser._id}`}
-                                style={{ 
-                                  fontSize: 'var(--text-sm)', 
-                                  color: 'var(--primary-600)',
-                                  textDecoration: 'none',
-                                  fontWeight: 'var(--font-medium)'
-                                }}
-                                className="hover:text-primary-700"
-                              >
-                                @{notification.relatedUser.username}
-                              </Link>
-                            </div>
-                          )}
+                  <div className="notification-body">
+                    <h4>{getNotificationMessage(n)}</h4>
 
-                          {/* Related Artwork */}
-                          {notification.relatedArtwork && (
-                            <div style={{ marginTop: 'var(--space-2)' }}>
-                              <Link
-                                to={`/artwork/${notification.relatedArtwork._id}`}
-                                className="btn btn-sm btn-ghost"
-                                style={{ padding: 'var(--space-2) var(--space-3)' }}
-                              >
-                                <Award style={{ width: '14px', height: '14px' }} />
-                                View artwork: {notification.relatedArtwork.title}
-                              </Link>
-                            </div>
-                          )}
-                        </div>
+                    {n.relatedArtwork && (
+                      <Link to={`/artwork/${n.relatedArtwork._id}`} className="artwork-link">
+                        <Award size={14} /> {n.relatedArtwork.title}
+                      </Link>
+                    )}
 
-                        {/* Actions */}
-                        <div className="flex items-center space-x-2" style={{ marginLeft: 'var(--space-4)' }}>
-                          <span style={{ 
-                            fontSize: 'var(--text-xs)', 
-                            color: 'var(--gray-500)',
-                            whiteSpace: 'nowrap'
-                          }}>
-                            {formatTimeAgo(notification.createdAt)}
-                          </span>
-                          
-                          {!notification.isRead && (
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                markAsRead(notification._id);
-                              }}
-                              className="btn btn-sm btn-ghost"
-                              title="Mark as read"
-                              style={{ 
-                                padding: 'var(--space-2)',
-                                color: 'var(--gray-400)'
-                              }}
-                            >
-                              <Check style={{ width: '14px', height: '14px' }} />
-                            </button>
-                          )}
-                          
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              deleteNotification(notification._id);
-                            }}
-                            className="btn btn-sm btn-ghost"
-                            title="Delete notification"
-                            style={{ 
-                              padding: 'var(--space-2)',
-                              color: 'var(--gray-400)'
-                            }}
-                          >
-                            <Trash2 style={{ width: '14px', height: '14px' }} />
-                          </button>
-                        </div>
-                      </div>
+                    <div className="notification-actions">
+                      <span className="notification-time">{formatTimeAgo(n.createdAt)}</span>
+                      {!n.isRead && (
+                        <button onClick={(e) => { e.stopPropagation(); markAsRead(n._id); }}>
+                          <Check size={14} />
+                        </button>
+                      )}
+                      <button onClick={(e) => { e.stopPropagation(); deleteNotification(n._id); }}>
+                        <Trash2 size={14} />
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -435,13 +250,9 @@ function Notifications() {
           )}
         </div>
 
-        {/* Load More */}
         {hasMore && notifications.length > 0 && (
-          <div style={{ textAlign: 'center', marginTop: 'var(--space-8)' }}>
-            <button
-              onClick={() => fetchNotifications(page + 1)}
-              className="btn btn-secondary"
-            >
+          <div className="load-more-wrapper">
+            <button onClick={() => fetchNotifications(page + 1)} className="btn-load-more">
               Load More Notifications
             </button>
           </div>

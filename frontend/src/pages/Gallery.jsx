@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Search, Grid, List, SlidersHorizontal, X } from 'lucide-react';
+import { Search, Grid, List, SlidersHorizontal, X, ChevronLeft, ChevronRight, Heart, Share2, ShoppingCart, Star, Send } from 'lucide-react';
 import http from '../lib/http';
 import ArtworkCard from '../components/ArtworkCard';
 import InfiniteScroll from '../components/InfiniteScroll';
@@ -15,6 +15,14 @@ const Gallery = () => {
   const [page, setPage] = useState(1);
   const [viewMode, setViewMode] = useState('grid');
   const [showFilters, setShowFilters] = useState(false);
+
+  // Modal states
+  const [selectedArtwork, setSelectedArtwork] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [reviews, setReviews] = useState([]);
+  const [newReview, setNewReview] = useState({ rating: 5, comment: '' });
+  const [loadingReviews, setLoadingReviews] = useState(false);
+  const [submittingReview, setSubmittingReview] = useState(false);
 
   // Filters
   const [filters, setFilters] = useState({
@@ -36,26 +44,19 @@ const Gallery = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchTimeout, setSearchTimeout] = useState(null);
 
-  // ==== De-duplication / lifecycle guards ====
-  const didInitRef = useRef(false);              // run initial fetch exactly once per mount
-  const lastUserIdRef = useRef(null);            // re-init only when user actually changes
-  const lastFetchedPageRef = useRef(null);       // prevent fetching same page twice
-  const inFlightRef = useRef(false);             // prevent parallel fetches
-  const reqIdRef = useRef(0);                    // ignore stale responses
+  // De-duplication / lifecycle guards
+  const didInitRef = useRef(false);
+  const lastUserIdRef = useRef(null);
+  const lastFetchedPageRef = useRef(null);
+  const inFlightRef = useRef(false);
+  const reqIdRef = useRef(0);
 
-  /** ==========================
-   * INITIAL LOAD
-   =========================== */
   useEffect(() => {
     const controller = new AbortController();
 
-    // Always get static metadata
     fetchCategories(controller.signal);
     fetchPopularTags(controller.signal);
 
-    // Initialize results:
-    // - First mount without user
-    // - Or when user really changes (id differs)
     const userId = user?.id || user?._id || null;
 
     if (!didInitRef.current || lastUserIdRef.current !== userId) {
@@ -65,16 +66,30 @@ const Gallery = () => {
       if (user) {
         fetchUserPreferences(controller.signal);
       }
-      // Fresh initial fetch
       resetAndFetch();
     }
 
     return () => controller.abort();
-  }, [user]); // keep as [user]; guarded by refs inside
+  }, [user]);
 
-  /** ==========================
-   * FETCH FUNCTIONS
-   =========================== */
+  // Keyboard navigation for modal
+  useEffect(() => {
+    if (!selectedArtwork) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      } else if (e.key === 'ArrowLeft') {
+        navigatePrevious();
+      } else if (e.key === 'ArrowRight') {
+        navigateNext();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedArtwork, selectedIndex]);
+
   const fetchCategories = async (signal) => {
     try {
       const resp = await http.get('/api/artworks/categories', { signal });
@@ -104,8 +119,10 @@ const Gallery = () => {
         http.get('/api/artworks/user/wishlist', { signal, headers }),
       ]);
 
-      if (likesRes?.data?.success)
-        setUserLikes(new Set((likesRes.data.data || []).map((a) => a._id)));
+      if (likesRes?.data?.success) {
+        const likedIds = (likesRes.data.data || []).map((a) => a._id);
+        setUserLikes(new Set(likedIds));
+      }
 
       if (wishlistRes?.data?.success)
         setUserWishlist(new Set((wishlistRes.data.data || []).map((a) => a._id)));
@@ -114,9 +131,8 @@ const Gallery = () => {
     }
   };
 
-  /** ==========================
-   * MAIN FETCH (Artworks)
-   =========================== */
+  // Fixed fetchArtworks function - remove the artist filter that's limiting results
+
 const fetchArtworks = async (
   pageNum = page,
   reset = false,
@@ -129,11 +145,9 @@ const fetchArtworks = async (
   lastFetchedPageRef.current = pageNum;
 
   const myReqId = ++reqIdRef.current;
-  console.log('Fetching artworks, reqId:', myReqId);
 
   try {
-    const userId = user?.id || user?._id || null;
-
+    // Build params object WITHOUT filtering by current user
     const paramsObj = {
       page: pageNum,
       limit: 20,
@@ -142,19 +156,17 @@ const fetchArtworks = async (
         ? customFilters.tags.join(',')
         : customFilters.tags,
     };
-    if (userId) paramsObj.artist = userId;
-
+    
+    // ❌ REMOVED: if (userId) paramsObj.artist = userId;
+    // This was filtering to show only the logged-in user's artworks
+    
     const params = new URLSearchParams(paramsObj).toString();
 
     const resp = await http.get(`/api/artworks?${params}`, { signal });
-    console.log('Received artworks response, reqId:', myReqId, resp);
 
     if (myReqId !== reqIdRef.current) return;
 
-    // ✅ resp is already the backend JSON, no extra .data nesting
     const newArtworks = resp?.data || [];
-
-    console.log('✅ Extracted artworks array length:', newArtworks.length);
 
     setArtworks(prev => (reset ? newArtworks : [...prev, ...newArtworks]));
     setHasMore(newArtworks.length === 20);
@@ -168,6 +180,7 @@ const fetchArtworks = async (
       inFlightRef.current = false;
     }
   }
+  
 };
 
 
@@ -176,13 +189,10 @@ const fetchArtworks = async (
     setArtworks([]);
     setPage(1);
     setHasMore(true);
-    lastFetchedPageRef.current = null; // allow page=1 fetch again
+    lastFetchedPageRef.current = null;
     fetchArtworks(1, true, customFilters);
   };
 
-  /** ==========================
-   * FILTER HANDLERS
-   =========================== */
   const handleSearchChange = (value) => {
     setSearchTerm(value);
     if (searchTimeout) clearTimeout(searchTimeout);
@@ -228,13 +238,11 @@ const fetchArtworks = async (
     resetAndFetch(cleared);
   };
 
-  /** ==========================
-   * INTERACTION HANDLERS
-   =========================== */
   const handleLike = async (artworkId) => {
     if (!user) return;
     const newLikes = new Set(userLikes);
-    if (newLikes.has(artworkId)) newLikes.delete(artworkId);
+    const isLiked = newLikes.has(artworkId);
+    if (isLiked) newLikes.delete(artworkId);
     else newLikes.add(artworkId);
     setUserLikes(newLikes);
 
@@ -253,6 +261,28 @@ const fetchArtworks = async (
           : a
       )
     );
+
+    // Update selected artwork if open
+    if (selectedArtwork?._id === artworkId) {
+      setSelectedArtwork(prev => ({
+        ...prev,
+        stats: {
+          ...prev.stats,
+          likes: newLikes.has(artworkId)
+            ? (prev.stats?.likes || 0) + 1
+            : Math.max(0, (prev.stats?.likes || 0) - 1),
+        },
+      }));
+    }
+
+    try {
+      const token = localStorage.getItem('auth_token');
+      await http.post(`/api/artworks/${artworkId}/like`, null, {
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      });
+    } catch (error) {
+      console.error('Failed to update like:', error);
+    }
   };
 
   const handleWishlist = async (artworkId) => {
@@ -263,19 +293,118 @@ const fetchArtworks = async (
     setUserWishlist(newWishlist);
   };
 
-  /** ==========================
-   * INFINITE SCROLL
-   =========================== */
   const handleLoadMore = useCallback(() => {
     if (!loading && hasMore) {
-      // will be skipped if same page already fetched (guarded above)
       fetchArtworks(page);
     }
   }, [loading, hasMore, page]);
 
-  /** ==========================
-   * RENDER
-   =========================== */
+  // Modal functions
+  const openModal = (artwork, index) => {
+    setSelectedArtwork(artwork);
+    setSelectedIndex(index);
+    fetchReviews(artwork._id);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeModal = () => {
+    setSelectedArtwork(null);
+    setSelectedIndex(-1);
+    setReviews([]);
+    setNewReview({ rating: 5, comment: '' });
+    document.body.style.overflow = 'unset';
+  };
+
+  const navigateNext = () => {
+    if (selectedIndex < artworks.length - 1) {
+      const nextIndex = selectedIndex + 1;
+      const nextArtwork = artworks[nextIndex];
+      setSelectedArtwork(nextArtwork);
+      setSelectedIndex(nextIndex);
+      fetchReviews(nextArtwork._id);
+    }
+  };
+
+  const navigatePrevious = () => {
+    if (selectedIndex > 0) {
+      const prevIndex = selectedIndex - 1;
+      const prevArtwork = artworks[prevIndex];
+      setSelectedArtwork(prevArtwork);
+      setSelectedIndex(prevIndex);
+      fetchReviews(prevArtwork._id);
+    }
+  };
+
+  const fetchReviews = async (artworkId) => {
+    setLoadingReviews(true);
+    try {
+      const resp = await http.get(`/api/artworks/${artworkId}/reviews`);
+      if (resp?.data?.success) {
+        setReviews(resp.data.data || []);
+      }
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+      setReviews([]);
+    } finally {
+      setLoadingReviews(false);
+    }
+  };
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    if (!user || !selectedArtwork || !newReview.comment.trim()) return;
+
+    setSubmittingReview(true);
+    try {
+      const token = localStorage.getItem('auth_token');
+      const resp = await http.post(
+        `/api/artworks/${selectedArtwork._id}/reviews`,
+        {
+          rating: newReview.rating,
+          comment: newReview.comment.trim(),
+        },
+        {
+          headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        }
+      );
+
+      if (resp?.data?.success) {
+        setReviews(prev => [resp.data.data, ...prev]);
+        setNewReview({ rating: 5, comment: '' });
+      }
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      alert('Failed to submit review. Please try again.');
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
+
+  const handleShare = async (artwork) => {
+    const url = `${window.location.origin}/artwork/${artwork._id}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: artwork.title,
+          text: `Check out "${artwork.title}" by ${artwork.artist?.username}`,
+          url: url,
+        });
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          copyToClipboard(url);
+        }
+      }
+    } else {
+      copyToClipboard(url);
+    }
+  };
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Link copied to clipboard!');
+    });
+  };
+
   return (
     <div className="gallery-page">
       {/* Header */}
@@ -437,15 +566,18 @@ const fetchArtworks = async (
           className={`artworks-container ${viewMode}`}
         >
           <div className={`artworks-grid ${viewMode}`}>
-            {artworks.map((artwork) => (
-              <ArtworkCard
-                key={artwork._id}
-                artwork={artwork}
-                onLike={handleLike}
-                onAddToWishlist={handleWishlist}
-                isLiked={userLikes.has(artwork._id)}
-                isInWishlist={userWishlist.has(artwork._id)}
-              />
+            {artworks.map((artwork, index) => (
+            <ArtworkCard
+              key={artwork._id}
+              artwork={artwork}
+              onLike={handleLike}
+              onAddToWishlist={handleWishlist}
+              isLiked={userLikes.has(artwork._id)}
+              isInWishlist={userWishlist.has(artwork._id)}
+              currentUser={user}
+              onClick={() => openModal(artwork, index)} // ✅ add this
+            />
+
             ))}
           </div>
         </InfiniteScroll>
@@ -463,6 +595,205 @@ const fetchArtworks = async (
           </div>
         )}
       </div>
+
+      {/* Artwork Modal */}
+      {selectedArtwork && (
+        <div className="artwork-modal-overlay" onClick={closeModal}>
+          <div className="artwork-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={closeModal}>
+              <X size={24} />
+            </button>
+
+            {/* Navigation Buttons */}
+            {selectedIndex > 0 && (
+              <button className="modal-nav modal-nav-prev" onClick={navigatePrevious}>
+                <ChevronLeft size={32} />
+              </button>
+            )}
+            {selectedIndex < artworks.length - 1 && (
+              <button className="modal-nav modal-nav-next" onClick={navigateNext}>
+                <ChevronRight size={32} />
+              </button>
+            )}
+
+            <div className="modal-content-wrapper">
+              {/* Image Section */}
+              <div className="modal-image-section">
+                <img
+                  src={
+                    selectedArtwork.imageUrl ||
+                    selectedArtwork.thumbnail ||
+                    selectedArtwork.images?.[0]?.url ||
+                    '/default-artwork.png'
+                  }
+                  alt={selectedArtwork.title}
+                  className="modal-image"
+                />
+              </div>
+
+              {/* Details Section */}
+              <div className="modal-details-section">
+                <div className="modal-header">
+                  <div className="modal-title-section">
+                    <h2 className="modal-title">{selectedArtwork.title}</h2>
+                    <p className="modal-artist">
+                      by {selectedArtwork.artist?.username || 'Unknown Artist'}
+                    </p>
+                  </div>
+                  <div className="modal-price">
+                    ₹{selectedArtwork.price?.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="modal-actions">
+                  {/* ❤️ Like button */}
+                  <button
+                    className={`modal-action-like ${userLikes.has(selectedArtwork._id) ? 'active' : ''}`}
+                    onClick={() => handleLike(selectedArtwork._id)}
+                    disabled={selectedArtwork.isSold}
+                  >
+                    <Heart size={20} fill={userLikes.has(selectedArtwork._id) ? 'currentColor' : 'none'} />
+                    <span>{selectedArtwork.stats?.likes || 0}</span>
+                  </button>
+
+                  {/* 🔗 Share button */}
+                  <button
+                    className="modal-action-btn"
+                    onClick={() => handleShare(selectedArtwork)}
+                  >
+                    <Share2 size={20} />
+                    <span>Share</span>
+                  </button>
+
+                  {/* 💰 Buy or Sold */}
+                  {selectedArtwork.isSold ? (
+                    <div className="sold-badge-modal">SOLD</div>
+                  ) : (
+                    <button
+                      className="modal-action-btn buy-now-btn"
+                      onClick={() => handleBuy(selectedArtwork._id)}
+                    >
+                      <ShoppingCart size={20} />
+                      <span>Buy Now</span>
+                    </button>
+                  )}
+                </div>
+
+
+
+                {/* Description */}
+                <div className="modal-description">
+                  <h3>Description</h3>
+                  <p>{selectedArtwork.description || 'No description available.'}</p>
+                </div>
+
+                {/* Tags */}
+                {selectedArtwork.tags && selectedArtwork.tags.length > 0 && (
+                  <div className="modal-tags">
+                    <h3>Tags</h3>
+                    <div className="modal-tags-list">
+                      {selectedArtwork.tags.map((tag, idx) => (
+                        <span key={idx} className="modal-tag">#{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Reviews Section */}
+                <div className="modal-reviews">
+                  <h3>Reviews & Ratings</h3>
+
+                  {/* Review Form */}
+                  {user && (
+                    <form className="review-form" onSubmit={handleSubmitReview}>
+                      <div className="review-rating-input">
+                        <label>Your Rating:</label>
+                        <div className="star-rating-input">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <button
+                              key={star}
+                              type="button"
+                              className={`star-btn ${newReview.rating >= star ? 'active' : ''}`}
+                              onClick={() => setNewReview(prev => ({ ...prev, rating: star }))}
+                            >
+                              <Star size={24} fill={newReview.rating >= star ? 'currentColor' : 'none'} />
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <textarea
+                        className="review-textarea"
+                        placeholder="Write your review..."
+                        value={newReview.comment}
+                        onChange={(e) => setNewReview(prev => ({ ...prev, comment: e.target.value }))}
+                        rows={3}
+                        required
+                      />
+
+                      <button
+                        type="submit"
+                        className="review-submit-btn"
+                        disabled={submittingReview || !newReview.comment.trim()}
+                      >
+                        {submittingReview ? 'Submitting...' : (
+                          <>
+                            <Send size={16} />
+                            Submit Review
+                          </>
+                        )}
+                      </button>
+                    </form>
+                  )}
+
+                  {/* Reviews List */}
+                  <div className="reviews-list">
+                    {loadingReviews ? (
+                      <div className="reviews-loading">Loading reviews...</div>
+                    ) : reviews.length === 0 ? (
+                      <div className="reviews-empty">No reviews yet. Be the first to review!</div>
+                    ) : (
+                      reviews.map((review) => (
+                        <div key={review._id} className="review-item">
+                          <div className="review-header">
+                            <div className="review-user">
+                              <div className="review-avatar">
+                                {review.user?.profile?.avatar ? (
+                                  <img src={review.user.profile.avatar} alt={review.user.username} />
+                                ) : (
+                                  review.user?.username?.charAt(0).toUpperCase() || 'U'
+                                )}
+                              </div>
+                              <div className="review-user-info">
+                                <span className="review-username">{review.user?.username || 'Anonymous'}</span>
+                                <span className="review-date">
+                                  {new Date(review.createdAt).toLocaleDateString()}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="review-rating">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star
+                                  key={star}
+                                  size={16}
+                                  fill={review.rating >= star ? 'currentColor' : 'none'}
+                                  className={review.rating >= star ? 'star-filled' : ''}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                          <p className="review-comment">{review.comment}</p>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

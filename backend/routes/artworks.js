@@ -8,6 +8,8 @@ const User = require('../models/User');
 const { protect } = require('../middleware/auth');
 const { upload } = require('../config/cloudinary');
 const { moderateArtwork } = require('../utils/aiModeration');
+const Notification = require('../models/Notification');
+
 
 // Get feed artworks from followed artists
 router.get('/feed', protect, async (req, res) => {
@@ -362,44 +364,83 @@ router.post('/', protect, upload.array('images', 5), async (req, res) => {
 });
 
 // Like/Unlike artwork
+// Like/Unlike artwork (with notifications + real-time updates)
 router.post('/:id/like', protect, async (req, res) => {
-  try {
-    const artwork = await Artwork.findById(req.params.id);
-    if (!artwork) {
-      return res.status(404).json({ 
-        success: false, 
-        message: 'Artwork not found' 
-      });
-    }
+  console.log(`[LIKE ROUTE] User ${req.user._id} toggling like for artwork ${req.params.id}`);
 
+  try {
+    const artworkId = req.params.id;
     const user = await User.findById(req.user._id);
-    const isLiked = user.likedArtworks?.includes(req.params.id);
+    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+
+    const artwork = await Artwork.findById(artworkId).populate('artist', 'username _id');
+    if (!artwork) return res.status(404).json({ success: false, message: 'Artwork not found' });
+
+    const isLiked = user.likedArtworks?.some(id => id.toString() === artworkId.toString());
+    const io = req.app.get('io'); // ✅ Access global Socket.IO instance
 
     if (isLiked) {
-      // Unlike
-      user.likedArtworks = user.likedArtworks.filter(id => id.toString() !== req.params.id);
-      artwork.stats.likes = Math.max(0, (artwork.stats.likes || 0) - 1);
+      // 🔻 Unlike
+      user.likedArtworks = user.likedArtworks.filter(id => id.toString() !== artworkId.toString());
+      await Artwork.findByIdAndUpdate(artworkId, { $inc: { 'stats.likes': -1 } });
     } else {
-      // Like
-      if (!user.likedArtworks) user.likedArtworks = [];
-      user.likedArtworks.push(req.params.id);
-      artwork.stats.likes = (artwork.stats.likes || 0) + 1;
+      // ❤️ Like
+      user.likedArtworks.push(artworkId);
+      await Artwork.findByIdAndUpdate(artworkId, { $inc: { 'stats.likes': 1 } });
+
+      // ✅ Only notify if the artist isn't the liker
+      if (artwork.artist._id.toString() !== req.user._id.toString()) {
+        const notification =await Notification.create({
+          recipient: artwork.artist,
+          sender: req.user._id,
+          type: 'like',
+          message: `${req.user.username} liked your artwork "${artwork.title}"`,
+          link: `/artwork/${artwork._id}`,
+          relatedArtwork: artwork._id, // ✅ Added
+          relatedUser: req.user._id,   // ✅ Added
+          content: {
+            title: artwork.title,      // ✅ So frontend has title access
+            message: `${req.user.username} liked your artwork "${artwork.title}"`
+          }
+        });
+
+        console.log(`🔔 Notification created for artist ${artwork.artist.username}`);
+
+        // ✅ Real-time push to the artist if connected
+        if (io) {
+          io.to(artwork.artist._id.toString()).emit('notification', {
+            type: 'like',
+            message: notification.message,
+            link: notification.link,
+            sender: {
+              _id: req.user._id,
+              username: req.user.username
+            },
+            timestamp: notification.createdAt
+          });
+          console.log(`📢 Real-time notification sent to artist ${artwork.artist._id}`);
+        }
+      }
     }
 
-    await Promise.all([user.save(), artwork.save()]);
+    await user.save();
+
+    const updated = await Artwork.findById(artworkId).select('stats.likes');
+    console.log(`❤️ Artwork ${artworkId} likes updated to ${updated.stats.likes}`);
 
     res.json({
       success: true,
       isActive: !isLiked,
-      count: artwork.stats.likes
+      count: updated.stats.likes,
+      message: isLiked ? 'Artwork unliked successfully' : 'Artwork liked successfully',
     });
   } catch (error) {
-    res.status(500).json({ 
-      success: false, 
-      message: error.message 
-    });
+    console.error('❌ Like route error:', error);
+    res.status(500).json({ success: false, message: error.message });
   }
 });
+
+
 
 // Add/Remove from wishlist
 router.post('/:id/wishlist', protect, async (req, res) => {
@@ -498,8 +539,9 @@ router.get('/user/liked', protect, async (req, res) => {
       }
     });
 
-    const likedArtworks = user.likedArtworks || [];
-    const total = user.likedArtworks?.length || 0;
+  const likedArtworks = user.likedArtworks || [];
+  const total = user.likedArtworks?.length || 0;
+  console.log(`[LIKED ARTWORKS API] User: ${req.user._id}, likedArtworks:`, likedArtworks.map(a => a._id || a));
 
     res.json({
       success: true,

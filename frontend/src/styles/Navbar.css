@@ -572,24 +572,11 @@
 
 /* Badge showing unread counts */
 .icon-badge {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  background-color: #ef4444;
-  color: #fff;
-  font-size: 0.625rem;
-  /* 10px */
-  font-weight: 600;
-  border-radius: 9999px;
-  height: 18px;
-  min-width: 18px;
-  padding: 0 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: pulseBadge 1.2s infinite;
-  box-shadow: 0 0 4px rgba(255, 0, 0, 0.5);
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
+
 
 /* Simple pulse animation for badges */
 @keyframes pulseBadge {

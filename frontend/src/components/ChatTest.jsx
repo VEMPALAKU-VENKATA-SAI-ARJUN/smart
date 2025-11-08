@@ -1,3 +1,4 @@
+// New file: frontend/src/components/ChatTest.jsx
 import { useState } from 'react';
 import { useChat } from '../contexts/ChatContext';
 

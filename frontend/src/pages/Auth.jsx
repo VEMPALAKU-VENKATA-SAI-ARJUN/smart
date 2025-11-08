@@ -69,6 +69,7 @@ const Auth = () => {
             value: "buyer",
             label: "Art Collector",
             icon: ShoppingBag,
+             image: "/icons/collector.jpg",
             description: "Browse and purchase amazing artworks",
             color: "text-secondary",
             bgColor: "bg-secondary/10 border-secondary/20"
@@ -77,6 +78,7 @@ const Auth = () => {
             value: "artist",
             label: "Artist",
             icon: Paintbrush,
+            image: "/icons/artist.jpg", 
             description: "Create and sell your artistic works",
             color: "text-primary",
             bgColor: "bg-primary/10 border-primary/20"
@@ -85,6 +87,7 @@ const Auth = () => {
             value: "moderator",
             label: "Moderator",
             icon: Shield,
+            image: "/icons/moderator.jpg",
             description: "Help maintain community standards",
             color: "text-accent",
             bgColor: "bg-accent/10 border-accent/20"
@@ -294,16 +297,13 @@ const Auth = () => {
                                 {activeTab === "register" && (
                                     <div className="form-group">
                                         <label className="block text-sm font-medium text-foreground mb-2">Account Type</label>
-                                        <div className="grid grid-cols-1 gap-2">
+                                       <div className="role-selection grid grid-cols-1 gap-2">
                                             {roles.map((option) => {
                                                 const Icon = option.icon;
                                                 return (
                                                     <label
                                                         key={option.value}
-                                                        className={`relative flex items-center p-3 border rounded-[var(--radius)] cursor-pointer transition-all ${selectedRole === option.value
-                                                            ? 'border-primary bg-primary/5'
-                                                            : 'border-border hover:border-muted-foreground'
-                                                            }`}
+                                                        className={`role-option relative flex items-center p-3 border rounded-lg cursor-pointer transition-all ${selectedRole === option.value ? 'selected' : ''}`}
                                                     >
                                                         <input
                                                             type="radio"
@@ -315,8 +315,14 @@ const Auth = () => {
                                                             disabled={loading}
                                                         />
                                                         <div className="flex items-center gap-3 flex-1">
-                                                            <div className={`p-2 rounded-lg ${selectedRole === option.value ? option.bgColor : 'bg-muted'}`}>
-                                                                <Icon className={`h-5 w-5 ${selectedRole === option.value ? option.color : 'text-muted-foreground'}`} />
+                                                            <div className={`relative flex items-center justify-center p-2 ml-1 size-1 rounded-lg ${selectedRole === option.value ? option.bgColor : 'bg-muted'}`}>
+                                                                {option.image ? (
+                                                                    <div className="role-option-image-container">
+                                                                    <img src={option.image} alt={option.label} className="role-option-image" />
+                                                                    </div>
+                                                                ) : (
+                                                                    <Icon className={`h-5 w-5 ${selectedRole === option.value ? option.color : 'text-muted-foreground'}`} />
+                                                                )}
                                                             </div>
                                                             <div>
                                                                 <div className="font-medium text-foreground">{option.label}</div>
@@ -324,7 +330,7 @@ const Auth = () => {
                                                             </div>
                                                         </div>
                                                         {selectedRole === option.value && (
-                                                            <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
+                                                            <div className="role-indicator w-5 h-5 bg-primary rounded-full flex items-center justify-center">
                                                                 <div className="w-2 h-2 bg-primary-foreground rounded-full"></div>
                                                             </div>
                                                         )}

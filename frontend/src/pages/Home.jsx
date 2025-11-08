@@ -256,8 +256,16 @@ export default function Home() {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="art-img">
-                <img 
-                  src={artwork.imageUrl || artwork.image} 
+                <img
+                  src={
+                    artwork.imageUrl?.startsWith('http')
+                      ? artwork.imageUrl
+                      : artwork.thumbnail?.startsWith('http')
+                      ? artwork.thumbnail
+                      : Array.isArray(artwork.images) && artwork.images.length > 0
+                      ? artwork.images[0]
+                      : 'https://via.placeholder.com/400x300?text=Image+Not+Found'
+                  }
                   alt={artwork.title}
                   onError={(e) => {
                     e.target.src = 'https://via.placeholder.com/400x300?text=Image+Not+Found';
@@ -272,7 +280,7 @@ export default function Home() {
                 <h3>{artwork.title}</h3>
                 <p>{artwork.artist?.name || artwork.artist?.username || 'Unknown Artist'}</p>
                 <div className="art-footer">
-                  <span>${artwork.price || 'N/A'}</span>
+                  <span>₹{artwork.price || 'N/A'}</span>
                   <span>{artwork.likes || 0} ❤️</span>
                 </div>
               </div>

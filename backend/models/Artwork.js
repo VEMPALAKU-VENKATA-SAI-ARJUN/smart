@@ -67,10 +67,12 @@ const artworkSchema = new mongoose.Schema({
     enum: ['trending', 'featured', 'new', 'bestseller', 'contest-winner']
   }],
   stats: {
-    views: { type: Number, default: 0 },
-    favorites: { type: Number, default: 0 },
-    shares: { type: Number, default: 0 }
-  },
+  views: { type: Number, default: 0 },
+  likes: { type: Number, default: 0 }, // ✅ add this
+  favorites: { type: Number, default: 0 },
+  shares: { type: Number, default: 0 }
+},
+
   isForSale: { type: Boolean, default: true },
   isSold: { type: Boolean, default: false },
   soldTo: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

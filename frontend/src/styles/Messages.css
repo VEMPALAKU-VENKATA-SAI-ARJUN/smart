@@ -103,6 +103,7 @@
 
 /* Clean Conversations Sidebar */
 .conversations-sidebar {
+  
   width: 340px;
   min-width: 340px;
   background: var(--chat-surface-alt);
@@ -153,6 +154,7 @@
 }
 
 .conversations-title {
+  
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0;
@@ -199,6 +201,7 @@
 
 /* Conversations List */
 .conversations-list {
+  background-color: #536176b1;
   flex: 1;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -308,6 +311,7 @@
 }
 
 .conversation-time {
+ 
   font-size: var(--text-xs);
   color: var(--gray-500);
   white-space: nowrap;
@@ -370,6 +374,7 @@
 }
 
 .chat-header-content {
+  
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -442,7 +447,7 @@
 .chat-user-details h2 {
   font-size: var(--text-xl);
   font-weight: var(--font-semibold);
-  color: var(--gray-900);
+   color: #000;
   margin: 0;
 }
 
@@ -1720,4 +1725,55 @@ age Status Indicators */
     color: #e2e8f0;
     border-color: rgba(71, 85, 105, 0.8);
   }
+}
+
+/* 🧠 S.M.A.R.T Assistant Section */
+.ai-chat-button-container {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.ai-chat-button {
+  width: 100%;
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: 0.3s ease;
+}
+
+.ai-chat-button:hover {
+  transform: scale(1.03);
+  opacity: 0.9;
+}
+
+/* 🟣 AI Chat Header */
+.ai-chat-header {
+  background: linear-gradient(90deg, #7c3aed, #a855f7);
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat-header-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
 }

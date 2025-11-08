@@ -168,34 +168,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* Stats Bar */
-.stats-bar {
-  display: flex;
-  justify-content: space-around;
-  padding: 30px 40px;
-  border-bottom: 1px solid #f0f0f0;
-  background: white;
-}
 
-.stat-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-}
-
-.stat-value {
-  font-size: 24px;
-  font-weight: 700;
-  color: #333;
-}
-
-.stat-label {
-  font-size: 14px;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
 
 /* Tabs */
 .tabs {
@@ -786,4 +759,138 @@ a,
 }
 @media (max-width: 640px) {
   .ig-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.purchases-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+/* ============================
+   🛒 Purchases (Horizontal Scroll)
+   ============================ */
+
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #7c3aed;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.empty-text {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin-top: 1rem;
+}
+
+/* Scroll container */
+.purchases-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 1.2rem;
+  padding-bottom: 1rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: #7c3aed #f3f4f6;
+}
+
+/* Custom scrollbar */
+.purchases-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+.purchases-scroll::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 10px;
+}
+.purchases-scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  border-radius: 10px;
+}
+
+/* Each card */
+.purchase-card-horizontal {
+  min-width: 240px;
+  flex: 0 0 auto;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #7c3aed15, #ec489915);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(124, 58, 237, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  scroll-snap-align: start;
+}
+
+.purchase-card-horizontal:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 18px rgba(124, 58, 237, 0.25);
+}
+
+.purchase-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  height: 160px;
+}
+
+.purchase-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.purchase-card-horizontal:hover .purchase-image {
+  transform: scale(1.08);
+}
+
+.purchase-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+ 
+  color: white;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.purchase-artist{
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #41176b5e;
+  display: block;     
+  color: #ffffff;
+  margin-top: 0.4rem;
+}
+.purchase-card-horizontal:hover .purchase-overlay {
+  opacity: 1;
+}
+
+.purchase-info {
+  padding: 0.8rem;
+  text-align: center;
+}
+
+.purchase-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.3rem;
+}
+
+.purchase-price {
+  font-weight: 700;
+  color: #7c3aed;
+}
+
+.purchase-date {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 0.3rem;
 }
