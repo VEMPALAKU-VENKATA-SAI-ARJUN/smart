@@ -1,13 +1,13 @@
-// models/Review.js
 const mongoose = require('mongoose');
 
 const reviewSchema = new mongoose.Schema({
   artwork: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Artwork',
-    required: true
+    required: true,
+    index: true
   },
-  buyer: {
+  reviewer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
@@ -20,19 +20,37 @@ const reviewSchema = new mongoose.Schema({
   },
   comment: {
     type: String,
+    required: true,
+    maxlength: 1000
+  },
+  recommendation: {
+    type: String,
+    enum: ['approve', 'revise', 'reject'],
     required: true
   },
-  images: [String],
-  helpful: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  response: {
-    text: String,
-    by: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    at: Date
+  createdAt: {
+    type: Date,
+    default: Date.now
   },
-  isVerifiedPurchase: { type: Boolean, default: false }
-}, { timestamps: true });
+  updatedAt: {
+    type: Date,
+    default: Date.now
+  }
+});
 
-reviewSchema.index({ artwork: 1, createdAt: -1 });
-reviewSchema.index({ buyer: 1, artwork: 1 }, { unique: true });
+// Compound unique index: one review per reviewer per artwork
+reviewSchema.index({ artwork: 1, reviewer: 1 }, { unique: true });
+
+// Pre-save validation
+reviewSchema.pre('save', function(next) {
+  if (this.rating < 1 || this.rating > 5) {
+    return next(new Error('Rating must be between 1 and 5'));
+  }
+  if (!this.artwork || !this.reviewer) {
+    return next(new Error('Artwork and reviewer are required'));
+  }
+  this.updatedAt = Date.now();
+  next();
+});
 
 module.exports = mongoose.model('Review', reviewSchema);

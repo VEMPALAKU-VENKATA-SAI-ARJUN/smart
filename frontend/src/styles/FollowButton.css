@@ -1,0 +1,240 @@
+/* Follow Button Container */
+.follow-button-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Follow Button Base Styles */
+.follow-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.follow-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.follow-btn-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.follow-btn-icon.spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Button Sizes */
+.follow-btn-sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.follow-btn-md {
+  padding: 0.5rem 1rem;
+  font-size: 0.9375rem;
+}
+
+.follow-btn-lg {
+  padding: 0.625rem 1.25rem;
+  font-size: 1rem;
+}
+
+/* Button Variants */
+.follow-btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+}
+
+.follow-btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.follow-btn-primary.following {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.follow-btn-primary.following:hover:not(:disabled) {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+}
+
+.follow-btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.follow-btn-secondary:hover:not(:disabled) {
+  background: #e5e7eb;
+}
+
+.follow-btn-secondary.following {
+  background: #e5e7eb;
+  color: #059669;
+}
+
+.follow-btn-secondary.following:hover:not(:disabled) {
+  background: #fecaca;
+  color: #dc2626;
+}
+
+.follow-btn-outline {
+  background: transparent;
+  border: 2px solid #3b82f6;
+  color: #3b82f6;
+}
+
+.follow-btn-outline:hover:not(:disabled) {
+  background: #3b82f6;
+  color: white;
+}
+
+.follow-btn-outline.following {
+  border-color: #10b981;
+  color: #10b981;
+}
+
+.follow-btn-outline.following:hover:not(:disabled) {
+  border-color: #dc2626;
+  color: #dc2626;
+  background: transparent;
+}
+
+/* Follower Count */
+.follower-count {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* Unfollow Menu Overlay */
+.unfollow-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease;
+}
+
+.unfollow-menu {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+.unfollow-menu h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.unfollow-menu p {
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.unfollow-menu-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.unfollow-confirm-btn,
+.unfollow-cancel-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.unfollow-confirm-btn {
+  background: #dc2626;
+  color: white;
+}
+
+.unfollow-confirm-btn:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.unfollow-confirm-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.unfollow-cancel-btn {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.unfollow-cancel-btn:hover:not(:disabled) {
+  background: #e5e7eb;
+}
+
+/* Animations */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .unfollow-menu {
+    padding: 1.25rem;
+  }
+
+  .unfollow-menu h3 {
+    font-size: 1.125rem;
+  }
+
+  .unfollow-menu-actions {
+    flex-direction: column;
+  }
+}

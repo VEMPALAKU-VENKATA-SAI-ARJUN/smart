@@ -26,11 +26,11 @@ router.post("/", protect, async (req, res) => {
     // 🧩 Step 1: Predefined Replies (Instant)
     const predefinedReplies = [
       {
-        keywords: ["buy", "purchase", "artwork", "payment"],
+        keywords: ["buy", "purchase", "payment"],
         reply: "To buy an artwork, visit the **Gallery Page**, choose your favorite art piece, click the 'Buy' button, and confirm your purchase. You'll be redirected to your purchases page after payment.",
       },
       {
-        keywords: ["upload", "post", "submit", "art"],
+        keywords: ["upload", "post", "submit", "artwork"],
         reply: "To upload your artwork, go to your **Profile Page** and click the 'Upload Artwork' button. You can add your image, title, and description easily!",
       },
       {

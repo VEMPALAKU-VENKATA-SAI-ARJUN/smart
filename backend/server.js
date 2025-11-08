@@ -94,7 +94,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/artworks', require('./routes/artworks'));
 app.use('/api/users', require('./routes/users'));
-app.use('/api/reviews', require('./routes/reviews'));
+app.use('/api', require('./routes/reviews'));
 app.use('/api/commissions', require('./routes/commissions'));
 app.use('/api/contests', require('./routes/contests'));
 app.use('/api/notifications', require('./routes/notifications'));

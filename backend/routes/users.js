@@ -7,9 +7,23 @@ const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('cloudinary').v2;
 const User = require('../models/User');
 const Artwork = require('../models/Artwork');
+const Notification = require('../models/Notification');
+const Transaction = require('../models/Transaction');
 const { protect } = require('../middleware/auth');
 
-const Transaction = require('../models/Transaction');
+// Optional auth middleware - doesn't fail if no token
+const optionalAuth = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (token) {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = await User.findById(decoded.id).select('-password');
+    }
+  } catch (error) {
+    // Silently fail - user just won't be authenticated
+  }
+  next();
+};
 /* ============================
    ☁️ CLOUDINARY CONFIG
    ============================ */
@@ -73,9 +87,119 @@ router.get('/:id/artworks', async (req, res) => {
 });
 
 /* ============================
+   🛒 GET USER PURCHASES (Buyer)
+   ============================ */
+router.get('/:id/purchases', async (req, res) => {
+  try {
+    const buyerId = req.params.id;
+
+    // Find all completed transactions for this buyer
+    const transactions = await Transaction.find({
+      buyer: buyerId,
+      status: 'completed',
+    })
+      .populate({
+        path: 'artwork',
+        populate: { path: 'artist', select: 'username profile.avatar' },
+      })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    // Return an empty array instead of a 404 for cleaner UI
+    if (!transactions.length) {
+      return res.status(200).json({ success: true, purchases: [] });
+    }
+
+    // Format data for frontend
+    const purchases = transactions.map((t) => ({
+      _id: t.artwork?._id,
+      title: t.artwork?.title || 'Untitled Artwork',
+      price: t.amount,
+      thumbnail: t.artwork?.thumbnail || t.artwork?.images?.[0]?.url || 'https://placehold.co/600x400',
+      artist: t.artwork?.artist || {},
+      purchasedAt: t.createdAt,
+      status: t.status,
+    }));
+
+    res.status(200).json({ success: true, purchases });
+  } catch (error) {
+    console.error('❌ Error fetching purchases:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch purchases' });
+  }
+});
+
+/* ============================
+   📊 GET USER STATS (Role-Aware)
+   ============================ */
+router.get('/:id/stats', optionalAuth, async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    // Get user to determine role
+    const user = await User.findById(userId).select('role').lean();
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // Parallel queries for optimal performance
+    const statsPromises = {
+      followers: User.findById(userId).select('followers').lean(),
+      following: User.findById(userId).select('following').lean(),
+    };
+
+    // Role-specific stats
+    if (user.role === 'artist') {
+      statsPromises.posts = Artwork.countDocuments({
+        artist: userId,
+        status: 'approved',
+        visibility: 'public'
+      });
+      statsPromises.sales = Transaction.countDocuments({
+        seller: userId,
+        status: 'completed'
+      });
+    } else if (user.role === 'buyer') {
+      statsPromises.purchases = Transaction.countDocuments({
+        buyer: userId,
+        status: 'completed'
+      });
+    }
+
+    // Execute all queries in parallel
+    const results = await Promise.all(
+      Object.entries(statsPromises).map(async ([key, promise]) => {
+        const result = await promise;
+        return [key, result];
+      })
+    );
+
+    // Build stats object
+    const stats = {};
+    results.forEach(([key, value]) => {
+      if (key === 'followers' || key === 'following') {
+        stats[key] = value?.[key]?.length || 0;
+      } else {
+        stats[key] = value || 0;
+      }
+    });
+
+    // Add role for frontend
+    stats.role = user.role;
+
+    res.status(200).json({
+      success: true,
+      data: stats
+    });
+  } catch (error) {
+    console.error('❌ Error fetching user stats:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch stats' });
+  }
+});
+
+/* ============================
    👤 GET USER PROFILE
    ============================ */
-router.get('/:id', async (req, res) => {
+router.get('/:id', optionalAuth, async (req, res) => {
   try {
     console.log('📦 Fetching user by ID:', req.params.id);
 
@@ -87,6 +211,22 @@ router.get('/:id', async (req, res) => {
 
     if (!user)
       return res.status(404).json({ success: false, message: 'User not found' });
+
+    // Add isFollowing field if user is authenticated
+    if (req.user) {
+      const currentUserId = req.user._id.toString();
+      user.isFollowing = user.followers.some(
+        follower => follower._id.toString() === currentUserId
+      );
+    } else {
+      user.isFollowing = false;
+    }
+
+    // Add quick stats
+    user.stats = {
+      followers: user.followers?.length || 0,
+      following: user.following?.length || 0
+    };
 
     res.status(200).json({ success: true, data: user });
   } catch (error) {
@@ -159,90 +299,159 @@ router.post('/:id/avatar', protect, upload.single('avatar'), async (req, res) =>
 });
 
 /* ============================
-   👥 FOLLOW / UNFOLLOW USER
+   👥 FOLLOW USER (Idempotent)
    ============================ */
 router.post('/:id/follow', protect, async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
     const currentUserId = req.user._id;
     const targetId = req.params.id;
 
-    if (currentUserId.toString() === targetId)
+    // Validation
+    if (currentUserId.toString() === targetId) {
+      await session.abortTransaction();
       return res.status(400).json({ success: false, message: "You can't follow yourself" });
-
-    const user = await User.findById(currentUserId);
-    const target = await User.findById(targetId);
-
-    if (!target)
-      return res.status(404).json({ success: false, message: 'User not found' });
-
-    const isFollowing = user.following.includes(targetId);
-
-    if (isFollowing) {
-      user.following.pull(targetId);
-      target.followers.pull(currentUserId);
-    } else {
-      user.following.push(targetId);
-      target.followers.push(currentUserId);
     }
 
-    await user.save();
-    await target.save();
+    // Check if target user exists
+    const target = await User.findById(targetId).session(session);
+    if (!target) {
+      await session.abortTransaction();
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // Check if already following (before update)
+    const currentUser = await User.findById(currentUserId).session(session);
+    const wasFollowing = currentUser.following.some(id => id.toString() === targetId);
+
+    // Atomic operations using $addToSet (idempotent)
+    const [updatedUser, updatedTarget] = await Promise.all([
+      User.findByIdAndUpdate(
+        currentUserId,
+        { $addToSet: { following: targetId } },
+        { new: true, session }
+      ).select('following'),
+      User.findByIdAndUpdate(
+        targetId,
+        { $addToSet: { followers: currentUserId } },
+        { new: true, session }
+      ).select('followers')
+    ]);
+
+    await session.commitTransaction();
+
+    const isNewFollow = !wasFollowing;
+
+    // Create notification only if this is a new follow
+    if (isNewFollow) {
+      const Notification = require('../models/Notification');
+      const notification = await Notification.create({
+        recipient: targetId,
+        type: 'follow',
+        content: {
+          title: 'New Follower',
+          message: `${req.user.username} started following you`,
+          link: `/profile/${currentUserId}`
+        },
+        relatedUser: currentUserId
+      });
+
+      // Emit real-time notification via Socket.IO
+      const io = req.app.get('io');
+      if (io) {
+        io.to(`user_${targetId}`).emit('notification:new', {
+          ...notification.toObject(),
+          sender: {
+            _id: currentUserId,
+            username: req.user.username,
+            profile: { avatar: req.user.profile?.avatar }
+          }
+        });
+
+        // Emit follower count update
+        io.to(`user_${targetId}`).emit('follow:update', {
+          followerCount: updatedTarget.followers.length
+        });
+      }
+    }
 
     res.status(200).json({
       success: true,
-      message: isFollowing ? 'Unfollowed' : 'Followed',
-      following: !isFollowing,
+      message: 'Followed successfully',
+      data: {
+        isFollowing: true,
+        followerCount: updatedTarget.followers.length,
+        followingCount: updatedUser.following.length
+      }
     });
   } catch (error) {
-    console.error('❌ Follow/unfollow error:', error);
+    await session.abortTransaction();
+    console.error('❌ Follow error:', error);
     res.status(500).json({ success: false, message: 'Server error' });
+  } finally {
+    session.endSession();
   }
 });
 
 /* ============================
-   🛒 GET USER PURCHASES (Buyer)
+   👥 UNFOLLOW USER (Idempotent)
    ============================ */
-/* ============================
-   🛒 GET USER PURCHASES (Buyer)
-   ============================ */
-router.get('/:id/purchases', async (req, res) => {
+router.delete('/:id/follow', protect, async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
-    const buyerId = req.params.id;
+    const currentUserId = req.user._id;
+    const targetId = req.params.id;
 
-    // Find all completed transactions for this buyer
-    const transactions = await Transaction.find({
-      buyer: buyerId,
-      status: 'completed',
-    })
-      .populate({
-        path: 'artwork',
-        populate: { path: 'artist', select: 'username profile.avatar' },
-      })
-      .sort({ createdAt: -1 })
-      .lean();
-
-    // Return an empty array instead of a 404 for cleaner UI
-    if (!transactions.length) {
-      return res.status(200).json({ success: true, purchases: [] });
+    // Validation
+    if (currentUserId.toString() === targetId) {
+      await session.abortTransaction();
+      return res.status(400).json({ success: false, message: "You can't unfollow yourself" });
     }
 
-    // Format data for frontend
-    const purchases = transactions.map((t) => ({
-      _id: t.artwork?._id,
-      title: t.artwork?.title || 'Untitled Artwork',
-      price: t.amount,
-      thumbnail: t.artwork?.thumbnail || t.artwork?.images?.[0]?.url || 'https://placehold.co/600x400',
-      artist: t.artwork?.artist || {},
-      purchasedAt: t.createdAt,
-      status: t.status,
-    }));
+    // Atomic operations using $pull (idempotent)
+    const [updatedUser, updatedTarget] = await Promise.all([
+      User.findByIdAndUpdate(
+        currentUserId,
+        { $pull: { following: targetId } },
+        { new: true, session }
+      ).select('following'),
+      User.findByIdAndUpdate(
+        targetId,
+        { $pull: { followers: currentUserId } },
+        { new: true, session }
+      ).select('followers')
+    ]);
 
-    res.status(200).json({ success: true, purchases });
+    await session.commitTransaction();
+
+    // Emit real-time follower count update
+    const io = req.app.get('io');
+    if (io) {
+      io.to(`user_${targetId}`).emit('follow:update', {
+        followerCount: updatedTarget.followers.length
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Unfollowed successfully',
+      data: {
+        isFollowing: false,
+        followerCount: updatedTarget.followers.length,
+        followingCount: updatedUser.following.length
+      }
+    });
   } catch (error) {
-    console.error('❌ Error fetching purchases:', error);
-    res.status(500).json({ success: false, message: 'Failed to fetch purchases' });
+    await session.abortTransaction();
+    console.error('❌ Unfollow error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  } finally {
+    session.endSession();
   }
 });
-
 
 module.exports = router;

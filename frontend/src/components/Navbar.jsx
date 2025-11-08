@@ -130,13 +130,16 @@ function Navbar() {
     window.location.href = "/";
   };
 
+  const isReviewer = user?.role === 'reviewer' || user?.role === 'moderator' || user?.role === 'admin';
+
   const navLinks = [
     { path: "/", label: "Home", icon: Home },
     { path: "/gallery", label: "Gallery", icon: Image },
     ...(user ? [{ path: "/following", label: "Following", icon: Users }] : []),
     ...(user ? [{ path: "/upload", label: "Upload", icon: Upload }] : []),
     ...(user ? [{ path: `/profile/${user.id}`, label: "Profile", icon: User }] : []),
-    ...(isModerator ? [{ path: "/moderation", label: "Moderation", icon: CheckCircle }] : []),
+    ...(isReviewer ? [{ path: "/review-queue", label: "Review Queue", icon: CheckCircle }] : []),
+    ...(isModerator ? [{ path: "/moderation", label: "Moderation", icon: Shield }] : []),
     ...(isAdmin ? [{ path: "/admin", label: "Admin", icon: Shield }] : []),
   ];
 

@@ -84,6 +84,15 @@ const Auth = () => {
             bgColor: "bg-primary/10 border-primary/20"
         },
         {
+            value: "reviewer",
+            label: "Reviewer",
+            icon: Sparkles,
+            image: "/icons/reviewer.svg",
+            description: "Provide expert feedback on artworks",
+            color: "text-purple-600",
+            bgColor: "bg-purple-100 border-purple-200"
+        },
+        {
             value: "moderator",
             label: "Moderator",
             icon: Shield,

@@ -338,9 +338,17 @@ const fetchArtworks = async (
   const fetchReviews = async (artworkId) => {
     setLoadingReviews(true);
     try {
-      const resp = await http.get(`/api/artworks/${artworkId}/reviews`);
-      if (resp?.data?.success) {
-        setReviews(resp.data.data || []);
+      const data = await http.get(`/api/artworks/${artworkId}/reviews`);
+      console.log('📋 Reviews data:', data);
+      console.log('📋 Reviews items:', data?.items);
+      console.log('📋 Reviews count:', data?.items?.length);
+      if (data?.success) {
+        const reviewsData = data.items || [];
+        console.log('📋 Setting reviews:', reviewsData);
+        setReviews(reviewsData);
+      } else {
+        console.log('⚠️ Response not successful');
+        setReviews([]);
       }
     } catch (error) {
       console.error('Error fetching reviews:', error);
@@ -702,49 +710,25 @@ const fetchArtworks = async (
 
                 {/* Reviews Section */}
                 <div className="modal-reviews">
-                  <h3>Reviews & Ratings</h3>
+                  <h3>Reviews & Ratings ({reviews.length})</h3>
 
-                  {/* Review Form */}
-                  {user && (
-                    <form className="review-form" onSubmit={handleSubmitReview}>
-                      <div className="review-rating-input">
-                        <label>Your Rating:</label>
-                        <div className="star-rating-input">
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <button
-                              key={star}
-                              type="button"
-                              className={`star-btn ${newReview.rating >= star ? 'active' : ''}`}
-                              onClick={() => setNewReview(prev => ({ ...prev, rating: star }))}
-                            >
-                              <Star size={24} fill={newReview.rating >= star ? 'currentColor' : 'none'} />
-                            </button>
-                          ))}
-                        </div>
+                  {/* Overall Rating */}
+                  {selectedArtwork.ratingAvg > 0 && (
+                    <div className="overall-rating-display">
+                      <div className="rating-stars-display">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star
+                            key={star}
+                            size={20}
+                            fill={star <= Math.round(selectedArtwork.ratingAvg) ? 'currentColor' : 'none'}
+                            className={star <= Math.round(selectedArtwork.ratingAvg) ? 'star-filled' : 'star-empty'}
+                          />
+                        ))}
                       </div>
-
-                      <textarea
-                        className="review-textarea"
-                        placeholder="Write your review..."
-                        value={newReview.comment}
-                        onChange={(e) => setNewReview(prev => ({ ...prev, comment: e.target.value }))}
-                        rows={3}
-                        required
-                      />
-
-                      <button
-                        type="submit"
-                        className="review-submit-btn"
-                        disabled={submittingReview || !newReview.comment.trim()}
-                      >
-                        {submittingReview ? 'Submitting...' : (
-                          <>
-                            <Send size={16} />
-                            Submit Review
-                          </>
-                        )}
-                      </button>
-                    </form>
+                      <span className="rating-value-display">
+                        {selectedArtwork.ratingAvg.toFixed(1)} out of 5
+                      </span>
+                    </div>
                   )}
 
                   {/* Reviews List */}
@@ -752,37 +736,44 @@ const fetchArtworks = async (
                     {loadingReviews ? (
                       <div className="reviews-loading">Loading reviews...</div>
                     ) : reviews.length === 0 ? (
-                      <div className="reviews-empty">No reviews yet. Be the first to review!</div>
+                      <div className="reviews-empty">No reviews yet</div>
                     ) : (
                       reviews.map((review) => (
                         <div key={review._id} className="review-item">
                           <div className="review-header">
                             <div className="review-user">
                               <div className="review-avatar">
-                                {review.user?.profile?.avatar ? (
-                                  <img src={review.user.profile.avatar} alt={review.user.username} />
+                                {review.reviewer?.profile?.avatar ? (
+                                  <img src={review.reviewer.profile.avatar} alt={review.reviewer.username} />
                                 ) : (
-                                  review.user?.username?.charAt(0).toUpperCase() || 'U'
+                                  review.reviewer?.username?.charAt(0).toUpperCase() || 'U'
                                 )}
                               </div>
                               <div className="review-user-info">
-                                <span className="review-username">{review.user?.username || 'Anonymous'}</span>
+                                <span className="review-username">{review.reviewer?.username || 'Anonymous'}</span>
                                 <span className="review-date">
                                   {new Date(review.createdAt).toLocaleDateString()}
                                 </span>
                               </div>
                             </div>
-                            <div className="review-rating">
+                            <div className="review-rating-display">
                               {[1, 2, 3, 4, 5].map((star) => (
                                 <Star
                                   key={star}
                                   size={16}
                                   fill={review.rating >= star ? 'currentColor' : 'none'}
-                                  className={review.rating >= star ? 'star-filled' : ''}
+                                  className={review.rating >= star ? 'star-filled' : 'star-empty'}
                                 />
                               ))}
                             </div>
                           </div>
+                          {review.recommendation && (
+                            <div className={`review-recommendation badge-${review.recommendation}`}>
+                              {review.recommendation === 'approve' && '✓ Approved'}
+                              {review.recommendation === 'revise' && '⚠ Needs Revision'}
+                              {review.recommendation === 'reject' && '✗ Rejected'}
+                            </div>
+                          )}
                           <p className="review-comment">{review.comment}</p>
                         </div>
                       ))

@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ChatProvider } from './contexts/ChatContext';
+import { SocketProvider } from './contexts/SocketContext';
 import { usePushNotifications } from './hooks/usePushNotifications';
 import Navbar from './components/Navbar';
 import QuickChat from './components/QuickChat';
@@ -11,6 +12,7 @@ import ArtistDashboard from './pages/ArtistDashboard';
 import RoleRoute from './components/RoleRoute';
 import Upload from './pages/Upload';
 import ModerationQueue from './pages/ModerationQueue';
+import ReviewQueue from './pages/ReviewQueue';
 import Dashboard from './pages/Dashboard';
 import Auth from './pages/Auth';
 import Register from './pages/Register';
@@ -99,6 +101,15 @@ function AppRoutes() {
         />
 
         <Route
+          path="/review-queue"
+          element={
+            <PrivateRoute roles={['reviewer', 'moderator', 'admin']}>
+              <ReviewQueue />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
           path="/artist/dashboard"
           element={
             <RoleRoute roles={["artist"]}>
@@ -123,11 +134,13 @@ function AppRoutes() {
 function App() {
   return (
     <AuthProvider>
-      <ChatProvider>
-        <Router>
-          <AppRoutes />
-        </Router>
-      </ChatProvider>
+      <SocketProvider>
+        <ChatProvider>
+          <Router>
+            <AppRoutes />
+          </Router>
+        </ChatProvider>
+      </SocketProvider>
     </AuthProvider>
   );
 }

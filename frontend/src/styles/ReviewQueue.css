@@ -1,0 +1,628 @@
+/* ================================
+   Review Queue Page Styles
+   ================================ */
+
+.reviewer-queue-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  padding: 2rem;
+}
+
+/* === Loading State === */
+.reviewer-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 1rem;
+}
+
+.reviewer-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e5e7eb;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.reviewer-loading-container p {
+  font-size: 1.125rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* === Header Section === */
+.reviewer-queue-header {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.reviewer-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.reviewer-header-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.reviewer-header-icon {
+  color: #667eea;
+  flex-shrink: 0;
+}
+
+.reviewer-header-title h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.25rem 0;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.reviewer-header-title p {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* === Header Stats === */
+.reviewer-header-stats {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.reviewer-stat-card {
+  background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  min-width: 120px;
+  transition: all 0.3s ease;
+}
+
+.reviewer-stat-card:hover {
+  border-color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+}
+
+.reviewer-stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #667eea;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.reviewer-stat-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* === Filters Bar === */
+.reviewer-filters-bar {
+  display: flex;
+  gap: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #e5e7eb;
+  flex-wrap: wrap;
+}
+
+.reviewer-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.reviewer-filter-group label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.reviewer-filter-group select {
+  padding: 0.625rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #1f2937;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 180px;
+}
+
+.reviewer-filter-group select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.reviewer-filter-group select:hover {
+  border-color: #9ca3af;
+}
+
+/* === Artworks Grid === */
+.reviewer-artworks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* === Empty State === */
+.reviewer-empty-state {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.reviewer-empty-icon {
+  color: #9ca3af;
+  margin-bottom: 1.5rem;
+  opacity: 0.6;
+}
+
+.reviewer-empty-state h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+}
+
+.reviewer-empty-state p {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* === Artwork Card === */
+.reviewer-artwork-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.reviewer-artwork-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* === Artwork Image Container === */
+.reviewer-artwork-image-container {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  background: #f3f4f6;
+  display: block;
+}
+
+.reviewer-artwork-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.reviewer-artwork-card:hover .reviewer-artwork-image {
+  transform: scale(1.08);
+}
+
+/* === Editor's Pick Badge === */
+.reviewer-editor-pick-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 3px 10px rgba(245, 158, 11, 0.4);
+  z-index: 2;
+}
+
+/* === Artwork Overlay === */
+.reviewer-artwork-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.4) 50%,
+      transparent 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.reviewer-artwork-card:hover .reviewer-artwork-overlay {
+  opacity: 1;
+}
+
+.reviewer-review-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.reviewer-review-btn:hover {
+  background: linear-gradient(135deg, #764ba2, #667eea);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+}
+
+/* === Artwork Info === */
+.reviewer-artwork-info {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+}
+
+.reviewer-artwork-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* === Artist Info === */
+.reviewer-artwork-artist {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.reviewer-artist-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e5e7eb;
+}
+
+.reviewer-artwork-artist span {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+/* === Artwork Meta === */
+.reviewer-artwork-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* === Status Badges === */
+.reviewer-status-badge {
+  display: flex;
+  align-items: center;
+}
+
+.reviewed-badge {
+  padding: 0.375rem 0.75rem;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.pending-badge {
+  padding: 0.375rem 0.75rem;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.reviewer-rating-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* === Rating Display === */
+.reviewer-rating-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reviewer-rating-display .reviewer-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.reviewer-star-filled {
+  color: #fbbf24;
+}
+
+.reviewer-star-empty {
+  color: #d1d5db;
+}
+
+.reviewer-rating-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* === Review Count === */
+.reviewer-review-count {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.reviewer-review-count svg {
+  flex-shrink: 0;
+}
+
+/* === Artwork Footer === */
+.reviewer-artwork-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.reviewer-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.reviewer-stat-item svg {
+  flex-shrink: 0;
+}
+
+/* === Category Badge === */
+.reviewer-category-badge {
+  padding: 0.35rem 0.75rem;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: white;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+}
+
+/* === Responsive Design === */
+@media (max-width: 1200px) {
+  .reviewer-artworks-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .reviewer-queue-page {
+    padding: 1rem;
+  }
+
+  .reviewer-queue-header {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .reviewer-header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .reviewer-header-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .reviewer-header-title h1 {
+    font-size: 1.5rem;
+  }
+
+  .reviewer-header-stats {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .reviewer-stat-card {
+    flex: 1;
+    min-width: 100px;
+  }
+
+  .reviewer-stat-value {
+    font-size: 1.5rem;
+  }
+
+  .reviewer-filters-bar {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .reviewer-filter-group {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .reviewer-filter-group select {
+    width: 100%;
+  }
+
+  .reviewer-artworks-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .reviewer-artwork-overlay {
+    opacity: 1;
+    background: linear-gradient(to top,
+        rgba(0, 0, 0, 0.7) 0%,
+        transparent 100%);
+  }
+}
+
+@media (max-width: 480px) {
+  .reviewer-queue-header {
+    padding: 1rem;
+  }
+
+  .reviewer-header-title h1 {
+    font-size: 1.25rem;
+  }
+
+  .reviewer-header-title p {
+    font-size: 0.875rem;
+  }
+
+  .reviewer-stat-card {
+    padding: 0.75rem 1rem;
+  }
+
+  .reviewer-artworks-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reviewer-artwork-info {
+    padding: 1rem;
+  }
+
+  .reviewer-artwork-title {
+    font-size: 1rem;
+  }
+}
+
+/* === Animation === */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reviewer-artwork-card {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* === Smooth Scrolling === */
+.reviewer-queue-page {
+  scroll-behavior: smooth;
+}
+
+/* === Focus States === */
+.reviewer-review-btn:focus-visible,
+.reviewer-filter-group select:focus-visible {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+/* === Print Styles === */
+@media print {
+
+  .reviewer-queue-header,
+  .reviewer-filters-bar,
+  .reviewer-artwork-overlay {
+    display: none;
+  }
+
+  .reviewer-artwork-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #e5e7eb;
+  }
+}

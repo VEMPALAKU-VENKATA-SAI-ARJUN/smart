@@ -68,10 +68,14 @@ const artworkSchema = new mongoose.Schema({
   }],
   stats: {
   views: { type: Number, default: 0 },
-  likes: { type: Number, default: 0 }, // ✅ add this
+  likes: { type: Number, default: 0 },
   favorites: { type: Number, default: 0 },
   shares: { type: Number, default: 0 }
 },
+  ratingAvg: { type: Number, default: 0 },
+  ratingCount: { type: Number, default: 0 },
+  reviewStatsLastUpdated: Date,
+  editorPick: { type: Boolean, default: false },
 
   isForSale: { type: Boolean, default: true },
   isSold: { type: Boolean, default: false },

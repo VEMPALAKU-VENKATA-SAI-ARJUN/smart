@@ -1255,3 +1255,225 @@ dditional Infinite Scroll Styles */
   filter: grayscale(60%) blur(0.5px);
   transition: all 0.3s ease;
 }
+
+
+/* === Modal Reviews Section === */
+.ig-modal-reviews {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.reviews-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.overall-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.rating-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.star-filled {
+  color: #fbbf24;
+}
+
+.star-empty {
+  color: #d1d5db;
+}
+
+.rating-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.reviews-loading,
+.reviews-empty-modal {
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.reviews-list-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.review-item-modal {
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.review-header-modal {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.review-avatar-modal {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.review-info-modal {
+  flex: 1;
+}
+
+.review-author-modal {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.review-meta-modal {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.review-stars-modal {
+  display: flex;
+  gap: 2px;
+}
+
+.review-date-modal {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.review-badge-modal {
+  padding: 0.25rem 0.625rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-approve {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.badge-revise {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge-reject {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.review-comment-modal {
+  color: #374151;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Scrollbar styling for reviews */
+.ig-modal-reviews::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ig-modal-reviews::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.ig-modal-reviews::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.ig-modal-reviews::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
+/* Overall Rating Display */
+.overall-rating-display {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.rating-stars-display {
+  display: flex;
+  gap: 4px;
+}
+
+.rating-value-display {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* Review Recommendation Badge */
+.review-recommendation {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.badge-approve {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.badge-revise {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge-reject {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Update review rating display */
+.review-rating-display {
+  display: flex;
+  gap: 2px;
+}
+
+.star-empty {
+  color: #d1d5db;
+}

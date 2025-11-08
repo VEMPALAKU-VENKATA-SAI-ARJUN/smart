@@ -35,6 +35,27 @@
   cursor: default;
   transition: transform 0.3s ease, color 0.3s ease;
   min-width: 80px;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+/* Clickable stat items */
+.stats-item.clickable {
+  cursor: pointer;
+}
+
+.stats-item.clickable:hover {
+  background-color: #f8f9fa;
+}
+
+.stats-item.clickable:active {
+  transform: scale(0.98);
+}
+
+.stats-item:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* Hover animation for stat items */

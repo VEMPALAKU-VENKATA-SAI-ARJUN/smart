@@ -1,0 +1,329 @@
+/* ================================
+   Artwork Details Page Styles
+   ================================ */
+
+.artwork-details-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* === Loading & Error States === */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  font-size: 1.125rem;
+  color: #6b7280;
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  font-size: 1.125rem;
+  color: #ef4444;
+  text-align: center;
+}
+
+/* === Artwork Container === */
+.artwork-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* === Image Section === */
+.artwork-image-section {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.artwork-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.artwork-image-section:hover .artwork-image {
+  transform: scale(1.05);
+}
+
+/* === Info Section === */
+.artwork-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* === Artwork Header === */
+.artwork-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.artwork-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+  line-height: 1.2;
+  flex: 1;
+}
+
+/* === Editor Pick Badge === */
+.editor-pick-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 3px 10px rgba(245, 158, 11, 0.3);
+  white-space: nowrap;
+}
+
+/* === Rating Display === */
+.artwork-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+  border-radius: 12px;
+  border: 2px solid #e5e7eb;
+}
+
+.artwork-rating .stars {
+  display: flex;
+  gap: 4px;
+}
+
+.artwork-rating .stars span {
+  font-size: 1.5rem;
+  color: #d1d5db;
+}
+
+.artwork-rating .stars span.filled {
+  color: #fbbf24;
+}
+
+.rating-text {
+  font-size: 0.95rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* === Artist Info === */
+.artist-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 12px;
+  border: 2px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.artist-info:hover {
+  border-color: #667eea;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+}
+
+.artist-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.artist-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+.artist-role {
+  font-size: 0.875rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* === Description === */
+.artwork-description {
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+}
+
+.artwork-description h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.75rem 0;
+}
+
+.artwork-description p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #374151;
+  margin: 0;
+}
+
+/* === Artwork Meta === */
+.artwork-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.meta-item {
+  padding: 1rem;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.meta-item:hover {
+  border-color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+}
+
+.meta-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.meta-value {
+  display: block;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* === Responsive Design === */
+@media (max-width: 1024px) {
+  .artwork-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .artwork-image-section {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media (max-width: 768px) {
+  .artwork-details-page {
+    padding: 1rem;
+  }
+
+  .artwork-container {
+    padding: 1.5rem;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .artwork-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .artwork-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .artwork-rating {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .artwork-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .artist-info {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .artwork-container {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .artwork-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .artwork-rating .stars span {
+    font-size: 1.25rem;
+  }
+
+  .artist-avatar {
+    width: 48px;
+    height: 48px;
+  }
+
+  .artwork-description {
+    padding: 1rem;
+  }
+
+  .meta-value {
+    font-size: 1rem;
+  }
+}
+
+/* === Animation === */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.artwork-container,
+.review-panel,
+.reviews-list {
+  animation: fadeIn 0.4s ease-out;
+}

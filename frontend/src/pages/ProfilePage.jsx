@@ -4,10 +4,12 @@ import '../styles/ProfilePage.css';
 
 import http from '../lib/http';
 import { useAuth } from '../contexts/AuthContext';
+import { useFollowUpdates } from '../hooks/useFollowUpdates';
 import ProfileHeader from '../components/ProfileHeader';
 import StatsBar from '../components/StatsBar';
 import ArtworkCard from '../components/ArtworkCard';
 import ArtworkModal from '../components/ArtworkModal';
+import FollowButton from '../components/FollowButton';
 
 const TABS = {
   ARTWORKS: 'artworks',
@@ -45,6 +47,25 @@ const ProfilePage = () => {
 
   // ✅ Determine if viewing own profile
   const isOwnProfile = authUser && (authUser._id === id || authUser.id === id);
+
+  // ✅ Real-time follow updates
+  useFollowUpdates(
+    // On follower count update
+    (data) => {
+      if (isOwnProfile) {
+        setUser(prev => ({
+          ...prev,
+          followers: prev.followers.slice(0, data.followerCount)
+        }));
+      }
+    },
+    // On new follower notification
+    (notification) => {
+      if (isOwnProfile && window.showToast) {
+        window.showToast(`${notification.sender?.username} started following you!`, 'success');
+      }
+    }
+  );
 
   useEffect(() => {
     if (!id) return;

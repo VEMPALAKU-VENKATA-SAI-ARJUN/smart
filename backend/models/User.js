@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['buyer', 'artist', 'moderator', 'admin'],
+    enum: ['buyer', 'artist', 'reviewer', 'moderator', 'admin'],
     default: 'buyer'
   },
   oauthProvider: {

@@ -2,14 +2,22 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import EditProfileModal from './EditProfileModal';
 import StatsBar from './StatsBar';
+import FollowButton from './FollowButton';
+import FollowersModal from './FollowersModal';
 import { MessageCircle } from 'lucide-react';
+import { useUserStats } from '../hooks/useUserStats';
 
 const ProfileHeader = ({ user, onUploadArtwork }) => {
   const navigate = useNavigate();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [showFollowersModal, setShowFollowersModal] = useState(false);
+  const [followersModalType, setFollowersModalType] = useState('followers');
 
   const currentUser = JSON.parse(localStorage.getItem('auth_user') || '{}');
   const isOwnProfile = currentUser?._id === user?._id || currentUser?.id === user?._id;
+
+  // Fetch real-time stats
+  const { stats, loading: statsLoading } = useUserStats(user?._id, isOwnProfile);
 
   const website = user?.profile?.website?.startsWith('http')
     ? user.profile.website
@@ -17,8 +25,49 @@ const ProfileHeader = ({ user, onUploadArtwork }) => {
     ? `https://${user.profile.website}`
     : '';
 
-  const followersCount = user.followers?.length || 0;
-  const followingCount = user.following?.length || 0;
+  const followersCount = stats.followers || user.followers?.length || 0;
+  const followingCount = stats.following || user.following?.length || 0;
+
+  // Check if current user is following this profile
+  const isFollowing = user.isFollowing !== undefined 
+    ? user.isFollowing 
+    : user.followers?.some(follower => {
+        const followerId = typeof follower === 'object' ? follower._id : follower;
+        const currentUserId = currentUser?._id || currentUser?.id;
+        return followerId?.toString() === currentUserId?.toString();
+      }) || false;
+
+  // Handlers for clickable stats
+  const handleFollowersClick = () => {
+    setFollowersModalType('followers');
+    setShowFollowersModal(true);
+  };
+
+  const handleFollowingClick = () => {
+    setFollowersModalType('following');
+    setShowFollowersModal(true);
+  };
+
+  const handlePostsClick = () => {
+    // Scroll to artworks section or navigate to tab
+    const artworksSection = document.querySelector('.artworks-grid, .ig-grid');
+    if (artworksSection) {
+      artworksSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleSalesClick = () => {
+    // Could open sales modal or navigate to sales page
+    console.log('Sales clicked');
+  };
+
+  const handlePurchasesClick = () => {
+    // Scroll to purchases section
+    const purchasesSection = document.querySelector('.buyer-content');
+    if (purchasesSection) {
+      purchasesSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   // Navigate to chat with this user
  const handleMessageUser = () => {
@@ -51,12 +100,19 @@ const ProfileHeader = ({ user, onUploadArtwork }) => {
 
           <StatsBar
             stats={{
-              artworks: user.artworksCount || 0,
+              posts: stats.posts || 0,
               followers: followersCount,
               following: followingCount,
-              sales: user.stats?.sales || 0,
+              sales: stats.sales || 0,
+              purchases: stats.purchases || 0
             }}
             role={user.role}
+            loading={statsLoading}
+            onFollowersClick={handleFollowersClick}
+            onFollowingClick={handleFollowingClick}
+            onPostsClick={user.role === 'artist' ? handlePostsClick : undefined}
+            onSalesClick={user.role === 'artist' ? handleSalesClick : undefined}
+            onPurchasesClick={user.role === 'buyer' ? handlePurchasesClick : undefined}
           />
 
           {user?.profile?.bio && (
@@ -88,11 +144,23 @@ const ProfileHeader = ({ user, onUploadArtwork }) => {
                 )}
               </>
             ) : (
-              // ✅ Message button for other profiles
-              <button className="btn btn-primary" onClick={handleMessageUser}>
-                <MessageCircle size={18} />
-                Message
-              </button>
+              <>
+                {/* ✅ Follow Button */}
+                <FollowButton
+                  key={`follow-${user._id}-${isFollowing}`}
+                  userId={user._id}
+                  initialIsFollowing={isFollowing}
+                  initialFollowerCount={followersCount}
+                  variant="primary"
+                  size="md"
+                />
+                
+                {/* ✅ Message button */}
+                <button className="btn btn-secondary" onClick={handleMessageUser}>
+                  <MessageCircle size={18} />
+                  Message
+                </button>
+              </>
             )}
           </div>
         </div>
@@ -100,6 +168,14 @@ const ProfileHeader = ({ user, onUploadArtwork }) => {
 
       {isEditModalOpen && isOwnProfile && (
         <EditProfileModal user={user} onClose={() => setIsEditModalOpen(false)} />
+      )}
+
+      {showFollowersModal && (
+        <FollowersModal
+          userId={user._id}
+          type={followersModalType}
+          onClose={() => setShowFollowersModal(false)}
+        />
       )}
     </div>
   );
