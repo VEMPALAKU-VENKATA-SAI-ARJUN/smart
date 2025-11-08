@@ -8,6 +8,7 @@
   --quick-chat-primary-dark: #4f46e5;
   --quick-chat-secondary: #06b6d4;
   --quick-chat-accent: #10b981;
+  --quick-chat-success: #10b981;
   --quick-chat-warning: #f59e0b;
   --quick-chat-error: #ef4444;
   --quick-chat-shadow: 0 10px 25px rgba(99, 102, 241, 0.15);
@@ -23,7 +24,7 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
-/* Clean Chat Toggle Button */
+/* Chat Toggle Button */
 .quick-chat-toggle {
   width: 60px;
   height: 60px;
@@ -98,7 +99,51 @@
   }
 }
 
-/* Clean Chat Widget */
+/* Tooltip */
+/* Tooltip */
+.quick-chat-toggle {
+  position: relative; /* make tooltip position relative to this */
+  overflow: visible;  /* allow tooltip to show outside the button */
+}
+
+.quick-chat-tooltip {
+  position: absolute;
+  right: 70px; /* distance from button */
+  bottom: 50%;
+  transform: translateY(50%);
+  background: rgba(17, 24, 39, 0.9);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+}
+
+.quick-chat-tooltip::after {
+ content: '';
+  position: absolute;
+  top: 50%;
+  right: -5px;
+  transform: translateY(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: rgba(17, 24, 39, 0.9);
+}
+
+/* Show tooltip on hover */
+.quick-chat-toggle:hover .quick-chat-tooltip {
+  opacity: 1;
+  right: 80px; /* slight slide-out animation */
+}
+
+
+/* Chat Widget */
 .quick-chat-widget {
   width: 360px;
   height: 480px;
@@ -125,7 +170,7 @@
   }
 }
 
-/* Clean Widget Header */
+/* Widget Header */
 .quick-chat-header {
   background: linear-gradient(135deg, var(--quick-chat-primary), var(--quick-chat-secondary));
   color: white;
@@ -135,17 +180,6 @@
   justify-content: space-between;
   position: relative;
   overflow: hidden;
-}
-
-.quick-chat-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M20 20c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10zm10 0c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10z'/%3E%3C/g%3E%3C/svg%3E");
-  pointer-events: none;
 }
 
 .quick-chat-header::before {
@@ -421,12 +455,14 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  margin: 0;
 }
 
 .quick-chat-conversation-time {
   font-size: 0.625rem;
   color: #6b7280;
   white-space: nowrap;
+  margin: 0;
 }
 
 .quick-chat-conversation-preview {
@@ -436,6 +472,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   line-height: 1.2;
+  margin: 0;
 }
 
 /* Widget Footer */

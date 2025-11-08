@@ -1,5 +1,6 @@
+/* QuickChat.jsx*/
 import { useState, useEffect } from 'react';
-import { MessageCircle, X, Send, Minimize2 } from 'lucide-react';
+import { MessageCircle, X, Send, Maximize2 } from 'lucide-react';
 import { useChat } from '../contexts/ChatContext';
 import { Link } from 'react-router-dom';
 import '../styles/QuickChat.css';
@@ -80,12 +81,17 @@ function QuickChat() {
           aria-label="Open chat"
         >
           <MessageCircle size={24} />
+
           {unreadCount > 0 && (
             <div className="quick-chat-badge">
               {unreadCount > 9 ? '9+' : unreadCount}
             </div>
           )}
+
+          {/* Tooltip / Hover Notation */}
+          <span className="quick-chat-tooltip">Quick Chat</span>
         </button>
+
       )}
 
       {/* Chat Widget */}
@@ -105,7 +111,7 @@ function QuickChat() {
                 onClick={() => setIsOpen(false)}
                 aria-label="Open full messages"
               >
-                <Minimize2 size={16} />
+                <Maximize2 size={16} />
               </Link>
               <button
                 onClick={() => setIsOpen(false)}
