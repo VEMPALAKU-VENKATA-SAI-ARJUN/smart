@@ -2,10 +2,31 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-
+const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('cloudinary').v2;
 const User = require('../models/User');
 const Artwork = require('../models/Artwork');
 const { protect } = require('../middleware/auth');
+
+const Transaction = require('../models/Transaction');
+/* ============================
+   ☁️ CLOUDINARY CONFIG
+   ============================ */
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'artnexus/avatars',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+  },
+});
+const upload = multer({ storage });
 
 /* ============================
    ✅ USER ROUTES
@@ -13,27 +34,20 @@ const { protect } = require('../middleware/auth');
 
 /**
  * @route   GET /api/users
- * @desc    Get all users (placeholder / for admin use later)
+ * @desc    Get all users (Admin only)
  */
 router.get('/', (req, res) => {
-  res.json({ message: 'Get all users - route placeholder' });
+  res.json({ message: 'Get all users - placeholder' });
 });
 
 /* ============================
    🎨 ARTWORK ROUTES BY USER
    ============================ */
-
-/**
- * @route   GET /api/users/:id/artworks
- * @desc    Get all artworks for a user (artist)
- * @query   ?all=true → show drafts & private for dashboard view
- */
 router.get('/:id/artworks', async (req, res) => {
   try {
     const userId = req.params.id;
     const showAll = req.query.all === 'true';
 
-    // Build query: support both string and ObjectId refs
     const query = {
       $or: [
         { artist: userId },
@@ -41,7 +55,6 @@ router.get('/:id/artworks', async (req, res) => {
       ],
     };
 
-    // Public gallery only (approved + public)
     if (!showAll) {
       query.status = 'approved';
       query.visibility = 'public';
@@ -60,30 +73,20 @@ router.get('/:id/artworks', async (req, res) => {
 });
 
 /* ============================
-   👤 USER PROFILE ROUTES
+   👤 GET USER PROFILE
    ============================ */
-
-/**
- * @route   GET /api/users/:id
- * @desc    Get user by ID
- */
 router.get('/:id', async (req, res) => {
   try {
-    console.log('📦 [UserRoute] Fetch request for ID:', req.params.id);
+    console.log('📦 Fetching user by ID:', req.params.id);
 
     const user = await User.findById(req.params.id)
       .select('-password')
+      .populate('followers', 'username profile.avatar')
+      .populate('following', 'username profile.avatar')
       .lean();
 
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: 'User not found' });
-    }
-
-    console.log(
-      `[GET /api/users/:id] Found user: ${user.username} (${user.role})`
-    );
+    if (!user)
+      return res.status(404).json({ success: false, message: 'User not found' });
 
     res.status(200).json({ success: true, data: user });
   } catch (error) {
@@ -93,112 +96,22 @@ router.get('/:id', async (req, res) => {
 });
 
 /* ============================
-   🛠️ ROLE MANAGEMENT (DEV TOOL)
+   ⚙️ UPDATE PROFILE
    ============================ */
-
-/**
- * @route   PATCH /api/users/:id/role
- * @desc    Update a user's role
- */
-router.patch('/:id/role', async (req, res) => {
-  try {
-    const { role } = req.body;
-
-    if (!['buyer', 'artist', 'moderator', 'admin'].includes(role)) {
-      return res
-        .status(400)
-        .json({ success: false, message: 'Invalid role value' });
-    }
-
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      { role },
-      { new: true }
-    ).select('-password');
-
-    if (!user)
-      return res
-        .status(404)
-        .json({ success: false, message: 'User not found' });
-
-    res.status(200).json({
-      success: true,
-      data: user,
-      message: `User role updated to ${role}`,
-    });
-  } catch (error) {
-    console.error('❌ Error updating user role:', error);
-    res.status(500).json({ success: false, message: 'Server error' });
-  }
-});
-
-/* ============================
-   🧠 USER SUGGESTIONS (FOLLOW SYSTEM)
-   ============================ */
-
-/**
- * @route   GET /api/users/suggestions
- * @desc    Suggest artists that current user isn't following
- */
-router.get('/suggestions', async (req, res) => {
-  try {
-    let followingIds = [];
-    let currentUserId = null;
-
-    if (req.headers.authorization) {
-      try {
-        const token = req.headers.authorization.split(' ')[1];
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        currentUserId = decoded.id;
-
-        const currentUser = await User.findById(currentUserId);
-        followingIds = currentUser?.following || [];
-      } catch (err) {
-        console.warn('⚠️ Invalid token while fetching suggestions');
-      }
-    }
-
-    const suggestions = await User.find({
-      _id: { $nin: [...followingIds, currentUserId].filter(Boolean) },
-      role: 'artist',
-      isActive: true,
-    })
-      .select('username profile.avatar profile.bio role followers')
-      .sort({ 'followers.length': -1 })
-      .limit(12)
-      .lean();
-
-    res.status(200).json({ success: true, data: suggestions });
-  } catch (error) {
-    console.error('❌ Error fetching artist suggestions:', error);
-    res.status(500).json({ success: false, message: 'Server error' });
-  }
-});
-
-/* ============================
-   ⚙️ PROFILE UPDATE
-   ============================ */
-
-/**
- * @route   PUT /api/users/:id
- * @desc    Update user profile (self only)
- */
 router.put('/:id', protect, async (req, res) => {
   try {
     const userId = req.params.id;
-    const { username, email, profile } = req.body;
+    const { username, email, profile, artistInfo, preferences } = req.body;
 
-    if (req.user._id.toString() !== userId) {
-      return res.status(403).json({
-        success: false,
-        message: 'You can only update your own profile',
-      });
-    }
+    if (req.user._id.toString() !== userId)
+      return res.status(403).json({ success: false, message: 'Unauthorized' });
 
     const updateData = {};
     if (username) updateData.username = username;
     if (email) updateData.email = email;
     if (profile) updateData.profile = profile;
+    if (artistInfo) updateData.artistInfo = artistInfo;
+    if (preferences) updateData.preferences = preferences;
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,
@@ -207,9 +120,7 @@ router.put('/:id', protect, async (req, res) => {
     ).select('-password');
 
     if (!updatedUser)
-      return res
-        .status(404)
-        .json({ success: false, message: 'User not found' });
+      return res.status(404).json({ success: false, message: 'User not found' });
 
     res.status(200).json({
       success: true,
@@ -217,24 +128,121 @@ router.put('/:id', protect, async (req, res) => {
       message: 'Profile updated successfully',
     });
   } catch (error) {
-    console.error('❌ Error updating user profile:', error);
-
-    if (error.code === 11000) {
-      return res.status(400).json({
-        success: false,
-        message: 'Username or email already exists',
-      });
-    }
-
+    console.error('❌ Error updating profile:', error);
+    if (error.code === 11000)
+      return res.status(400).json({ success: false, message: 'Duplicate username or email' });
     res.status(500).json({ success: false, message: 'Server error' });
   }
 });
 
 /* ============================
-   🗑️ USER DELETE (placeholder)
+   🖼️ UPLOAD AVATAR (Cloudinary)
    ============================ */
-router.delete('/:id', (req, res) => {
-  res.json({ message: `Delete user ${req.params.id} - placeholder route` });
+router.post('/:id/avatar', protect, upload.single('avatar'), async (req, res) => {
+  try {
+    if (req.user._id.toString() !== req.params.id)
+      return res.status(403).json({ success: false, message: 'Unauthorized' });
+
+    const imageUrl = req.file.path;
+
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { 'profile.avatar': imageUrl },
+      { new: true }
+    ).select('-password');
+
+    res.status(200).json({ success: true, url: imageUrl, user });
+  } catch (error) {
+    console.error('❌ Avatar upload failed:', error);
+    res.status(500).json({ success: false, message: 'Avatar upload failed' });
+  }
 });
+
+/* ============================
+   👥 FOLLOW / UNFOLLOW USER
+   ============================ */
+router.post('/:id/follow', protect, async (req, res) => {
+  try {
+    const currentUserId = req.user._id;
+    const targetId = req.params.id;
+
+    if (currentUserId.toString() === targetId)
+      return res.status(400).json({ success: false, message: "You can't follow yourself" });
+
+    const user = await User.findById(currentUserId);
+    const target = await User.findById(targetId);
+
+    if (!target)
+      return res.status(404).json({ success: false, message: 'User not found' });
+
+    const isFollowing = user.following.includes(targetId);
+
+    if (isFollowing) {
+      user.following.pull(targetId);
+      target.followers.pull(currentUserId);
+    } else {
+      user.following.push(targetId);
+      target.followers.push(currentUserId);
+    }
+
+    await user.save();
+    await target.save();
+
+    res.status(200).json({
+      success: true,
+      message: isFollowing ? 'Unfollowed' : 'Followed',
+      following: !isFollowing,
+    });
+  } catch (error) {
+    console.error('❌ Follow/unfollow error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+/* ============================
+   🛒 GET USER PURCHASES (Buyer)
+   ============================ */
+/* ============================
+   🛒 GET USER PURCHASES (Buyer)
+   ============================ */
+router.get('/:id/purchases', async (req, res) => {
+  try {
+    const buyerId = req.params.id;
+
+    // Find all completed transactions for this buyer
+    const transactions = await Transaction.find({
+      buyer: buyerId,
+      status: 'completed',
+    })
+      .populate({
+        path: 'artwork',
+        populate: { path: 'artist', select: 'username profile.avatar' },
+      })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    // Return an empty array instead of a 404 for cleaner UI
+    if (!transactions.length) {
+      return res.status(200).json({ success: true, purchases: [] });
+    }
+
+    // Format data for frontend
+    const purchases = transactions.map((t) => ({
+      _id: t.artwork?._id,
+      title: t.artwork?.title || 'Untitled Artwork',
+      price: t.amount,
+      thumbnail: t.artwork?.thumbnail || t.artwork?.images?.[0]?.url || 'https://placehold.co/600x400',
+      artist: t.artwork?.artist || {},
+      purchasedAt: t.createdAt,
+      status: t.status,
+    }));
+
+    res.status(200).json({ success: true, purchases });
+  } catch (error) {
+    console.error('❌ Error fetching purchases:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch purchases' });
+  }
+});
+
 
 module.exports = router;
