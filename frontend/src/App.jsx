@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ChatProvider } from './contexts/ChatContext';
 import { SocketProvider } from './contexts/SocketContext';
 import { usePushNotifications } from './hooks/usePushNotifications';
+import { Toaster } from './components/ui/toaster';
 import Navbar from './components/Navbar';
 import QuickChat from './components/QuickChat';
 import Home from './pages/Home';
@@ -103,7 +104,7 @@ function AppRoutes() {
         <Route
           path="/review-queue"
           element={
-            <PrivateRoute roles={['reviewer', 'moderator', 'admin']}>
+            <PrivateRoute roles={['reviewer' , 'admin']}>
               <ReviewQueue />
             </PrivateRoute>
           }
@@ -127,6 +128,9 @@ function AppRoutes() {
       {/* Existing QuickChat Widget (optional) */}
       {user && (user.role === 'artist' || user.role === 'buyer') &&
         window.location.pathname !== '/messages' && <QuickChat />}
+      
+      {/* Toast notifications */}
+      <Toaster />
     </div>
   );
 }

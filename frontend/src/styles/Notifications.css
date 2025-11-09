@@ -120,7 +120,8 @@
 .filter-card {
   background: white;
   border-radius: 1rem;
-  padding: 1rem 1.5rem;
+  padding: 1.5rem 1.5rem;
+  margin-top: 1.5rem;
   margin-bottom: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   animation: fadeIn 0.5s ease-out 0.1s backwards;
@@ -191,7 +192,7 @@
   font-weight: 600;
 }
 
-.filter-badge.error {
+.filter-badge.unread {
   background: #ef4444;
 }
 
@@ -623,4 +624,29 @@
     flex-direction: column;
     gap: 0.5rem;
   }
+}
+
+/* Ba
+dge Styles */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  min-width: 20px;
+  height: 20px;
+}
+
+.badge-primary {
+  background: #667eea;
+  color: white;
+}
+
+.badge-error {
+  background: #ef4444;
+  color: white;
 }

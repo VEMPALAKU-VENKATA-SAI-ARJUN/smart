@@ -171,7 +171,7 @@ function Notifications() {
                 <p>{unreadCount > 0 ? `${unreadCount} unread` : 'All caught up 🎉'}</p>
               </div>
             </div>
-            <div className="header-actions">
+           { /*<div className="header-actions">
               <Link to="/settings/notifications" className="btn-settings">
                 <Settings size={16} /> Settings
               </Link>
@@ -180,7 +180,7 @@ function Notifications() {
                   <CheckCheck size={16} /> Mark all read
                 </button>
               )}
-            </div>
+            </div>*/}
           </div>
         </div>
 
@@ -197,7 +197,7 @@ function Notifications() {
               onClick={() => setFilter('unread')}
               className={`filter-tab ${filter === 'unread' ? 'active' : ''}`}>
               <Filter size={16} /> Unread
-              {unreadCount > 0 && <span className="filter-badge error">{unreadCount}</span>}
+              {unreadCount > 0 && <span className="filter-badge unread">{unreadCount}</span>}
             </button>
           </div>
         </div>

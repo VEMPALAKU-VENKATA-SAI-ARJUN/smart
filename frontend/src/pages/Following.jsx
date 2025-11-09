@@ -4,6 +4,10 @@ import { Heart, Eye, Users, UserPlus, Sparkles, TrendingUp } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import http from '../lib/http';
+import ArtistCard from '../components/ArtistCard';
+import { useArtistPrefetch } from '../hooks/useIntersectionObserver';
+import { useQueryClient } from '@tanstack/react-query';
+import styles from '../styles/Following.module.css';
 
 // Use Vite env or fallback to localhost backend
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
@@ -11,12 +15,41 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 export default function Following() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [feedArtworks, setFeedArtworks] = useState([]);
   const [followingList, setFollowingList] = useState([]);
   const [suggestedArtists, setSuggestedArtists] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('feed');
   const [error, setError] = useState('');
+
+  // Prefetch function for artist preview data
+  const prefetchArtistPreview = (artistId) => {
+    if (!artistId) return;
+    
+    queryClient.prefetchQuery({
+      queryKey: ['artistPreview', artistId],
+      queryFn: async () => {
+        const headers = { 
+          Authorization: `Bearer ${localStorage.getItem('auth_token')}` 
+        };
+        
+        const response = await http.get(
+          `/api/users/${artistId}/mini-preview`,
+          { 
+            headers,
+            dedupeKey: `artist-preview:${artistId}`
+          }
+        );
+        
+        return response?.data?.data || response?.data;
+      },
+      staleTime: 30000,
+    });
+  };
+
+  // Set up intersection observer for prefetching
+  useArtistPrefetch(followingList, prefetchArtistPreview);
 
   useEffect(() => {
     if (!user) {
@@ -71,69 +104,102 @@ export default function Following() {
 
   const handleUnfollow = async (artistId) => {
     try {
-      const headers = { Authorization: `Bearer ${localStorage.getItem('auth_token')}` };
-      await http.post(`/api/users/${artistId}/follow`, {}, { headers });
+      // Optimistically update the UI by removing the artist from the list
+      setFollowingList((prevList) => prevList.filter((artist) => artist._id !== artistId));
+      
+      // If we're on the feed tab and there are no more following, show empty state
+      if (followingList.length === 1 && activeTab === 'feed') {
+        setFeedArtworks([]);
+      }
+      
+      // Invalidate the query cache for this artist's preview
+      queryClient.invalidateQueries(['artistPreview', artistId]);
+      
+      // Optionally refresh the full data in the background
+      // This will update follower counts and other data
       fetchFollowingData();
     } catch (error) {
       console.error('Error unfollowing artist:', error);
+      // On error, refetch to restore the correct state
+      fetchFollowingData();
     }
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Following</h1>
+          <p className={styles.subtitle}>Stay updated with your favorite artists</p>
+        </div>
+
+        {/* Tabs skeleton */}
+        <div className={styles.tabs}>
+          <button className={`${styles.tab} ${styles.tabActive}`}>
+            <Sparkles className={styles.tabIcon} />
+            Feed
+          </button>
+          <button className={styles.tab}>
+            <Users className={styles.tabIcon} />
+            Following
+          </button>
+          <button className={styles.tab}>
+            <TrendingUp className={styles.tabIcon} />
+            Discover
+          </button>
+        </div>
+
+        {/* Skeleton loaders */}
+        <div className={styles.skeletonGrid}>
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className={styles.skeletonCard}>
+              <div className={styles.skeletonAvatar} />
+              <div className={`${styles.skeletonText} ${styles.skeletonTextShort}`} />
+              <div className={`${styles.skeletonText} ${styles.skeletonTextLong}`} />
+              <div className={`${styles.skeletonText} ${styles.skeletonTextLong}`} />
+              <div className={styles.skeletonButton} />
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Following</h1>
-        <p className="text-gray-600">Stay updated with your favorite artists</p>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>Following</h1>
+        <p className={styles.subtitle}>Stay updated with your favorite artists</p>
       </div>
 
       {/* Error Display */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-          <p className="text-red-600">{error}</p>
+        <div className={styles.errorBanner}>
+          <p className={styles.errorText}>{error}</p>
         </div>
       )}
 
       {/* Tabs */}
-      <div className="flex gap-6 mb-8 border-b">
+      <div className={styles.tabs}>
         <button
           onClick={() => setActiveTab('feed')}
-          className={`pb-3 font-medium transition-colors flex items-center gap-2 ${
-            activeTab === 'feed'
-              ? 'text-blue-600 border-b-2 border-blue-600'
-              : 'text-gray-500 hover:text-gray-700'
-          }`}
+          className={`${styles.tab} ${activeTab === 'feed' ? styles.tabActive : ''}`}
         >
-          <Sparkles className="w-4 h-4" />
+          <Sparkles className={styles.tabIcon} />
           Feed ({feedArtworks.length})
         </button>
         <button
           onClick={() => setActiveTab('following')}
-          className={`pb-3 font-medium transition-colors flex items-center gap-2 ${
-            activeTab === 'following'
-              ? 'text-blue-600 border-b-2 border-blue-600'
-              : 'text-gray-500 hover:text-gray-700'
-          }`}
+          className={`${styles.tab} ${activeTab === 'following' ? styles.tabActive : ''}`}
         >
-          <Users className="w-4 h-4" />
+          <Users className={styles.tabIcon} />
           Following ({followingList.length})
         </button>
         <button
           onClick={() => setActiveTab('suggestions')}
-          className={`pb-3 font-medium transition-colors flex items-center gap-2 ${
-            activeTab === 'suggestions'
-              ? 'text-blue-600 border-b-2 border-blue-600'
-              : 'text-gray-500 hover:text-gray-700'
-          }`}
+          className={`${styles.tab} ${activeTab === 'suggestions' ? styles.tabActive : ''}`}
         >
-          <TrendingUp className="w-4 h-4" />
+          <TrendingUp className={styles.tabIcon} />
           Discover
         </button>
       </div>
@@ -142,72 +208,70 @@ export default function Following() {
       {activeTab === 'feed' && (
         <div>
           {followingList.length === 0 ? (
-            <div className="text-center py-16">
-              <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No Following Yet</h3>
-              <p className="text-gray-500 mb-6">
+            <div className={styles.emptyState}>
+              <Users className={styles.emptyIcon} />
+              <h3 className={styles.emptyTitle}>No Following Yet</h3>
+              <p className={styles.emptyDescription}>
                 Follow artists to see their latest artworks in your feed
               </p>
               <button
                 onClick={() => setActiveTab('suggestions')}
-                className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                className={styles.emptyButton}
               >
                 Discover Artists
               </button>
             </div>
           ) : feedArtworks.length === 0 ? (
-            <div className="text-center py-16">
-              <Sparkles className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No New Artworks</h3>
-              <p className="text-gray-500">
+            <div className={styles.emptyState}>
+              <Sparkles className={styles.emptyIcon} />
+              <h3 className={styles.emptyTitle}>No New Artworks</h3>
+              <p className={styles.emptyDescription}>
                 The artists you follow haven't posted anything recently
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className={styles.feedGrid}>
               {feedArtworks.map((artwork) => (
-                <div key={artwork._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                  <div className="relative">
+                <div key={artwork._id} className={styles.feedArtworkCard}>
+                  <div className={styles.feedArtworkImageContainer}>
                     <img
                       src={artwork.thumbnail}
                       alt={artwork.title}
-                      className="w-full h-48 object-cover"
+                      className={styles.feedArtworkImage}
                     />
-                    <div className="absolute top-3 right-3">
-                      <span className="bg-black bg-opacity-50 text-white px-2 py-1 rounded text-sm">
-                        ₹{artwork.price}
-                      </span>
+                    <div className={styles.feedArtworkPrice}>
+                      ₹{artwork.price}
                     </div>
                   </div>
-                  <div className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
+                  <div className={styles.feedArtworkContent}>
+                    <div className={styles.feedArtworkArtist}>
                       <img
                         src={artwork.artist?.profile?.avatar || `https://ui-avatars.com/api/?name=${artwork.artist?.username}&size=32`}
                         alt={artwork.artist?.username}
-                        className="w-6 h-6 rounded-full"
+                        className={styles.feedArtworkArtistAvatar}
                       />
-                      <span className="text-sm text-gray-600">
+                      <span className={styles.feedArtworkArtistName}>
                         {artwork.artist?.username}
                       </span>
                     </div>
-                    <h3 className="font-semibold text-lg mb-2">{artwork.title}</h3>
-                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                    <h3 className={styles.feedArtworkTitle}>{artwork.title}</h3>
+                    <p className={styles.feedArtworkDescription}>
                       {artwork.description}
                     </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4 text-sm text-gray-500">
-                        <span className="flex items-center gap-1">
-                          <Eye className="w-4 h-4" />
+                    <div className={styles.feedArtworkFooter}>
+                      <div className={styles.feedArtworkStats}>
+                        <span className={styles.feedArtworkStat}>
+                          <Eye className={styles.feedArtworkStatIcon} />
                           {artwork.stats?.views || 0}
                         </span>
-                        <span className="flex items-center gap-1">
-                          <Heart className="w-4 h-4" />
+                        <span className={styles.feedArtworkStat}>
+                          <Heart className={styles.feedArtworkStatIcon} />
                           {artwork.stats?.likes || 0}
                         </span>
                       </div>
                       <button
                         onClick={() => navigate(`/artwork/${artwork._id}`)}
-                        className="text-blue-500 hover:text-blue-600 font-medium text-sm"
+                        className={styles.feedArtworkViewButton}
                       >
                         View Details
                       </button>
@@ -223,65 +287,27 @@ export default function Following() {
       {activeTab === 'following' && (
         <div>
           {followingList.length === 0 ? (
-            <div className="text-center py-16">
-              <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Not Following Anyone</h3>
-              <p className="text-gray-500 mb-6">
+            <div className={styles.emptyState}>
+              <Users className={styles.emptyIcon} />
+              <h3 className={styles.emptyTitle}>Not Following Anyone</h3>
+              <p className={styles.emptyDescription}>
                 Start following artists to build your network
               </p>
               <button
                 onClick={() => setActiveTab('suggestions')}
-                className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                className={styles.emptyButton}
               >
                 Find Artists to Follow
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className={styles.artistGrid}>
               {followingList.map((artist) => (
-                <div key={artist._id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                  <div className="flex items-center gap-4 mb-4">
-                    <img
-                      src={artist.profile?.avatar || `https://ui-avatars.com/api/?name=${artist.username}&size=64`}
-                      alt={artist.username}
-                      className="w-16 h-16 rounded-full object-cover"
-                    />
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-lg">{artist.username}</h3>
-                      {artist.role === 'artist' && (
-                        <span className="inline-block px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">
-                          Artist
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  
-                  {artist.profile?.bio && (
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                      {artist.profile.bio}
-                    </p>
-                  )}
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm text-gray-500">
-                      {artist.followers?.length || 0} followers
-                    </div>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => navigate(`/artist/${artist._id}`)}
-                        className="px-3 py-1 text-blue-500 hover:text-blue-600 text-sm font-medium"
-                      >
-                        View Profile
-                      </button>
-                      <button
-                        onClick={() => handleUnfollow(artist._id)}
-                        className="px-3 py-1 bg-gray-200 text-gray-700 hover:bg-gray-300 rounded text-sm font-medium"
-                      >
-                        Unfollow
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <ArtistCard
+                  key={artist._id}
+                  artist={artist}
+                  onUnfollow={handleUnfollow}
+                />
               ))}
             </div>
           )}
@@ -291,27 +317,27 @@ export default function Following() {
       {activeTab === 'suggestions' && (
         <div>
           {suggestedArtists.length === 0 ? (
-            <div className="text-center py-16">
-              <TrendingUp className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No Suggestions Available</h3>
-              <p className="text-gray-500">
+            <div className={styles.emptyState}>
+              <TrendingUp className={styles.emptyIcon} />
+              <h3 className={styles.emptyTitle}>No Suggestions Available</h3>
+              <p className={styles.emptyDescription}>
                 Check back later for artist recommendations
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className={styles.suggestionsGrid}>
               {suggestedArtists.map((artist) => (
-                <div key={artist._id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                  <div className="flex items-center gap-4 mb-4">
+                <div key={artist._id} className={styles.suggestionCard}>
+                  <div className={styles.suggestionHeader}>
                     <img
                       src={artist.profile?.avatar || `https://ui-avatars.com/api/?name=${artist.username}&size=64`}
                       alt={artist.username}
-                      className="w-16 h-16 rounded-full object-cover"
+                      className={styles.suggestionAvatar}
                     />
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-lg">{artist.username}</h3>
+                    <div className={styles.suggestionInfo}>
+                      <h3 className={styles.suggestionName}>{artist.username}</h3>
                       {artist.role === 'artist' && (
-                        <span className="inline-block px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">
+                        <span className={styles.suggestionRoleBadge}>
                           Artist
                         </span>
                       )}
@@ -319,27 +345,27 @@ export default function Following() {
                   </div>
                   
                   {artist.profile?.bio && (
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                    <p className={styles.suggestionBio}>
                       {artist.profile.bio}
                     </p>
                   )}
                   
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm text-gray-500">
+                  <div className={styles.suggestionFooter}>
+                    <div className={styles.suggestionFollowers}>
                       {artist.followers?.length || 0} followers
                     </div>
-                    <div className="flex gap-2">
+                    <div className={styles.suggestionActions}>
                       <button
-                        onClick={() => navigate(`/artist/${artist._id}`)}
-                        className="px-3 py-1 text-blue-500 hover:text-blue-600 text-sm font-medium"
+                        onClick={() => navigate(`/profile/${artist._id}`)}
+                        className={styles.suggestionViewButton}
                       >
                         View Profile
                       </button>
                       <button
                         onClick={() => handleFollow(artist._id)}
-                        className="px-3 py-1 bg-blue-500 text-white hover:bg-blue-600 rounded text-sm font-medium flex items-center gap-1"
+                        className={styles.suggestionFollowButton}
                       >
-                        <UserPlus className="w-3 h-3" />
+                        <UserPlus size={12} />
                         Follow
                       </button>
                     </div>

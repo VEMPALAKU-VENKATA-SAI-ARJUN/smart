@@ -206,12 +206,12 @@ function Navbar() {
                   <Link to="/profile" className="dropdown-item">
                     <User size={16} /> My Profile
                   </Link>
-                  <Link to="/settings/notifications" className="dropdown-item">
+                  <Link to="/notifications" className="dropdown-item">
                     <Bell size={16} /> Notifications
                   </Link>
-                  <Link to="/settings" className="dropdown-item">
+                   {/*<Link to="/settings" className="dropdown-item">
                     <Settings size={16} /> Settings
-                  </Link>
+                  </Link>*/}
                   <hr className="dropdown-divider" />
                   <button onClick={handleLogout} className="dropdown-item logout-btn">
                     <LogOut size={16} /> Logout

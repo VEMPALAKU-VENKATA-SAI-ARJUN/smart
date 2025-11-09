@@ -143,33 +143,33 @@ const ProfilePage = () => {
         />
 
         {/* Top-level tabs */}
-        <div className="tabs">
+        <div className="profile-tabs">
           <button
-            className={`tab ${activeTab === TABS.POSTS ? 'active' : ''}`}
+            className={`profile-tab ${activeTab === TABS.POSTS ? 'active' : ''}`}
             onClick={() => setActiveTab(TABS.POSTS)}
           >Posts</button>
           <button
-            className={`tab ${activeTab === TABS.REELS ? 'active' : ''}`}
+            className={`profile-tab ${activeTab === TABS.REELS ? 'active' : ''}`}
             onClick={() => setActiveTab(TABS.REELS)}
           >Reels</button>
           <button
-            className={`tab ${activeTab === TABS.TAGGED ? 'active' : ''}`}
+            className={`profile-tab ${activeTab === TABS.TAGGED ? 'active' : ''}`}
             onClick={() => setActiveTab(TABS.TAGGED)}
           >Tagged</button>
 
           {/* Artist-only dashboard tabs on the right */}
           {isArtist && isOwnProfile && (
-            <div style={{ marginLeft: 'auto', display: 'flex' }}>
+            <div className="profile-tabs">
               <button
-                className={`tab ${activeTab === TABS.ARTWORKS ? 'active' : ''}`}
+                className={`profile-tab-1 ${activeTab === TABS.ARTWORKS ? 'active' : ''}`}
                 onClick={() => setActiveTab(TABS.ARTWORKS)}
               >Artworks</button>
               <button
-                className={`tab ${activeTab === TABS.DRAFTS ? 'active' : ''}`}
+                className={`profile-tab-1 ${activeTab === TABS.DRAFTS ? 'active' : ''}`}
                 onClick={() => setActiveTab(TABS.DRAFTS)}
               >Drafts</button>
               <button
-                className={`tab ${activeTab === TABS.ANALYTICS ? 'active' : ''}`}
+                className={`profile-tab-1 ${activeTab === TABS.ANALYTICS ? 'active' : ''}`}
                 onClick={() => setActiveTab(TABS.ANALYTICS)}
               >Analytics</button>
             </div>
@@ -246,19 +246,19 @@ const ProfilePage = () => {
             </div>
           )}
 
-          {activeTab === TABS.REELS && (
+          {/*activeTab === TABS.REELS && (
             <div className="ig-empty">
               <div className="ig-empty-icon">🎞️</div>
               <p>No reels yet</p>
             </div>
-          )}
+          )*/}
 
-          {activeTab === TABS.TAGGED && (
+          {/*activeTab === TABS.TAGGED && (
             <div className="ig-empty">
               <div className="ig-empty-icon">🏷️</div>
               <p>No tagged posts yet</p>
             </div>
-          )}
+          )*/}
 
           {user.role === 'buyer' && isOwnProfile && (
             <div className="buyer-content fade-in">

@@ -129,8 +129,9 @@ const ArtworkCard = ({
 
         {/* Buttons (stop modal trigger) */}
         <div className="artwork-actions">
+          
           <button
-            className={`action-btn favorite-btn ${isLiked ? 'active' : ''}`}
+            className={`artwork-like-btn ${isLiked ? 'active' : ''}`}
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
@@ -138,23 +139,12 @@ const ArtworkCard = ({
             }}
             title={isLiked ? 'Unlike' : 'Like'}
           >
-            <Heart size={18} fill={isLiked ? 'currentColor' : 'none'} />
+            <Heart className={`heart ${isLiked ? 'active' : ''}`} size={18} />
           </button>
 
-          <button
-            className={`action-btn wishlist-btn ${isInWishlist ? 'active' : ''}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              onAddToWishlist?.(artwork._id);
-            }}
-            title={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-          >
-            <Star size={18} fill={isInWishlist ? 'currentColor' : 'none'} />
-          </button>
 
           <button
-            className="action-btn share-btn"
+            className="artwork-share-btn"
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
@@ -165,7 +155,7 @@ const ArtworkCard = ({
             }}
             title="Share"
           >
-            <Share2 size={18} />
+            <Share2 className="share" size={18} />
           </button>
         </div>
 

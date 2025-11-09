@@ -114,15 +114,7 @@ const Gallery = () => {
       if (!token) return;
 
       const headers = { Authorization: `Bearer ${token}` };
-      const [likesRes, wishlistRes] = await Promise.all([
-        http.get('/api/artworks/user/liked', { signal, headers }),
-        http.get('/api/artworks/user/wishlist', { signal, headers }),
-      ]);
-
-      if (likesRes?.data?.success) {
-        const likedIds = (likesRes.data.data || []).map((a) => a._id);
-        setUserLikes(new Set(likedIds));
-      }
+      const wishlistRes = await http.get('/api/artworks/user/wishlist', { signal, headers });
 
       if (wishlistRes?.data?.success)
         setUserWishlist(new Set((wishlistRes.data.data || []).map((a) => a._id)));
@@ -147,7 +139,6 @@ const fetchArtworks = async (
   const myReqId = ++reqIdRef.current;
 
   try {
-    // Build params object WITHOUT filtering by current user
     const paramsObj = {
       page: pageNum,
       limit: 20,
@@ -157,16 +148,40 @@ const fetchArtworks = async (
         : customFilters.tags,
     };
     
-    // ❌ REMOVED: if (userId) paramsObj.artist = userId;
-    // This was filtering to show only the logged-in user's artworks
-    
     const params = new URLSearchParams(paramsObj).toString();
 
     const resp = await http.get(`/api/artworks?${params}`, { signal });
 
     if (myReqId !== reqIdRef.current) return;
 
-    const newArtworks = resp?.data || [];
+    const newArtworks = resp?.data?.data || resp?.data || [];
+    
+    console.log('🎨 Fetched artworks:', newArtworks.length);
+    console.log('🎨 First artwork isLikedByCurrentUser:', newArtworks[0]?.isLikedByCurrentUser);
+    console.log('🎨 User:', user ? user.username : 'Not logged in');
+
+    // ✅ Initialize userLikes from isLikedByCurrentUser field
+    if (reset && user) {
+      const likedIds = new Set();
+      newArtworks.forEach(artwork => {
+        if (artwork.isLikedByCurrentUser) {
+          likedIds.add(artwork._id);
+        }
+      });
+      console.log('🎨 Setting liked IDs (reset):', Array.from(likedIds));
+      setUserLikes(likedIds);
+    } else if (user) {
+      setUserLikes(prev => {
+        const updated = new Set(prev);
+        newArtworks.forEach(artwork => {
+          if (artwork.isLikedByCurrentUser) {
+            updated.add(artwork._id);
+          }
+        });
+        console.log('🎨 Updating liked IDs:', Array.from(updated));
+        return updated;
+      });
+    }
 
     setArtworks(prev => (reset ? newArtworks : [...prev, ...newArtworks]));
     setHasMore(newArtworks.length === 20);
@@ -240,22 +255,30 @@ const fetchArtworks = async (
 
   const handleLike = async (artworkId) => {
     if (!user) return;
+    
+    const wasLiked = userLikes.has(artworkId);
+    
+    // ✅ Optimistic UI update
     const newLikes = new Set(userLikes);
-    const isLiked = newLikes.has(artworkId);
-    if (isLiked) newLikes.delete(artworkId);
-    else newLikes.add(artworkId);
+    if (wasLiked) {
+      newLikes.delete(artworkId);
+    } else {
+      newLikes.add(artworkId);
+    }
     setUserLikes(newLikes);
 
+    // Update artwork in list
     setArtworks((prev) =>
       prev.map((a) =>
         a._id === artworkId
           ? {
               ...a,
+              isLikedByCurrentUser: !wasLiked,
               stats: {
                 ...a.stats,
-                likes: newLikes.has(artworkId)
-                  ? (a.stats?.likes || 0) + 1
-                  : Math.max(0, (a.stats?.likes || 0) - 1),
+                likes: wasLiked
+                  ? Math.max(0, (a.stats?.likes || 0) - 1)
+                  : (a.stats?.likes || 0) + 1,
               },
             }
           : a
@@ -266,22 +289,60 @@ const fetchArtworks = async (
     if (selectedArtwork?._id === artworkId) {
       setSelectedArtwork(prev => ({
         ...prev,
+        isLikedByCurrentUser: !wasLiked,
         stats: {
           ...prev.stats,
-          likes: newLikes.has(artworkId)
-            ? (prev.stats?.likes || 0) + 1
-            : Math.max(0, (prev.stats?.likes || 0) - 1),
+          likes: wasLiked
+            ? Math.max(0, (prev.stats?.likes || 0) - 1)
+            : (prev.stats?.likes || 0) + 1,
         },
       }));
     }
 
     try {
       const token = localStorage.getItem('auth_token');
-      await http.post(`/api/artworks/${artworkId}/like`, null, {
+      const response = await http.post(`/api/artworks/${artworkId}/like`, null, {
         headers: token ? { Authorization: `Bearer ${token}` } : undefined,
       });
+
+      // ✅ Sync with server response
+      if (response?.data?.success) {
+        const { liked, likesCount } = response.data;
+        
+        // Update state with server truth
+        const serverLikes = new Set(userLikes);
+        if (liked) {
+          serverLikes.add(artworkId);
+        } else {
+          serverLikes.delete(artworkId);
+        }
+        setUserLikes(serverLikes);
+
+        // Update artwork counts with server data
+        setArtworks((prev) =>
+          prev.map((a) =>
+            a._id === artworkId
+              ? {
+                  ...a,
+                  isLikedByCurrentUser: liked,
+                  stats: { ...a.stats, likes: likesCount },
+                }
+              : a
+          )
+        );
+
+        if (selectedArtwork?._id === artworkId) {
+          setSelectedArtwork(prev => ({
+            ...prev,
+            isLikedByCurrentUser: liked,
+            stats: { ...prev.stats, likes: likesCount },
+          }));
+        }
+      }
     } catch (error) {
       console.error('Failed to update like:', error);
+      // ✅ Revert on error
+      setUserLikes(wasLiked ? new Set([...userLikes, artworkId]) : new Set([...userLikes].filter(id => id !== artworkId)));
     }
   };
 

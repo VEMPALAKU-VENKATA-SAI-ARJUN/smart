@@ -5,7 +5,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Artwork = require('../models/Artwork');
 const User = require('../models/User');
-const { protect } = require('../middleware/auth');
+const { protect, optionalAuth } = require('../middleware/auth');
 const { upload } = require('../config/cloudinary');
 const { moderateArtwork } = require('../utils/aiModeration');
 const Notification = require('../models/Notification');
@@ -17,7 +17,7 @@ router.get('/feed', protect, async (req, res) => {
     const { page = 1, limit = 20 } = req.query;
     const skip = (page - 1) * limit;
     
-    const currentUser = await User.findById(req.user._id);
+    const currentUser = await User.findById(req.user._id).select('following likedArtworks');
     const followingIds = currentUser.following || [];
     
     if (followingIds.length === 0) {
@@ -41,9 +41,16 @@ router.get('/feed', protect, async (req, res) => {
       visibility: 'public'
     });
     
+    // ✅ Add isLikedByCurrentUser field
+    const likedIds = new Set((currentUser.likedArtworks || []).map(id => id.toString()));
+    const enrichedArtworks = artworks.map(artwork => ({
+      ...artwork,
+      isLikedByCurrentUser: likedIds.has(artwork._id.toString())
+    }));
+    
     res.json({
       success: true,
-      data: artworks,
+      data: enrichedArtworks,
       pagination: {
         page: Number(page),
         limit: Number(limit),
@@ -170,7 +177,7 @@ router.get('/categories', async (req, res) => {
 
 // Get all artworks with filters (show all for owner, only approved/public for others)
 // ✅ PUBLIC GALLERY ENDPOINT – only approved + public artworks
-router.get('/', async (req, res) => {
+router.get('/', optionalAuth, async (req, res) => {
   try {
     const {
       category,
@@ -222,9 +229,26 @@ router.get('/', async (req, res) => {
 
     const total = await Artwork.countDocuments(query);
 
+    // ✅ Add isLikedByCurrentUser field for authenticated users
+    let enrichedArtworks = artworks;
+    if (req.user) {
+      const user = await User.findById(req.user._id).select('likedArtworks');
+      const likedIds = new Set((user.likedArtworks || []).map(id => id.toString()));
+      
+      enrichedArtworks = artworks.map(artwork => ({
+        ...artwork,
+        isLikedByCurrentUser: likedIds.has(artwork._id.toString())
+      }));
+    } else {
+      enrichedArtworks = artworks.map(artwork => ({
+        ...artwork,
+        isLikedByCurrentUser: false
+      }));
+    }
+
     res.json({
       success: true,
-      data: artworks,
+      data: enrichedArtworks,
       pagination: {
         page: Number(page),
         limit: Number(limit),
@@ -363,7 +387,6 @@ router.post('/', protect, upload.array('images', 5), async (req, res) => {
   }
 });
 
-// Like/Unlike artwork
 // Like/Unlike artwork (with notifications + real-time updates)
 router.post('/:id/like', protect, async (req, res) => {
   console.log(`[LIKE ROUTE] User ${req.user._id} toggling like for artwork ${req.params.id}`);
@@ -390,16 +413,16 @@ router.post('/:id/like', protect, async (req, res) => {
 
       // ✅ Only notify if the artist isn't the liker
       if (artwork.artist._id.toString() !== req.user._id.toString()) {
-        const notification =await Notification.create({
+        const notification = await Notification.create({
           recipient: artwork.artist,
           sender: req.user._id,
           type: 'like',
           message: `${req.user.username} liked your artwork "${artwork.title}"`,
           link: `/artwork/${artwork._id}`,
-          relatedArtwork: artwork._id, // ✅ Added
-          relatedUser: req.user._id,   // ✅ Added
+          relatedArtwork: artwork._id,
+          relatedUser: req.user._id,
           content: {
-            title: artwork.title,      // ✅ So frontend has title access
+            title: artwork.title,
             message: `${req.user.username} liked your artwork "${artwork.title}"`
           }
         });
@@ -428,10 +451,11 @@ router.post('/:id/like', protect, async (req, res) => {
     const updated = await Artwork.findById(artworkId).select('stats.likes');
     console.log(`❤️ Artwork ${artworkId} likes updated to ${updated.stats.likes}`);
 
+    // ✅ Return consistent response format
     res.json({
       success: true,
-      isActive: !isLiked,
-      count: updated.stats.likes,
+      liked: !isLiked,  // true if now liked, false if unliked
+      likesCount: updated.stats.likes,
       message: isLiked ? 'Artwork unliked successfully' : 'Artwork liked successfully',
     });
   } catch (error) {
@@ -602,11 +626,12 @@ router.get('/user/wishlist', protect, async (req, res) => {
 });
 
 // Get single artwork
-router.get('/:id', async (req, res) => {
+router.get('/:id', optionalAuth, async (req, res) => {
   try {
     const artwork = await Artwork.findById(req.params.id)
       .populate('artist', 'username profile email artistInfo')
-      .populate('soldTo', 'username');
+      .populate('soldTo', 'username')
+      .lean();
     
     if (!artwork) {
       return res.status(404).json({ 
@@ -616,12 +641,22 @@ router.get('/:id', async (req, res) => {
     }
     
     // Increment view count
+    await Artwork.findByIdAndUpdate(req.params.id, { $inc: { 'stats.views': 1 } });
     artwork.stats.views += 1;
-    await artwork.save();
+    
+    // ✅ Add isLikedByCurrentUser field for authenticated users
+    let isLikedByCurrentUser = false;
+    if (req.user) {
+      const user = await User.findById(req.user._id).select('likedArtworks');
+      isLikedByCurrentUser = (user.likedArtworks || []).some(id => id.toString() === artwork._id.toString());
+    }
     
     res.json({
       success: true,
-      data: artwork
+      data: {
+        ...artwork,
+        isLikedByCurrentUser
+      }
     });
   } catch (error) {
     res.status(500).json({ 

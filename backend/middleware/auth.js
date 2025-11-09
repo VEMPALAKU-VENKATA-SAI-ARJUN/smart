@@ -55,3 +55,29 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
+
+// Optional authentication - doesn't fail if no token provided
+exports.optionalAuth = async (req, res, next) => {
+  try {
+    let token;
+    
+    if (req.headers.authorization?.startsWith('Bearer')) {
+      token = req.headers.authorization.split(' ')[1];
+    }
+    
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = await User.findById(decoded.id).select('-password');
+      } catch (error) {
+        // Token invalid, but continue without user
+        console.log('Optional auth - Invalid token, continuing without user');
+      }
+    }
+    
+    next();
+  } catch (error) {
+    // Continue without authentication
+    next();
+  }
+};

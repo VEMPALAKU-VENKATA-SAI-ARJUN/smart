@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('cloudinary').v2;
+const rateLimit = require('express-rate-limit');
 const User = require('../models/User');
 const Artwork = require('../models/Artwork');
 const Notification = require('../models/Notification');
@@ -24,6 +25,43 @@ const optionalAuth = async (req, res, next) => {
   }
   next();
 };
+
+/* ============================
+   💾 IN-MEMORY CACHE FOR MINI PREVIEW
+   ============================ */
+const previewCache = new Map();
+const CACHE_TTL = 30000; // 30 seconds
+
+function getCachedPreview(userId) {
+  const entry = previewCache.get(userId);
+  if (entry && Date.now() - entry.timestamp < CACHE_TTL) {
+    return entry.data;
+  }
+  previewCache.delete(userId);
+  return null;
+}
+
+function setCachedPreview(userId, data) {
+  previewCache.set(userId, {
+    data,
+    timestamp: Date.now()
+  });
+}
+
+/* ============================
+   🚦 RATE LIMITER FOR MINI PREVIEW
+   ============================ */
+const miniPreviewLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 30, // 30 requests per minute per user
+  message: { 
+    success: false, 
+    error: 'Too many preview requests, please wait',
+    code: 'RATE_LIMIT_EXCEEDED'
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 /* ============================
    ☁️ CLOUDINARY CONFIG
    ============================ */
@@ -52,6 +90,59 @@ const upload = multer({ storage });
  */
 router.get('/', (req, res) => {
   res.json({ message: 'Get all users - placeholder' });
+});
+
+/* ============================
+   🔍 GET SUGGESTED ARTISTS
+   ============================ */
+router.get('/suggestions', protect, async (req, res) => {
+  try {
+    const currentUserId = req.user._id;
+    const limit = parseInt(req.query.limit) || 10;
+
+    // Get current user's following list
+    const currentUser = await User.findById(currentUserId).select('following').lean();
+    const followingIds = (currentUser?.following || []).map(id => id.toString());
+
+    // Find artists that:
+    // 1. Are not the current user
+    // 2. Are not already followed
+    // 3. Have the 'artist' role
+    // 4. Have at least one approved artwork
+    const suggestedArtists = await User.find({
+      _id: { $ne: currentUserId, $nin: followingIds },
+      role: 'artist'
+    })
+      .select('username profile.avatar profile.bio role followers')
+      .limit(limit * 2) // Get more to filter
+      .lean();
+
+    // Filter artists who have at least one approved artwork
+    const artistsWithArtworks = await Promise.all(
+      suggestedArtists.map(async (artist) => {
+        const artworkCount = await Artwork.countDocuments({
+          artist: artist._id,
+          status: 'approved',
+          visibility: 'public'
+        });
+        return artworkCount > 0 ? artist : null;
+      })
+    );
+
+    // Remove nulls and limit results
+    const filteredArtists = artistsWithArtworks
+      .filter(artist => artist !== null)
+      .slice(0, limit);
+
+    res.status(200).json({ 
+      success: true, 
+      data: filteredArtists 
+    });
+  } catch (error) {
+    console.error('❌ Error fetching suggestions:', error);
+    console.error('Error details:', error.message, error.stack);
+    res.status(500).json({ success: false, message: 'Server error', error: error.message });
+  }
 });
 
 /* ============================
@@ -125,6 +216,127 @@ router.get('/:id/purchases', async (req, res) => {
   } catch (error) {
     console.error('❌ Error fetching purchases:', error);
     res.status(500).json({ success: false, message: 'Failed to fetch purchases' });
+  }
+});
+
+/* ============================
+   🎴 GET ARTIST MINI PREVIEW
+   ============================ */
+router.get('/:id/mini-preview', miniPreviewLimiter, optionalAuth, async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Invalid user ID',
+        code: 'INVALID_USER_ID'
+      });
+    }
+
+    // Check cache first
+    const cached = getCachedPreview(userId);
+    if (cached) {
+      return res.status(200).json({ success: true, data: cached });
+    }
+
+    // Fetch user profile with minimal fields
+    const user = await User.findById(userId)
+      .select('username profile.avatar profile.bio followers following lastLogin')
+      .lean();
+
+    if (!user) {
+      return res.status(404).json({ 
+        success: false, 
+        error: 'Artist not found',
+        code: 'ARTIST_NOT_FOUND'
+      });
+    }
+
+    // Fetch top 3 approved artworks
+    const artworks = await Artwork.find({
+      artist: userId,
+      status: 'approved',
+      visibility: 'public'
+    })
+      .select('title thumbnail createdAt')
+      .sort({ createdAt: -1 })
+      .limit(3)
+      .lean();
+
+    // Calculate stats
+    const stats = {
+      followers: user.followers?.length || 0,
+      artworks: await Artwork.countDocuments({
+        artist: userId,
+        status: 'approved',
+        visibility: 'public'
+      })
+    };
+
+    // Determine online status and activity
+    const now = Date.now();
+    const lastActive = user.lastLogin ? new Date(user.lastLogin).getTime() : 0;
+    const isOnline = (now - lastActive) < 5 * 60 * 1000; // Online if active within 5 minutes
+    const isRecentlyActive = (now - lastActive) < 24 * 60 * 60 * 1000; // Active within 24 hours
+
+    // Check if recently posted (within 7 days)
+    const recentArtwork = artworks.length > 0 ? artworks[0] : null;
+    const isRecentlyPosted = recentArtwork && 
+      (now - new Date(recentArtwork.createdAt).getTime()) < 7 * 24 * 60 * 60 * 1000;
+
+    // Get follow date if current user is authenticated
+    let followedAt = null;
+    if (req.user) {
+      const currentUser = await User.findById(req.user._id)
+        .select('following')
+        .lean();
+      
+      if (currentUser?.following?.some(id => id.toString() === userId)) {
+        // Note: We don't have the exact follow date in the current schema
+        // This would require a separate Follow model with timestamps
+        followedAt = null; // Placeholder for future implementation
+      }
+    }
+
+    // Build response
+    const previewData = {
+      user: {
+        _id: user._id,
+        username: user.username,
+        profile: {
+          avatar: user.profile?.avatar || null,
+          bio: user.profile?.bio || null
+        },
+        stats,
+        isOnline,
+        lastActive: user.lastLogin
+      },
+      artworks: artworks.map(art => ({
+        _id: art._id,
+        title: art.title,
+        thumbnail: art.thumbnail,
+        createdAt: art.createdAt
+      })),
+      followedAt,
+      badges: {
+        recentlyActive: isRecentlyActive,
+        recentlyPosted: isRecentlyPosted
+      }
+    };
+
+    // Cache the result
+    setCachedPreview(userId, previewData);
+
+    res.status(200).json({ success: true, data: previewData });
+  } catch (error) {
+    console.error('❌ Error fetching mini preview:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to fetch preview',
+      code: 'SERVER_ERROR'
+    });
   }
 });
 
@@ -295,6 +507,58 @@ router.post('/:id/avatar', protect, upload.single('avatar'), async (req, res) =>
   } catch (error) {
     console.error('❌ Avatar upload failed:', error);
     res.status(500).json({ success: false, message: 'Avatar upload failed' });
+  }
+});
+
+/* ============================
+   👥 GET FOLLOWING LIST
+   ============================ */
+router.get('/:id/following', async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const user = await User.findById(userId)
+      .select('following')
+      .populate('following', 'username profile.avatar profile.bio role followers')
+      .lean();
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    res.status(200).json({ 
+      success: true, 
+      data: user.following || [] 
+    });
+  } catch (error) {
+    console.error('❌ Error fetching following list:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+/* ============================
+   👥 GET FOLLOWERS LIST
+   ============================ */
+router.get('/:id/followers', async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const user = await User.findById(userId)
+      .select('followers')
+      .populate('followers', 'username profile.avatar profile.bio role followers')
+      .lean();
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    res.status(200).json({ 
+      success: true, 
+      data: user.followers || [] 
+    });
+  } catch (error) {
+    console.error('❌ Error fetching followers list:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 });
 
