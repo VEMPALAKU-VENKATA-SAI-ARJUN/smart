@@ -1,7 +1,13 @@
 /* ============================= */
 /* Home Page Styles              */
 /* ============================= */
-
+.Home-Trending-artworks {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 40px 0 20px 0;
+  color: rgb(98, 0, 196);
+}
 .home-container {
   background-color: #f9fafc;
   color: #222;
@@ -32,7 +38,7 @@
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(83, 0, 128, 0.459), rgba(136, 64, 224, 0.4));
+  background: linear-gradient(90deg, rgba(61, 0, 94, 0.827), rgba(136, 64, 224, 0.608));
   z-index: 2;
 }
 
@@ -90,6 +96,7 @@
   align-items: center;
   gap: 8px;
   transition: all 0.3s ease;
+  color: white;
 }
 
 .btn-primary {
@@ -102,13 +109,21 @@
   background: #e9f9f9;
 }
 
-.btn-outline {
+.home-upload-btn-outline {
+   padding: 10px 20px;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
   border: 2px solid #fff;
   color: #fff;
   background: transparent;
 }
 
-.btn-outline:hover {
+.home-upload-btn-outline:hover {
   background: #fff;
   color: teal;
 }
@@ -144,7 +159,7 @@
 }
 
 .tab.active {
-  background: linear-gradient(90deg, teal, turquoise);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: #fff;
 }
 
@@ -179,7 +194,7 @@
 }
 
 .pill.active {
-  background: linear-gradient(90deg, teal, turquoise);
+ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: #fff;
   border: none;
 }
@@ -360,4 +375,147 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* 
+========================================
+   DARK MODE STYLES FOR HOME PAGE
+   ======================================== */
+
+body.dark-mode .home-container {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+/* Hero Section Dark Mode */
+body.dark-mode .hero-section {
+  background: linear-gradient(135deg, #1e1b4b, #312e81, #4f46e5);
+}
+
+body.dark-mode .hero-overlay {
+  background: linear-gradient(90deg, rgba(30, 27, 75, 0.8), rgba(79, 70, 229, 0.6));
+}
+
+body.dark-mode .hero-badge {
+  background: rgba(139, 92, 246, 0.3);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+}
+
+body.dark-mode .hero-title,
+body.dark-mode .hero-subtext {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .btn-primary {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+  color: #ffffff !important;
+}
+
+body.dark-mode .btn-primary:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed);
+}
+
+body.dark-mode .btn-outline {
+  border-color: #a78bfa;
+  color: #a78bfa !important;
+}
+
+body.dark-mode .btn-outline:hover {
+  background: #a78bfa;
+  color: #1e1b4b !important;
+}
+
+/* Filters Section Dark Mode */
+body.dark-mode .filters-section {
+  background-color: transparent;
+}
+
+body.dark-mode .tab {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+body.dark-mode .tab.active {
+  background: linear-gradient(90deg, #7c3aed, #8b5cf6);
+  color: #ffffff;
+}
+
+body.dark-mode .dropdown select {
+  background-color: #1e293b;
+  border-color: #475569;
+  color: #f1f5f9;
+}
+
+body.dark-mode .pill {
+  background: #334155;
+  border-color: #475569;
+  color: #e2e8f0;
+}
+
+body.dark-mode .pill.active {
+  background: linear-gradient(90deg, #7c3aed, #8b5cf6);
+  color: #ffffff;
+  border: none;
+}
+
+/* Artwork Cards Dark Mode */
+body.dark-mode .art-card {
+  background: #1e293b !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .art-card:hover {
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+body.dark-mode .art-info h3 {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .art-footer {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .category-badge {
+  background: rgba(30, 41, 59, 0.9);
+  color: #e2e8f0;
+}
+
+body.dark-mode .ai-badge {
+  background: #8b5cf6;
+  color: #ffffff;
+}
+
+/* Loading, Error & Empty States Dark Mode */
+body.dark-mode .loading-section,
+body.dark-mode .error-section,
+body.dark-mode .empty-section {
+  background-color: transparent;
+}
+
+body.dark-mode .loading-spinner {
+  color: #8b5cf6;
+}
+
+body.dark-mode .empty-icon {
+  color: #475569;
+}
+
+body.dark-mode .error-content p,
+body.dark-mode .empty-content p {
+  color: #94a3b8;
+}
+
+body.dark-mode .empty-content h3 {
+  color: #f1f5f9;
+}
+
+body.dark-mode .load-more button {
+  background: #334155;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+
+body.dark-mode .load-more button:hover {
+  background: #475569;
 }

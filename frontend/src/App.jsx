@@ -2,9 +2,11 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ChatProvider } from './contexts/ChatContext';
 import { SocketProvider } from './contexts/SocketContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { usePushNotifications } from './hooks/usePushNotifications';
 import { Toaster } from './components/ui/toaster';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import QuickChat from './components/QuickChat';
 import Home from './pages/Home';
 import ArtworkDetails from './pages/ArtworkDetails';
@@ -45,7 +47,7 @@ function AppRoutes() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="app">
       <Navbar />
 
       <Routes>
@@ -131,21 +133,26 @@ function AppRoutes() {
       
       {/* Toast notifications */}
       <Toaster />
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
 
 function App() {
   return (
-    <AuthProvider>
-      <SocketProvider>
-        <ChatProvider>
-          <Router>
-            <AppRoutes />
-          </Router>
-        </ChatProvider>
-      </SocketProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <SocketProvider>
+          <ChatProvider>
+            <Router>
+              <AppRoutes />
+            </Router>
+          </ChatProvider>
+        </SocketProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

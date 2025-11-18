@@ -293,6 +293,7 @@
   color: #6b7280;
   margin: 0 0 0.75rem 0;
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -382,17 +383,18 @@
   font-weight: 600;
   text-transform: uppercase;
 }
-
 .suggestionBio {
   font-size: 0.875rem;
   color: #6b7280;
   margin: 0 0 1rem 0;
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 
 .suggestionFooter {
   display: flex;
@@ -523,4 +525,109 @@
     width: 100%;
     justify-content: center;
   }
+}
+
+
+/* ========================================
+   DARK MODE STYLES FOR FOLLOWING PAGE
+   ======================================== */
+
+body.dark-mode .container {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .header {
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .subtitle {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .tabs {
+  background-color: #1e293b !important;
+  border-bottom-color: #334155 !important;
+}
+
+body.dark-mode .tab {
+  color: #94a3b8 !important;
+  border-bottom-color: transparent !important;
+}
+
+body.dark-mode .tab:hover {
+  color: #e2e8f0 !important;
+  background-color: rgba(139, 92, 246, 0.1) !important;
+}
+
+body.dark-mode .tabActive {
+  color: #a78bfa !important;
+  border-bottom-color: #8b5cf6 !important;
+  background-color: rgba(139, 92, 246, 0.15) !important;
+}
+
+body.dark-mode .tabIcon {
+  color: inherit !important;
+}
+
+body.dark-mode .feedGrid,
+body.dark-mode .artistGrid,
+body.dark-mode .suggestionsGrid {
+  background-color: transparent !important;
+}
+
+body.dark-mode .emptyState {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .emptyIcon {
+  color: #475569 !important;
+}
+
+body.dark-mode .emptyTitle {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .emptyDescription {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .emptyButton {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .emptyButton:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed) !important;
+}
+
+body.dark-mode .skeletonGrid {
+  background-color: transparent !important;
+}
+
+body.dark-mode .skeletonCard {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .skeletonAvatar,
+body.dark-mode .skeletonText,
+body.dark-mode .skeletonButton {
+  background-color: #334155 !important;
+}
+
+body.dark-mode .errorBanner {
+  background-color: rgba(239, 68, 68, 0.2) !important;
+  border-color: #ef4444 !important;
+}
+
+body.dark-mode .errorText {
+  color: #fca5a5 !important;
 }

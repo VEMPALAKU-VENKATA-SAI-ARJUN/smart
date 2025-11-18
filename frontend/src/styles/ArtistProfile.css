@@ -399,3 +399,111 @@ a:focus-visible {
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #2563eb, #7c3aed);
 }
+
+/
+* ========================================
+   DARK MODE STYLES FOR ARTIST PROFILE
+   ======================================== */
+
+body.dark-mode .artist-profile-container {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .artist-profile-header {
+  background: linear-gradient(135deg, #1e1b4b, #312e81, #4f46e5) !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .artist-profile-banner {
+  background: linear-gradient(135deg, #1e1b4b, #312e81) !important;
+}
+
+body.dark-mode .artist-profile-info {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .artist-profile-name {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .artist-profile-bio {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .artist-profile-stats {
+  background-color: transparent !important;
+}
+
+body.dark-mode .artist-profile-stat {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .artist-profile-stat-value {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .artist-profile-stat-label {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .artist-profile-tabs {
+  background-color: #1e293b !important;
+  border-bottom-color: #334155 !important;
+}
+
+body.dark-mode .artist-profile-tab {
+  color: #94a3b8 !important;
+  border-bottom-color: transparent !important;
+}
+
+body.dark-mode .artist-profile-tab:hover {
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .artist-profile-tab.active {
+  color: #a78bfa !important;
+  border-bottom-color: #8b5cf6 !important;
+}
+
+body.dark-mode .artist-profile-content {
+  background-color: transparent !important;
+}
+
+body.dark-mode .artist-profile-gallery {
+  background-color: transparent !important;
+}
+
+body.dark-mode .artist-profile-button {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .artist-profile-button:hover {
+  background-color: #475569 !important;
+}
+
+body.dark-mode .artist-profile-button-follow {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+body.dark-mode .artist-profile-button-follow:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed) !important;
+}
+
+body.dark-mode .artist-profile-button-following {
+  background-color: #334155 !important;
+  color: #a78bfa !important;
+  border-color: #8b5cf6 !important;
+}
+
+body.dark-mode .artist-profile-button-following:hover {
+  background-color: rgba(220, 38, 38, 0.2) !important;
+  color: #fca5a5 !important;
+  border-color: #ef4444 !important;
+}

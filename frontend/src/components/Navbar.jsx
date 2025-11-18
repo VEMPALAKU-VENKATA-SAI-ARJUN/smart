@@ -14,10 +14,89 @@ import {
   Users,
   Bell,
   MessageCircle,
+  Palette,
+  LayoutDashboard,
+  ShoppingBag,
+  Crown
 } from "lucide-react";
 import { useChat } from "../contexts/ChatContext";
 import "../styles/Navbar.css";
 import http, { API_BASE } from "../lib/http";
+import { rateLimitedFetch } from "../utils/rateLimitedFetch";
+
+// Navigation configuration based on user role
+const getNavigationLinks = (user) => {
+  const links = {
+    common: [
+      { path: "/", label: "Home", icon: Home },
+      { path: "/gallery", label: "Gallery", icon: Image },
+    ],
+    authenticated: [],
+    roleSpecific: []
+  };
+
+  if (!user) return links;
+
+  // Links for all authenticated users
+  links.authenticated = [
+    { path: "/following", label: "Following", icon: Users },
+    { path: `/profile/${user.id}`, label: "Profile", icon: User },
+  ];
+
+  // Role-specific links
+  switch (user.role) {
+    case 'artist':
+      links.roleSpecific = [
+        { path: "/upload", label: "Upload", icon: Upload },
+        //{ path: "/artist/dashboard", label: "Dashboard", icon: LayoutDashboard },
+      ];
+      break;
+
+    case 'buyer':
+      links.roleSpecific = [
+        //{ path: "/purchases", label: "Purchases", icon: ShoppingBag },
+      ];
+      break;
+
+    case 'reviewer':
+      links.roleSpecific = [
+        { path: "/review-queue", label: "Review Queue", icon: CheckCircle },
+      ];
+      break;
+
+    case 'moderator':
+      links.roleSpecific = [
+       // { path: "/review-queue", label: "Review Queue", icon: CheckCircle },
+        { path: "/moderation", label: "Moderation", icon: Shield },
+      ];
+      break;
+
+    case 'admin':
+      links.roleSpecific = [
+        { path: "/review-queue", label: "Review Queue", icon: CheckCircle },
+        { path: "/moderation", label: "Moderation", icon: Shield },
+        { path: "/admin", label: "Admin Panel", icon: Crown },
+      ];
+      break;
+
+    default:
+      break;
+  }
+
+  return links;
+};
+
+// Get role badge configuration
+const getRoleBadge = (role) => {
+  const badges = {
+    admin: { label: "Admin", color: "badge-admin" },
+    moderator: { label: "Moderator", color: "badge-moderator" },
+    reviewer: { label: "Reviewer", color: "badge-reviewer" },
+    artist: { label: "Artist", color: "badge-artist" },
+    buyer: { label: "Buyer", color: "badge-buyer" },
+  };
+  return badges[role] || null;
+};
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -75,9 +154,10 @@ function Navbar() {
       };
 
       run();
+      // Increased interval to 5 minutes (300000ms) to avoid rate limiting
       const interval = setInterval(() => {
         if (document.visibilityState === 'visible') run();
-      }, 120000);
+      }, 300000);
 
       document.addEventListener('visibilitychange', handleVisibility);
 
@@ -99,19 +179,33 @@ function Navbar() {
       if (controllerRef) controllerRef.current = controller;
 
       try {
-        const headers = { Authorization: `Bearer ${token}` };
-        const resp = await http.get('/api/notifications/unread-count', { signal: controller.signal, headers, dedupeKey: `notifications-count:${token}` });
-        // http.get returns { data: parsedJson }
-        const notifData = resp?.data ?? null;
-        if (notifData && notifData.success) setNotificationCount(notifData.count);
-        // broadcast to other tabs
-        try { if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
-          const bc = new BroadcastChannel('notifications-count');
-          bc.postMessage(notifData.count);
-          bc.close();
-        } } catch (_) {}
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const url = `${API_URL}/api/notifications/unread-count`;
+        
+        // Use rate-limited fetch with caching
+        const notifData = await rateLimitedFetch(url, {
+          headers: { Authorization: `Bearer ${token}` },
+          signal: controller.signal
+        });
+        
+        if (notifData && notifData.success) {
+          setNotificationCount(notifData.count);
+          
+          // broadcast to other tabs
+          try {
+            if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
+              const bc = new BroadcastChannel('notifications-count');
+              bc.postMessage(notifData.count);
+              bc.close();
+            }
+          } catch (_) {}
+        }
       } catch (e) {
         if (e.name === 'AbortError') return;
+        // Silently fail for rate limit errors
+        if (e.message && e.message.includes('Rate limited')) {
+          return;
+        }
         console.warn("Failed to fetch notification count:", e.message ?? e);
       } finally {
         if (controllerRef) controllerRef.current = null;
@@ -130,31 +224,29 @@ function Navbar() {
     window.location.href = "/";
   };
 
-  const isReviewer = user?.role === 'reviewer' || user?.role === 'moderator' || user?.role === 'admin';
-
-  const navLinks = [
-    { path: "/", label: "Home", icon: Home },
-    { path: "/gallery", label: "Gallery", icon: Image },
-    ...(user ? [{ path: "/following", label: "Following", icon: Users }] : []),
-    ...(user ? [{ path: "/upload", label: "Upload", icon: Upload }] : []),
-    ...(user ? [{ path: `/profile/${user.id}`, label: "Profile", icon: User }] : []),
-    ...(isReviewer ? [{ path: "/review-queue", label: "Review Queue", icon: CheckCircle }] : []),
-    ...(isModerator ? [{ path: "/moderation", label: "Moderation", icon: Shield }] : []),
-    ...(isAdmin ? [{ path: "/admin", label: "Admin", icon: Shield }] : []),
+  // Get navigation links based on user role
+  const navigationLinks = getNavigationLinks(user);
+  const allNavLinks = [
+    ...navigationLinks.common,
+    ...navigationLinks.authenticated,
+    ...navigationLinks.roleSpecific
   ];
+
+  // Get role badge
+  const roleBadge = user ? getRoleBadge(user.role) : null;
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
         {/* Logo */}
         <Link to="/" className="navbar-logo">
-          <span className="logo-icon">⚡</span>
+          <span className="logo-icon"><Palette  /></span>
           <span className="logo-text">S.M.A.R.T</span>
         </Link>
 
         {/* Desktop Navigation */}
         <ul className="navbar-menu">
-          {navLinks.map((link) => {
+          {allNavLinks.map((link) => {
             const Icon = link.icon;
             return (
               <li key={link.path} className="navbar-item">
@@ -200,16 +292,45 @@ function Navbar() {
               <div className="user-menu">
                 <div className="user-info">
                   <div className="user-avatar">{displayInitial}</div>
-                  <span className="user-name">{displayName}</span>
+                  <div className="user-details">
+                    <span className="user-name">{displayName}</span>
+                    {roleBadge && (
+                      <span className={`role-badge ${roleBadge.color}`}>
+                        {roleBadge.label}
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <div className="dropdown-menu">
-                  <Link to="/profile" className="dropdown-item">
+                  <div className="dropdown-header">
+                    <div className="dropdown-user-info">
+                      <div className="user-avatar-large">{displayInitial}</div>
+                      <div>
+                        <div className="dropdown-user-name">{displayName}</div>
+                        {roleBadge && (
+                          <span className={`role-badge-small ${roleBadge.color}`}>
+                            {roleBadge.label}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <hr className="dropdown-divider" />
+                  <Link to={`/profile/${user.id}`} className="dropdown-item">
                     <User size={16} /> My Profile
                   </Link>
                   <Link to="/notifications" className="dropdown-item">
                     <Bell size={16} /> Notifications
                   </Link>
-                   {/*<Link to="/settings" className="dropdown-item">
+                  {(user.role === 'artist' || user.role === 'buyer') && (
+                    <Link to="/messages" className="dropdown-item">
+                      <MessageCircle size={16} /> Messages
+                      {messageCount > 0 && (
+                        <span className="dropdown-badge">{messageCount}</span>
+                      )}
+                    </Link>
+                  )}
+                  {/*<Link to="/settings" className="dropdown-item">
                     <Settings size={16} /> Settings
                   </Link>*/}
                   <hr className="dropdown-divider" />
@@ -235,39 +356,129 @@ function Navbar() {
       {/* Mobile Navigation */}
       {isOpen && (
         <div className="navbar-mobile">
-          <ul className="mobile-menu">
-            {navLinks.map((link) => {
-              const Icon = link.icon;
-              return (
-                <li key={link.path} className="mobile-item">
+          {/* Mobile User Info */}
+          {user && (
+            <div className="mobile-user-header">
+              <div className="user-avatar-mobile">{displayInitial}</div>
+              <div className="mobile-user-details">
+                <span className="mobile-user-name">{displayName}</span>
+                {roleBadge && (
+                  <span className={`role-badge-mobile ${roleBadge.color}`}>
+                    {roleBadge.label}
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Common Links */}
+          {navigationLinks.common.length > 0 && (
+            <div className="mobile-section">
+              <div className="mobile-section-title">Navigation</div>
+              <ul className="mobile-menu">
+                {navigationLinks.common.map((link) => {
+                  const Icon = link.icon;
+                  return (
+                    <li key={link.path} className="mobile-item">
+                      <Link
+                        to={link.path}
+                        className={`mobile-link ${isActive(link.path) ? "active" : ""}`}
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <Icon size={18} />
+                        {link.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+
+          {/* Authenticated User Links */}
+          {user && navigationLinks.authenticated.length > 0 && (
+            <div className="mobile-section">
+              <div className="mobile-section-title">My Account</div>
+              <ul className="mobile-menu">
+                {navigationLinks.authenticated.map((link) => {
+                  const Icon = link.icon;
+                  return (
+                    <li key={link.path} className="mobile-item">
+                      <Link
+                        to={link.path}
+                        className={`mobile-link ${isActive(link.path) ? "active" : ""}`}
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <Icon size={18} />
+                        {link.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+                <li className="mobile-item">
                   <Link
-                    to={link.path}
-                    className={`mobile-link ${isActive(link.path) ? "active" : ""}`}
+                    to="/notifications"
+                    className={`mobile-link ${isActive("/notifications") ? "active" : ""}`}
                     onClick={() => setIsOpen(false)}
                   >
-                    <Icon size={18} />
-                    {link.label}
+                    <Bell size={18} />
+                    Notifications
+                    {notificationCount > 0 && (
+                      <span className="mobile-badge">{notificationCount}</span>
+                    )}
                   </Link>
                 </li>
-              );
-            })}
-          </ul>
+                {(user.role === 'artist' || user.role === 'buyer') && (
+                  <li className="mobile-item">
+                    <Link
+                      to="/messages"
+                      className={`mobile-link ${isActive("/messages") ? "active" : ""}`}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <MessageCircle size={18} />
+                      Messages
+                      {messageCount > 0 && (
+                        <span className="mobile-badge">{messageCount}</span>
+                      )}
+                    </Link>
+                  </li>
+                )}
+              </ul>
+            </div>
+          )}
+
+          {/* Role-Specific Links */}
+          {user && navigationLinks.roleSpecific.length > 0 && (
+            <div className="mobile-section">
+              <div className="mobile-section-title">
+                {roleBadge ? `${roleBadge.label} Tools` : 'Tools'}
+              </div>
+              <ul className="mobile-menu">
+                {navigationLinks.roleSpecific.map((link) => {
+                  const Icon = link.icon;
+                  return (
+                    <li key={link.path} className="mobile-item">
+                      <Link
+                        to={link.path}
+                        className={`mobile-link ${isActive(link.path) ? "active" : ""}`}
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <Icon size={18} />
+                        {link.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
 
           {/* Mobile Auth Section */}
           <div className="mobile-auth">
             {user ? (
-              <>
-                <div className="mobile-user-info">
-                  <div className="user-avatar-mobile">{displayInitial}</div>
-                  <span>{displayName}</span>
-                </div>
-                <Link to="/profile" className="mobile-link" onClick={() => setIsOpen(false)}>
-                  <Settings size={18} /> Settings
-                </Link>
-                <button onClick={handleLogout} className="btn-logout-mobile">
-                  <LogOut size={18} /> Logout
-                </button>
-              </>
+              <button onClick={handleLogout} className="btn-logout-mobile">
+                <LogOut size={18} /> Logout
+              </button>
             ) : (
               <Link to="/auth" className="btn-login-mobile" onClick={() => setIsOpen(false)}>
                 Sign In / Sign Up

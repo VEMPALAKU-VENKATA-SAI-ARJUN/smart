@@ -597,3 +597,83 @@
     border: 1px solid #000;
   }
 }
+
+
+/* ========================================
+   DARK MODE STYLES FOR QUICK CHAT
+   ======================================== */
+
+body.dark-mode .quick-chat-container {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .quick-chat-header {
+  background: linear-gradient(135deg, #1e1b4b, #312e81) !important;
+  color: #f1f5f9 !important;
+  border-bottom-color: #334155 !important;
+}
+
+body.dark-mode .quick-chat-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .quick-chat-messages {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode .quick-chat-message {
+  background-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .quick-chat-message.sent {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .quick-chat-message.received {
+  background-color: #1e293b !important;
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .quick-chat-input-area {
+  background-color: #1e293b !important;
+  border-top-color: #334155 !important;
+}
+
+body.dark-mode .quick-chat-input {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .quick-chat-input::placeholder {
+  color: #64748b !important;
+}
+
+body.dark-mode .quick-chat-input:focus {
+  border-color: #8b5cf6 !important;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2) !important;
+}
+
+body.dark-mode .quick-chat-send-button {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .quick-chat-send-button:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed) !important;
+}
+
+body.dark-mode .quick-chat-toggle {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4) !important;
+}
+
+body.dark-mode .quick-chat-toggle:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed) !important;
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.6) !important;
+}

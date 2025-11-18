@@ -106,7 +106,7 @@ export const ChatProvider = ({ children }) => {
     };
   }, []);
 
-  // Fetch initial unread count
+  // Fetch initial unread count with rate limiting
   useEffect(() => {
     const fetchUnreadCount = async () => {
       try {
@@ -118,22 +118,30 @@ export const ChatProvider = ({ children }) => {
           return;
         }
 
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/chat/unread-count`, {
+        // Import rate-limited fetch dynamically
+        const { rateLimitedFetch } = await import('../utils/rateLimitedFetch');
+        
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const data = await rateLimitedFetch(`${API_URL}/api/chat/unread-count`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
 
-        if (response.ok) {
-          const data = await response.json();
+        if (data && data.data) {
           setUnreadCount(data.data.count);
         }
       } catch (error) {
-        console.error('Failed to fetch unread count:', error);
+        // Silently fail for rate limit errors
+        if (!error.message || !error.message.includes('Rate limited')) {
+          console.error('Failed to fetch unread count:', error);
+        }
       }
     };
 
-    fetchUnreadCount();
+    // Delay initial fetch to avoid simultaneous requests
+    const timer = setTimeout(fetchUnreadCount, 2000);
+    return () => clearTimeout(timer);
   }, []);
 
   const sendMessage = (recipientId, content, messageType = 'text', relatedArtwork = null) => {

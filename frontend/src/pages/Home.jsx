@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Sparkles, TrendingUp, Zap, Filter, Loader2 } from 'lucide-react';
-import heroBg from '../assets/hero-bg.png';
+import heroBg from '../assets/hero-bg.jpg';
 import '../styles/Home.css';
 
 export default function Home() {
@@ -152,13 +152,13 @@ export default function Home() {
             <Link to="/gallery" className="btn-primary">
               <Zap className="icon" /> Explore Gallery
             </Link>
-            <Link to="/upload" className="btn-outline">Upload Artwork</Link>
+            <Link to="/upload" className="home-upload-btn-outline">Upload Artwork</Link>
           </div>
         </div>
       </section>
-
+      <div className='Home-Trending-artworks'>Trending Artworks</div>
       {/* Filters Section */}
-      <section className="filters-section">
+     {/* <section className="filters-section">
         <div className="filters-bar">
           <div className="tabs">
             <button
@@ -216,7 +216,7 @@ export default function Home() {
             </button>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* Error State */}
       {error && (

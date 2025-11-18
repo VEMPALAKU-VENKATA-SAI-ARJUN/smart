@@ -238,3 +238,37 @@
     flex-direction: column;
   }
 }
+
+
+/* ========================================
+   DARK MODE STYLES FOR FOLLOW BUTTON
+   ======================================== */
+
+body.dark-mode .follow-button {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+body.dark-mode .follow-button:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed) !important;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.5) !important;
+}
+
+body.dark-mode .follow-button.following {
+  background-color: #334155 !important;
+  color: #a78bfa !important;
+  border: 2px solid #8b5cf6 !important;
+}
+
+body.dark-mode .follow-button.following:hover {
+  background-color: rgba(239, 68, 68, 0.2) !important;
+  color: #fca5a5 !important;
+  border-color: #ef4444 !important;
+}
+
+body.dark-mode .follow-button:disabled {
+  background-color: #334155 !important;
+  color: #64748b !important;
+  border-color: #475569 !important;
+}

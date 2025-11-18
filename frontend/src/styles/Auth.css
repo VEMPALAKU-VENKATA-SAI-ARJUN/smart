@@ -578,3 +578,144 @@ label {
     height: 36px;
   }
 }
+
+
+/* ========================================
+   DARK MODE STYLES FOR AUTH PAGE
+   ======================================== */
+
+body.dark-mode .auth-container {
+  background: linear-gradient(135deg, #0f172a, #1e1b4b, #312e81) !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .auth-card {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .auth-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .auth-subtitle {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .auth-input,
+body.dark-mode .auth-form input,
+body.dark-mode .auth-form textarea {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .auth-input::placeholder,
+body.dark-mode .auth-form input::placeholder {
+  color: #64748b !important;
+}
+
+body.dark-mode .auth-input:focus,
+body.dark-mode .auth-form input:focus {
+  border-color: #8b5cf6 !important;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2) !important;
+}
+
+body.dark-mode .auth-button,
+body.dark-mode .auth-form button[type="submit"] {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+body.dark-mode .auth-button:hover,
+body.dark-mode .auth-form button[type="submit"]:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed) !important;
+}
+
+body.dark-mode .auth-link {
+  color: #a78bfa !important;
+}
+
+body.dark-mode .auth-link:hover {
+  color: #c4b5fd !important;
+}
+
+body.dark-mode .auth-divider {
+  border-color: #334155 !important;
+}
+
+body.dark-mode .auth-social-button {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .auth-social-button:hover {
+  background-color: #475569 !important;
+}
+
+body.dark-mode .auth-error {
+  background-color: rgba(239, 68, 68, 0.2) !important;
+  border-color: #ef4444 !important;
+  color: #fca5a5 !important;
+}
+
+body.dark-mode .auth-success {
+  background-color: rgba(16, 185, 129, 0.2) !important;
+  border-color: #10b981 !important;
+  color: #6ee7b7 !important;
+}
+
+
+/* ========================================
+   ENHANCED DARK MODE FOR AUTH PAGE
+   ======================================== */
+
+body.dark-mode .auth-page {
+  background: linear-gradient(135deg, #0f172a, #1e1b4b, #312e81) !important;
+}
+
+body.dark-mode .auth-wrapper {
+  background: transparent !important;
+}
+
+body.dark-mode .auth-form-container {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .auth-tabs {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .auth-tab {
+  background-color: transparent !important;
+  color: #94a3b8 !important;
+  border-bottom-color: transparent !important;
+}
+
+body.dark-mode .auth-tab.active,
+body.dark-mode .auth-tab[aria-selected="true"] {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+  border-bottom-color: #8b5cf6 !important;
+}
+
+body.dark-mode .auth-left-panel {
+  background: linear-gradient(135deg, #1e1b4b, #312e81, #4f46e5) !important;
+}
+
+body.dark-mode .auth-right-panel {
+  background-color: #1e293b !important;
+}
+
+body.dark-mode .auth-stats {
+  background-color: transparent !important;
+}
+
+body.dark-mode .auth-stat-item {
+  color: #f1f5f9 !important;
+}

@@ -420,3 +420,105 @@
     display: none;
   }
 }
+
+
+/* ========================================
+   DARK MODE STYLES FOR ARTIST HOVER CARD
+   ======================================== */
+
+body.dark-mode .hoverCard {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .header {
+  background: linear-gradient(135deg, #1e1b4b, #312e81) !important;
+}
+
+body.dark-mode .avatar {
+  border-color: #475569 !important;
+}
+
+body.dark-mode .username {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .badge {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+}
+
+body.dark-mode .bio {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .stats {
+  background-color: #334155 !important;
+  border-top-color: #475569 !important;
+}
+
+body.dark-mode .statItem {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .statValue {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .statLabel {
+  color: #64748b !important;
+}
+
+body.dark-mode .artworkGrid {
+  background-color: transparent !important;
+}
+
+body.dark-mode .artworkThumb {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .actions {
+  background-color: transparent !important;
+  border-top-color: #334155 !important;
+}
+
+body.dark-mode .followButton {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .followButton:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed) !important;
+}
+
+body.dark-mode .unfollowButton {
+  background-color: #334155 !important;
+  color: #a78bfa !important;
+  border-color: #8b5cf6 !important;
+}
+
+body.dark-mode .unfollowButton:hover {
+  background-color: rgba(239, 68, 68, 0.2) !important;
+  color: #fca5a5 !important;
+  border-color: #ef4444 !important;
+}
+
+body.dark-mode .viewProfileButton {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .viewProfileButton:hover {
+  background-color: #475569 !important;
+}
+
+body.dark-mode .loading {
+  color: #8b5cf6 !important;
+}
+
+body.dark-mode .error {
+  background-color: rgba(239, 68, 68, 0.2) !important;
+  color: #fca5a5 !important;
+}

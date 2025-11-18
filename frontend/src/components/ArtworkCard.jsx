@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Heart, Eye, Share2, ShoppingCart, User, Star, Edit3 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/ArtworkCard.css';
 
 const ArtworkCard = ({
@@ -13,6 +13,7 @@ const ArtworkCard = ({
   currentUser,
   onClick, // ✅ added for modal
 }) => {
+  const navigate = useNavigate();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
@@ -36,7 +37,7 @@ const ArtworkCard = ({
   };
   const handleBuy = async (artworkId) => {
   try {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("auth_user"));
     if (!user) {
       alert("Please log in to buy this artwork.");
       navigate("/auth");

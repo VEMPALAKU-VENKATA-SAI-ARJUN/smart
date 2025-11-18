@@ -535,3 +535,97 @@
     transform: rotate(360deg);
   }
 }
+
+/* ======
+==================================
+   DARK MODE STYLES FOR CONTESTS
+   ======================================== */
+
+body.dark-mode .contests-container {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .contests-header {
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .contests-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .contest-card {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .contest-card:hover {
+  box-shadow: 0 8px 16px rgba(139, 92, 246, 0.4) !important;
+}
+
+body.dark-mode .contest-card-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .contest-card-description {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .contest-card-prize {
+  color: #a78bfa !important;
+}
+
+body.dark-mode .contest-card-deadline {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .contest-card-status {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .contest-card-status.active {
+  background: linear-gradient(135deg, #059669, #10b981) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+body.dark-mode .contest-card-status.upcoming {
+  background: linear-gradient(135deg, #d97706, #f59e0b) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+body.dark-mode .contest-card-status.ended {
+  background-color: #475569 !important;
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .contest-card-button {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .contest-card-button:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed) !important;
+}
+
+body.dark-mode .contest-filters {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .contest-filter-button {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .contest-filter-button.active {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+  border: none !important;
+}

@@ -105,18 +105,4 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Google OAuth
-router.get('/google', 
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
-
-router.get('/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
-    const token = generateToken(req.user._id);
-    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
-    res.redirect(`${clientUrl.replace(/\/$/, '')}/auth/success?token=${token}`);
-  }
-);
-
 module.exports = router;

@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import Dark Mode Styles */
+@import './styles/dark-mode.css';
+@import './styles/component-dark-mode.css';
+@import './styles/aggressive-dark-mode.css';
+
 /* Base reset & global styles */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -94,4 +99,57 @@ button:focus-visible {
 
 .animate-slide-down {
   animation: slide-down 0.3s ease forwards;
+}
+
+/
+* ========================================
+   DARK MODE CSS VARIABLES OVERRIDE
+   ======================================== */
+
+body.dark-mode {
+  /* Override all CSS variables for dark mode */
+  --background: #0f172a !important;
+  --foreground: #f1f5f9 !important;
+  --card: #1e293b !important;
+  --card-foreground: #f1f5f9 !important;
+  --popover: #1e293b !important;
+  --popover-foreground: #f1f5f9 !important;
+  --primary: #8b5cf6 !important;
+  --primary-foreground: #ffffff !important;
+  --secondary: #334155 !important;
+  --secondary-foreground: #e2e8f0 !important;
+  --muted: #334155 !important;
+  --muted-foreground: #94a3b8 !important;
+  --accent: #334155 !important;
+  --accent-foreground: #e2e8f0 !important;
+  --destructive: #ef4444 !important;
+  --destructive-foreground: #ffffff !important;
+  --border: #334155 !important;
+  --input: #334155 !important;
+  --ring: #8b5cf6 !important;
+  
+  /* Additional variables */
+  --radius: 0.5rem;
+  
+  /* Background and text */
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+  color-scheme: dark;
+}
+
+/* Force dark mode on html element */
+html.dark-mode {
+  background-color: #0f172a !important;
+  color-scheme: dark;
+}
+
+/* Ensure body takes full height and has dark background */
+body.dark-mode {
+  background-color: #0f172a !important;
+  min-height: 100vh;
+}
+
+/* Override any light backgrounds */
+body.dark-mode * {
+  border-color: var(--border);
 }

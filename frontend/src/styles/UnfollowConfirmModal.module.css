@@ -268,3 +268,77 @@
     color: #f9fafb;
   }
 }
+
+/* ===
+=====================================
+   DARK MODE STYLES FOR UNFOLLOW MODAL
+   ======================================== */
+
+body.dark-mode .modalOverlay {
+  background-color: rgba(15, 23, 42, 0.8) !important;
+}
+
+body.dark-mode .modalContent {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .modalHeader {
+  background-color: #334155 !important;
+  border-bottom-color: #475569 !important;
+}
+
+body.dark-mode .modalTitle {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .closeButton {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .closeButton:hover {
+  color: #f1f5f9 !important;
+  background-color: #475569 !important;
+}
+
+body.dark-mode .modalBody {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .artistInfo {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .artistName {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .artistMeta {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .modalFooter {
+  background-color: transparent !important;
+  border-top-color: #334155 !important;
+}
+
+body.dark-mode .cancelButton {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .cancelButton:hover {
+  background-color: #475569 !important;
+}
+
+body.dark-mode .unfollowButton {
+  background: linear-gradient(135deg, #dc2626, #ef4444) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .unfollowButton:hover {
+  background: linear-gradient(135deg, #b91c1c, #dc2626) !important;
+}

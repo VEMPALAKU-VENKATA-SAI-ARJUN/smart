@@ -327,3 +327,157 @@
 .reviews-list {
   animation: fadeIn 0.4s ease-out;
 }
+
+
+/* ========================================
+   DARK MODE STYLES FOR ARTWORK DETAILS
+   ======================================== */
+
+body.dark-mode .artwork-details-container {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .artwork-details-card {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .artwork-details-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .artwork-details-description {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .artwork-details-price {
+  color: #a78bfa !important;
+}
+
+body.dark-mode .artwork-details-artist {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .artwork-details-artist-name {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .artwork-details-stats {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .artwork-details-stat-value {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .artwork-details-stat-label {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .artwork-details-button {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .artwork-details-button:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed) !important;
+}
+
+body.dark-mode .artwork-details-button-secondary {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .artwork-details-button-secondary:hover {
+  background-color: #475569 !important;
+}
+
+body.dark-mode .artwork-details-tags {
+  background-color: transparent !important;
+}
+
+body.dark-mode .artwork-details-tag {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .artwork-details-comments {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .artwork-details-comment {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .artwork-details-comment-author {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .artwork-details-comment-text {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .artwork-details-comment-input {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .artwork-details-comment-input::placeholder {
+  color: #64748b !important;
+}
+
+body.dark-mode .artwork-details-comment-input:focus {
+  border-color: #8b5cf6 !important;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2) !important;
+}
+
+
+/* ========================================
+   ENHANCED DARK MODE FOR ARTWORK DETAILS
+   ======================================== */
+
+body.dark-mode .artwork-page {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode .artwork-container {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode .artwork-content {
+  background-color: transparent !important;
+}
+
+body.dark-mode .artwork-main {
+  background-color: transparent !important;
+}
+
+body.dark-mode .artwork-sidebar {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .artwork-info-section {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .artwork-header {
+  background-color: transparent !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .artwork-body {
+  background-color: transparent !important;
+  color: #cbd5e1 !important;
+}

@@ -762,3 +762,164 @@
 .bounce-in {
   animation: successPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
+
+/* ===
+=====================================
+   DARK MODE STYLES FOR UPLOAD PAGE
+   ======================================== */
+
+body.dark-mode .upload-container {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .upload-header {
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .upload-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .upload-form {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .upload-area {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  border-style: dashed !important;
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .upload-area:hover,
+body.dark-mode .upload-area.drag-over {
+  border-color: #8b5cf6 !important;
+  background-color: rgba(139, 92, 246, 0.1) !important;
+}
+
+body.dark-mode .upload-icon {
+  color: #64748b !important;
+}
+
+body.dark-mode .upload-text {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .upload-input,
+body.dark-mode .upload-textarea,
+body.dark-mode .upload-select {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .upload-input::placeholder,
+body.dark-mode .upload-textarea::placeholder {
+  color: #64748b !important;
+}
+
+body.dark-mode .upload-input:focus,
+body.dark-mode .upload-textarea:focus,
+body.dark-mode .upload-select:focus {
+  border-color: #8b5cf6 !important;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2) !important;
+}
+
+body.dark-mode .upload-label {
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .upload-button {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .upload-button:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed) !important;
+}
+
+body.dark-mode .upload-button:disabled {
+  background: #334155 !important;
+  color: #64748b !important;
+}
+
+body.dark-mode .upload-preview {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .upload-preview-image {
+  border-color: #334155 !important;
+}
+
+body.dark-mode .upload-progress {
+  background-color: #334155 !important;
+}
+
+body.dark-mode .upload-progress-bar {
+  background: linear-gradient(90deg, #7c3aed, #8b5cf6) !important;
+}
+
+body.dark-mode .upload-error {
+  background-color: rgba(239, 68, 68, 0.2) !important;
+  border-color: #ef4444 !important;
+  color: #fca5a5 !important;
+}
+
+body.dark-mode .upload-success {
+  background-color: rgba(16, 185, 129, 0.2) !important;
+  border-color: #10b981 !important;
+  color: #6ee7b7 !important;
+}
+
+
+/* ========================================
+   ENHANCED DARK MODE FOR UPLOAD PAGE
+   ======================================== */
+
+body.dark-mode .upload-page {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode .upload-wrapper {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode .upload-content {
+  background-color: transparent !important;
+}
+
+body.dark-mode .upload-dropzone {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  border-style: dashed !important;
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .upload-dropzone:hover {
+  border-color: #8b5cf6 !important;
+  background-color: rgba(139, 92, 246, 0.1) !important;
+}
+
+body.dark-mode .upload-dropzone p {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .upload-dropzone small {
+  color: #64748b !important;
+}
+
+body.dark-mode .upload-icon {
+  color: #64748b !important;
+}
+
+body.dark-mode .upload-instructions {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .upload-file-types {
+  color: #64748b !important;
+}

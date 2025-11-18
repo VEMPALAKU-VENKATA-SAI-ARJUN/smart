@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import axios from "axios";
 import http from '../lib/http';
+import '../styles/Dashboard.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -96,31 +97,31 @@ export default function Dashboard() {
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'approved': return <CheckCircle className="w-4 h-4 text-green-500" />;
-      case 'pending': return <Clock className="w-4 h-4 text-yellow-500" />;
-      case 'rejected': return <XCircle className="w-4 h-4 text-red-500" />;
-      default: return <AlertCircle className="w-4 h-4 text-gray-500" />;
+      case 'approved': return <CheckCircle />;
+      case 'pending': return <Clock />;
+      case 'rejected': return <XCircle />;
+      default: return <AlertCircle />;
     }
   };
 
-  const getStatusColor = (status) => {
+  const getStatusClass = (status) => {
     switch (status) {
-      case 'approved': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'rejected': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'approved': return 'approved';
+      case 'pending': return 'pending';
+      case 'rejected': return 'rejected';
+      default: return 'draft';
     }
   };
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/2 mb-8"></div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="loading-container">
+        <div className="loading-skeleton">
+          <div className="skeleton-title"></div>
+          <div className="skeleton-subtitle"></div>
+          <div className="skeleton-grid">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="h-32 bg-gray-200 rounded-lg"></div>
+              <div key={i} className="skeleton-card"></div>
             ))}
           </div>
         </div>
@@ -129,176 +130,175 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="dashboard-container">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+      <div className="dashboard-header">
+        <h1 className="dashboard-title">
           Welcome back, {user?.username || 'Artist'}!
         </h1>
-        <p className="text-gray-600">
+        <p className="dashboard-subtitle">
           Manage your artworks, track performance, and grow your creative presence.
         </p>
       </div>
 
       {/* Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Artworks</p>
-              <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+      <div className="stats-grid">
+        <div className="stat-card">
+          <div className="stat-card-content">
+            <div className="stat-info">
+              <p className="stat-label">Total Artworks</p>
+              <p className="stat-value primary">{stats.total}</p>
             </div>
-            <ImageIcon className="w-8 h-8 text-blue-500" />
+            <div className="stat-icon primary">
+              <ImageIcon />
+            </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Drafts</p>
-              <p className="text-2xl font-bold text-gray-600">{stats.drafts}</p>
+        <div className="stat-card">
+          <div className="stat-card-content">
+            <div className="stat-info">
+              <p className="stat-label">Drafts</p>
+              <p className="stat-value secondary">{stats.drafts}</p>
             </div>
-            <AlertCircle className="w-8 h-8 text-gray-500" />
+            <div className="stat-icon secondary">
+              <AlertCircle />
+            </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Pending Review</p>
-              <p className="text-2xl font-bold text-yellow-600">{stats.pending}</p>
+        <div className="stat-card">
+          <div className="stat-card-content">
+            <div className="stat-info">
+              <p className="stat-label">Pending Review</p>
+              <p className="stat-value warning">{stats.pending}</p>
             </div>
-            <Clock className="w-8 h-8 text-yellow-500" />
+            <div className="stat-icon warning">
+              <Clock />
+            </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Views</p>
-              <p className="text-2xl font-bold text-green-600">{stats.totalViews}</p>
+        <div className="stat-card">
+          <div className="stat-card-content">
+            <div className="stat-info">
+              <p className="stat-label">Total Views</p>
+              <p className="stat-value success">{stats.totalViews}</p>
             </div>
-            <Eye className="w-8 h-8 text-green-500" />
+            <div className="stat-icon success">
+              <Eye />
+            </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Favorites</p>
-              <p className="text-2xl font-bold text-red-600">{stats.totalFavorites}</p>
+        {/*<div className="stat-card">
+          <div className="stat-card-content">
+            <div className="stat-info">
+              <p className="stat-label">Total Favorites</p>
+              <p className="stat-value danger">{stats.totalFavorites}</p>
             </div>
-            <Heart className="w-8 h-8 text-red-500" />
+            <div className="stat-icon danger">
+              <Heart />
+            </div>
           </div>
-        </div>
+        </div>*/}
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Link
-            to="/upload"
-            className="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
-          >
-            <Plus className="w-6 h-6 text-blue-600 mr-3" />
-            <div>
-              <h3 className="font-medium text-blue-900">Upload New Artwork</h3>
-              <p className="text-sm text-blue-600">Share your latest creation</p>
+      <div className="quick-actions-card">
+        <h2 className="section-title">Quick Actions</h2>
+        <div className="actions-grid">
+          <Link to="/upload" className="action-card primary">
+            <div className="action-icon">
+              <Plus />
+            </div>
+            <div className="action-content">
+              <h3 className="action-title">Upload New Artwork</h3>
+              <p className="action-description">Share your latest creation</p>
             </div>
           </Link>
 
-          <Link
-            to={`/profile/${user?.id}`}
-            className="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
-          >
-            <User className="w-6 h-6 text-green-600 mr-3" />
-            <div>
-              <h3 className="font-medium text-green-900">Edit Profile</h3>
-              <p className="text-sm text-green-600">Update your information</p>
+          <Link to={`/profile/${user?.id}`} className="action-card success">
+            <div className="action-icon">
+              <User />
+            </div>
+            <div className="action-content">
+              <h3 className="action-title">Edit Profile</h3>
+              <p className="action-description">Update your information</p>
             </div>
           </Link>
 
-          <Link
-            to="/gallery"
-            className="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
-          >
-            <ImageIcon className="w-6 h-6 text-purple-600 mr-3" />
-            <div>
-              <h3 className="font-medium text-purple-900">Browse Gallery</h3>
-              <p className="text-sm text-purple-600">Explore other artworks</p>
+          <Link to="/gallery" className="action-card purple">
+            <div className="action-icon">
+              <ImageIcon />
+            </div>
+            <div className="action-content">
+              <h3 className="action-title">Browse Gallery</h3>
+              <p className="action-description">Explore other artworks</p>
             </div>
           </Link>
         </div>
       </div>
 
       {/* Recent Artworks */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold text-gray-900">Your Artworks</h2>
+      <div className="artworks-card">
+        <div className="artworks-header">
+          <h2 className="section-title">Your Artworks</h2>
           {userArtworks.length > 0 && (
-            <Link
-              to="/upload"
-              className="text-blue-600 hover:text-blue-800 font-medium"
-            >
+            <Link to="/upload" className="upload-link">
               Upload More
             </Link>
           )}
         </div>
 
         {userArtworks.length === 0 ? (
-          <div className="text-center py-12">
-            <ImageIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No artworks yet</h3>
-            <p className="text-gray-600 mb-6">
+          <div className="empty-state">
+            <ImageIcon className="empty-icon" />
+            <h3 className="empty-title">No artworks yet</h3>
+            <p className="empty-description">
               Start sharing your creativity with the world!
             </p>
-            <Link
-              to="/upload"
-              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              <Plus className="w-4 h-4 mr-2" />
+            <Link to="/upload" className="upload-button">
+              <Plus />
               Upload Your First Artwork
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="artworks-grid">
             {userArtworks.slice(0, 6).map((artwork) => (
-              <div key={artwork._id} className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="aspect-square bg-gray-200 relative">
+              <div key={artwork._id} className="artwork-card">
+                <div className="artwork-image-container">
                   {artwork.images && artwork.images[0] ? (
                     <img
                       src={artwork.images[0].url}
                       alt={artwork.title}
-                      className="w-full h-full object-cover"
+                      className="artwork-image"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <ImageIcon className="w-12 h-12 text-gray-400" />
+                    <div className="artwork-placeholder">
+                      <ImageIcon />
                     </div>
                   )}
-                  <div className="absolute top-2 right-2">
-                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(artwork.status)}`}>
-                      {getStatusIcon(artwork.status)}
-                      <span className="ml-1 capitalize">{artwork.status}</span>
-                    </span>
+                  <div className={`artwork-status-badge ${getStatusClass(artwork.status)}`}>
+                    {getStatusIcon(artwork.status)}
+                    <span>{artwork.status}</span>
                   </div>
                 </div>
-                <div className="p-4">
-                  <h3 className="font-medium text-gray-900 truncate">{artwork.title}</h3>
-                  <p className="text-sm text-gray-600 mt-1">₹{artwork.price}</p>
-                  <div className="flex items-center justify-between mt-3 text-sm text-gray-500">
-                    <div className="flex items-center">
-                      <Eye className="w-4 h-4 mr-1" />
-                      {artwork.stats?.views || 0}
+                <div className="artwork-info">
+                  <h3 className="artwork-title">{artwork.title}</h3>
+                  <p className="artwork-price">₹{artwork.price}</p>
+                  <div className="artwork-stats">
+                    <div className="artwork-stat">
+                      <Eye />
+                      <span>{artwork.stats?.views || 0}</span>
                     </div>
-                    <div className="flex items-center">
-                      <Heart className="w-4 h-4 mr-1" />
-                      {artwork.stats?.favorites || 0}
+                    <div className="artwork-stat">
+                      <Heart />
+                      <span>{artwork.stats?.favorites || 0}</span>
                     </div>
-                    <div className="flex items-center">
-                      <Calendar className="w-4 h-4 mr-1" />
-                      {new Date(artwork.createdAt).toLocaleDateString()}
+                    <div className="artwork-stat">
+                      <Calendar />
+                      <span>{new Date(artwork.createdAt).toLocaleDateString()}</span>
                     </div>
                   </div>
                 </div>
@@ -308,8 +308,8 @@ export default function Dashboard() {
         )}
 
         {userArtworks.length > 6 && (
-          <div className="text-center mt-6">
-            <button className="text-blue-600 hover:text-blue-800 font-medium">
+          <div className="view-all-container">
+            <button className="view-all-button">
               View All Artworks ({userArtworks.length})
             </button>
           </div>

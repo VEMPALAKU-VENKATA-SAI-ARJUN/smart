@@ -51,3 +51,100 @@
   justify-content: flex-end;
   gap: 0.5rem;
 }
+
+
+/* ========================================
+   DARK MODE STYLES FOR EDIT PROFILE MODAL
+   ======================================== */
+
+body.dark-mode .edit-profile-modal-overlay {
+  background-color: rgba(15, 23, 42, 0.8) !important;
+}
+
+body.dark-mode .edit-profile-modal {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .edit-profile-modal-header {
+  background-color: #334155 !important;
+  border-bottom-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .edit-profile-modal-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .edit-profile-modal-close {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .edit-profile-modal-close:hover {
+  color: #f1f5f9 !important;
+  background-color: #475569 !important;
+}
+
+body.dark-mode .edit-profile-modal-body {
+  background-color: #1e293b !important;
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .edit-profile-form-group label {
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .edit-profile-form-group input,
+body.dark-mode .edit-profile-form-group textarea,
+body.dark-mode .edit-profile-form-group select {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .edit-profile-form-group input::placeholder,
+body.dark-mode .edit-profile-form-group textarea::placeholder {
+  color: #64748b !important;
+}
+
+body.dark-mode .edit-profile-form-group input:focus,
+body.dark-mode .edit-profile-form-group textarea:focus,
+body.dark-mode .edit-profile-form-group select:focus {
+  border-color: #8b5cf6 !important;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2) !important;
+}
+
+body.dark-mode .edit-profile-avatar-upload {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .edit-profile-avatar-upload:hover {
+  border-color: #8b5cf6 !important;
+  background-color: rgba(139, 92, 246, 0.1) !important;
+}
+
+body.dark-mode .edit-profile-modal-footer {
+  background-color: transparent !important;
+  border-top-color: #334155 !important;
+}
+
+body.dark-mode .edit-profile-cancel-button {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .edit-profile-cancel-button:hover {
+  background-color: #475569 !important;
+}
+
+body.dark-mode .edit-profile-save-button {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .edit-profile-save-button:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed) !important;
+}

@@ -216,3 +216,65 @@
   outline: 2px solid #667eea;
   outline-offset: 2px;
 }
+
+/*
+ ========================================
+   DARK MODE STYLES
+   ======================================== */
+
+body.dark-mode .artistCard {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .artistCard:hover {
+  box-shadow: 0 12px 25px rgba(139, 92, 246, 0.4) !important;
+  border-color: #8b5cf6 !important;
+}
+
+body.dark-mode .avatar {
+  border-color: #475569 !important;
+}
+
+body.dark-mode .artistCard:hover .avatar {
+  border-color: #8b5cf6 !important;
+}
+
+body.dark-mode .username {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .badge {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+}
+
+body.dark-mode .bio {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .stats {
+  color: #94a3b8 !important;
+  border-top-color: #334155 !important;
+}
+
+body.dark-mode .viewButton {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+}
+
+body.dark-mode .viewButton:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed) !important;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.5) !important;
+}
+
+body.dark-mode .unfollowButton {
+  background: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .unfollowButton:hover {
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: #ef4444 !important;
+  color: #fca5a5 !important;
+}

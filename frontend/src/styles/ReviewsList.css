@@ -330,3 +330,71 @@
     font-size: 0.875rem;
   }
 }
+
+/
+* ========================================
+   DARK MODE STYLES FOR REVIEWS LIST
+   ======================================== */
+
+body.dark-mode .reviews-list {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .reviews-list-header {
+  background-color: #334155 !important;
+  border-bottom-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .reviews-list-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .review-item {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .review-item:hover {
+  background-color: rgba(139, 92, 246, 0.1) !important;
+  border-color: #8b5cf6 !important;
+}
+
+body.dark-mode .review-author {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .review-date {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .review-rating {
+  color: #fbbf24 !important;
+}
+
+body.dark-mode .review-text {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .review-actions {
+  background-color: transparent !important;
+}
+
+body.dark-mode .review-button {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .review-button:hover {
+  background-color: #475569 !important;
+}
+
+body.dark-mode .reviews-empty {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .reviews-empty-icon {
+  color: #475569 !important;
+}

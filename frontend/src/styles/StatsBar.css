@@ -127,3 +127,39 @@
 /* ================================
    END OF STATS BAR STYLES
    ================================ */
+
+
+/* ========================================
+   DARK MODE STYLES FOR STATS BAR
+   ======================================== */
+
+body.dark-mode .stats-bar {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .stats-bar-item {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .stats-bar-item:hover {
+  background-color: #475569 !important;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3) !important;
+}
+
+body.dark-mode .stats-bar-value {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .stats-bar-label {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .stats-bar-icon {
+  color: #8b5cf6 !important;
+}
+
+body.dark-mode .stats-bar-divider {
+  border-color: #334155 !important;
+}

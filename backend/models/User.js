@@ -19,19 +19,13 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: function() { return !this.oauthProvider; }
+    required: true
   },
   role: {
     type: String,
     enum: ['buyer', 'artist', 'reviewer', 'moderator', 'admin'],
     default: 'buyer'
   },
-  oauthProvider: {
-    type: String,
-    enum: ['google', 'github', null],
-    default: null
-  },
-  oauthId: String,
   profile: {
     avatar: String,
     bio: String,

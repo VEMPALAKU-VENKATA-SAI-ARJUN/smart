@@ -1160,3 +1160,174 @@ a,
 .purchase-card-horizontal {
   transition: var(--transition-base);
 }
+
+
+/* ========================================
+   DARK MODE STYLES FOR PROFILE PAGE
+   ======================================== */
+
+body.dark-mode .profile-container {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .profile-header {
+  background: linear-gradient(135deg, #1e1b4b, #312e81, #4f46e5) !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .profile-banner {
+  background: linear-gradient(135deg, #1e1b4b, #312e81) !important;
+}
+
+body.dark-mode .profile-card {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .profile-name {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .profile-username {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .profile-bio {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .profile-stats {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .profile-stat-value {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .profile-stat-label {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .profile-tabs {
+  background-color: #1e293b !important;
+  border-bottom-color: #334155 !important;
+}
+
+body.dark-mode .profile-tab {
+  color: #94a3b8 !important;
+  border-bottom-color: transparent !important;
+}
+
+body.dark-mode .profile-tab:hover {
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .profile-tab.active {
+  color: #a78bfa !important;
+  border-bottom-color: #8b5cf6 !important;
+}
+
+body.dark-mode .profile-content {
+  background-color: transparent !important;
+}
+
+body.dark-mode .profile-button {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .profile-button:hover {
+  background-color: #475569 !important;
+}
+
+body.dark-mode .profile-button-primary {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+body.dark-mode .profile-button-primary:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed) !important;
+}
+
+body.dark-mode .profile-edit-form {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .profile-input,
+body.dark-mode .profile-textarea {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .profile-input::placeholder,
+body.dark-mode .profile-textarea::placeholder {
+  color: #64748b !important;
+}
+
+body.dark-mode .profile-input:focus,
+body.dark-mode .profile-textarea:focus {
+  border-color: #8b5cf6 !important;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2) !important;
+}
+
+body.dark-mode .profile-label {
+  color: #e2e8f0 !important;
+}
+
+
+/* ========================================
+   ENHANCED DARK MODE FOR PROFILE PAGE
+   ======================================== */
+
+body.dark-mode .profile-page {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode .stat-item {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .stats-bar {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .section-title {
+  color: #f1f5f9 !important;
+  background-color: transparent !important;
+}
+
+body.dark-mode .purchase-scroll {
+  background-color: transparent !important;
+}
+
+body.dark-mode .purchases-section {
+  background-color: transparent !important;
+}
+
+body.dark-mode .purchase-item {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .purchase-card {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .profile-section {
+  background-color: transparent !important;
+}
+
+body.dark-mode .profile-content-area {
+  background-color: transparent !important;
+}

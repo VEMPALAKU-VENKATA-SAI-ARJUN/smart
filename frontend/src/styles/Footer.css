@@ -1,0 +1,261 @@
+/* Footer Container */
+.footer {
+  width: 100%;
+  padding: 3rem 2rem 2rem;
+  transition: background 0.4s ease, color 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-light {
+  background: linear-gradient(135deg, #f8fafc, #e0e7ff, #ddd6fe);
+  color: #1e1b4b;
+}
+
+.footer-dark {
+  background: linear-gradient(135deg, #1e1b4b, #312e81, #4f46e5);
+  color: #f1f5f9;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Brand Section */
+.footer-brand {
+  text-align: center;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.footer-logo-light {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  margin: 0 0 0.5rem 0;
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.footer-logo-light:hover {
+  transform: scale(1.05);
+}
+.footer-logo-dark {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  margin: 0 0 0.5rem 0;
+  background: linear-gradient(135deg, #fbbf24, #fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.footer-logo-dark:hover {
+  transform: scale(1.05);
+}
+
+.footer-tagline {
+  font-size: 1rem;
+  font-weight: 300;
+  margin: 0;
+  opacity: 0.9;
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+.footer-light .footer-tagline {
+  color: #4c1d95;
+}
+
+.footer-dark .footer-tagline {
+  color: #e0e7ff;
+}
+
+/* Dark Mode Toggle */
+.footer-toggle {
+  margin: 1rem 0;
+}
+
+.dark-mode-toggle {
+  background: rgba(139, 92, 246, 0.2);
+  border: 2px solid rgba(139, 92, 246, 0.4);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-mode-toggle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.4), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.dark-mode-toggle:hover::before {
+  opacity: 1;
+}
+
+.dark-mode-toggle:hover {
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.6),
+              0 0 40px rgba(139, 92, 246, 0.4);
+  border-color: rgba(139, 92, 246, 0.8);
+}
+
+.dark-mode-toggle:active {
+  transform: scale(0.95);
+}
+
+.toggle-icon {
+  color: #8b5cf6;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.footer-dark .toggle-icon {
+  color: #fbbf24;
+}
+
+.footer-light .toggle-icon {
+  color: #6366f1;
+}
+
+/* Credits Section */
+.footer-credits {
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(139, 92, 246, 0.2);
+  width: 100%;
+  max-width: 600px;
+}
+
+.footer-copyright {
+  font-size: 0.875rem;
+  margin: 0 0 0.5rem 0;
+  opacity: 0.8;
+}
+
+.footer-author {
+  font-size: 0.875rem;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.author-name {
+  font-weight: 600;
+  background: linear-gradient(135deg, #7c3aed, #a78bfa, #c4b5fd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.author-name::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.author-name:hover::after {
+  opacity: 1;
+  animation: glow 1.5s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(139, 92, 246, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.8);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .footer {
+    padding: 2rem 1.5rem 1.5rem;
+  }
+
+  .footer-logo {
+    font-size: 2rem;
+  }
+
+  .footer-tagline {
+    font-size: 0.9rem;
+  }
+
+  .dark-mode-toggle {
+    width: 45px;
+    height: 45px;
+  }
+
+  .footer-copyright,
+  .footer-author {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 1.5rem 1rem 1rem;
+  }
+
+  .footer-logo {
+    font-size: 1.75rem;
+  }
+
+  .footer-tagline {
+    font-size: 0.85rem;
+  }
+
+  .dark-mode-toggle {
+    width: 40px;
+    height: 40px;
+  }
+
+  .toggle-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Footer integrates with global dark mode from dark-mode.css */

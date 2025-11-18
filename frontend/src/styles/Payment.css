@@ -61,3 +61,72 @@
     transform: translateY(0);
   }
 }
+
+
+/* ========================================
+   DARK MODE STYLES FOR PAYMENT PAGES
+   ======================================== */
+
+body.dark-mode .payment-container {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .payment-card {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .payment-header {
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .payment-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .payment-message {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .payment-success-icon {
+  color: #10b981 !important;
+}
+
+body.dark-mode .payment-error-icon {
+  color: #ef4444 !important;
+}
+
+body.dark-mode .payment-details {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .payment-detail-label {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .payment-detail-value {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .payment-button {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .payment-button:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed) !important;
+}
+
+body.dark-mode .payment-button-secondary {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .payment-button-secondary:hover {
+  background-color: #475569 !important;
+}

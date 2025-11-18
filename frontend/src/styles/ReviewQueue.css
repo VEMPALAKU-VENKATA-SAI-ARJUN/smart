@@ -626,3 +626,181 @@
     border: 1px solid #e5e7eb;
   }
 }
+
+
+/* ========================================
+   DARK MODE STYLES FOR REVIEW QUEUE
+   ======================================== */
+
+body.dark-mode .review-queue-container {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .review-queue-header {
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+  color: #f1f5f9 !important;
+  border-bottom-color: #334155 !important;
+}
+
+body.dark-mode .review-queue-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .review-queue-stats {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .review-queue-stat-card {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .review-queue-stat-value {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .review-queue-stat-label {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .review-queue-filters {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .review-queue-filter-button {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .review-queue-filter-button.active {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+body.dark-mode .review-item {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .review-item:hover {
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3) !important;
+}
+
+body.dark-mode .review-item-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .review-item-description {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .review-item-meta {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .review-item-actions {
+  background-color: transparent !important;
+}
+
+body.dark-mode .review-button-approve {
+  background: linear-gradient(135deg, #059669, #10b981) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .review-button-approve:hover {
+  background: linear-gradient(135deg, #047857, #059669) !important;
+}
+
+body.dark-mode .review-button-reject {
+  background: linear-gradient(135deg, #dc2626, #ef4444) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .review-button-reject:hover {
+  background: linear-gradient(135deg, #b91c1c, #dc2626) !important;
+}
+
+body.dark-mode .review-button-details {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .review-button-details:hover {
+  background-color: #475569 !important;
+}
+
+body.dark-mode .review-modal {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .review-modal-header {
+  background-color: #334155 !important;
+  border-bottom-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .review-modal-body {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .review-textarea {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .review-textarea::placeholder {
+  color: #64748b !important;
+}
+
+body.dark-mode .review-textarea:focus {
+  border-color: #8b5cf6 !important;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2) !important;
+}
+
+
+/* ========================================
+   ENHANCED DARK MODE FOR REVIEW QUEUE
+   ======================================== */
+
+body.dark-mode .review-queue-page {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode .review-queue-container {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode .review-queue-content {
+  background-color: transparent !important;
+}
+
+body.dark-mode .reviewer-artwork-card {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .review-card {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .review-artwork-item {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .review-grid {
+  background-color: transparent !important;
+}
+
+body.dark-mode .review-list {
+  background-color: transparent !important;
+}

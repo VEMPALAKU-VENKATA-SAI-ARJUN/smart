@@ -1697,3 +1697,165 @@
         gap: 1rem;
     }
 }
+
+/* ===
+=====================================
+   DARK MODE STYLES FOR MODERATION QUEUE
+   ======================================== */
+
+body.dark-mode .moderation-queue-container {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .moderation-queue-header {
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+  color: #f1f5f9 !important;
+  border-bottom-color: #334155 !important;
+}
+
+body.dark-mode .moderation-queue-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .moderation-item {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .moderation-item:hover {
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3) !important;
+}
+
+body.dark-mode .moderation-item-content {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .moderation-item-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .moderation-item-meta {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .moderation-actions {
+  background-color: transparent !important;
+}
+
+body.dark-mode .moderation-button-approve {
+  background: linear-gradient(135deg, #059669, #10b981) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .moderation-button-approve:hover {
+  background: linear-gradient(135deg, #047857, #059669) !important;
+}
+
+body.dark-mode .moderation-button-reject {
+  background: linear-gradient(135deg, #dc2626, #ef4444) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .moderation-button-reject:hover {
+  background: linear-gradient(135deg, #b91c1c, #dc2626) !important;
+}
+
+body.dark-mode .moderation-button-flag {
+  background-color: #d97706 !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .moderation-button-flag:hover {
+  background-color: #b45309 !important;
+}
+
+body.dark-mode .moderation-filters {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .moderation-filter-button {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .moderation-filter-button.active {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+body.dark-mode .moderation-stats {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .moderation-stat-card {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .moderation-stat-value {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .moderation-stat-label {
+  color: #94a3b8 !important;
+}
+
+
+/* ========================================
+   ENHANCED DARK MODE FOR MODERATION QUEUE
+   ======================================== */
+
+body.dark-mode .moderation-stats-container {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .moderation-stats-header {
+  background-color: #334155 !important;
+  color: #f1f5f9 !important;
+  border-bottom-color: #475569 !important;
+}
+
+body.dark-mode .moderation-controls {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .controls-layout {
+  background-color: transparent !important;
+}
+
+body.dark-mode .artwork-list-container {
+  background-color: transparent !important;
+}
+
+body.dark-mode .artwork-grid {
+  background-color: transparent !important;
+}
+
+body.dark-mode .moderation-page {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode .moderation-container {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode .moderation-content {
+  background-color: transparent !important;
+}
+
+body.dark-mode .moderation-card {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .moderation-artwork-card {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}

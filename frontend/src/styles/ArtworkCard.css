@@ -467,3 +467,79 @@
     transform: scale(1);
   }
 }
+
+
+/* ========================================
+   DARK MODE STYLES FOR ARTWORK CARD
+   ======================================== */
+
+body.dark-mode .artwork-card {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .artwork-card:hover {
+  box-shadow: 0 8px 16px rgba(139, 92, 246, 0.4) !important;
+  transform: translateY(-4px);
+}
+
+body.dark-mode .artwork-card-image-container {
+  border-bottom-color: #334155 !important;
+}
+
+body.dark-mode .artwork-card-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .artwork-card-artist {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .artwork-card-artist:hover {
+  color: #a78bfa !important;
+}
+
+body.dark-mode .artwork-card-description {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .artwork-card-price {
+  color: #a78bfa !important;
+  font-weight: 600;
+}
+
+body.dark-mode .artwork-card-stats {
+  color: #94a3b8 !important;
+  border-top-color: #334155 !important;
+}
+
+body.dark-mode .artwork-card-stat-item {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .artwork-card-badge {
+  background-color: rgba(139, 92, 246, 0.2) !important;
+  color: #a78bfa !important;
+  border-color: #8b5cf6 !important;
+}
+
+body.dark-mode .artwork-card-button {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .artwork-card-button:hover {
+  background-color: #475569 !important;
+}
+
+body.dark-mode .artwork-card-button-primary {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+body.dark-mode .artwork-card-button-primary:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed) !important;
+}

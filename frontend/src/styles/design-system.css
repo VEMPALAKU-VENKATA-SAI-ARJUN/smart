@@ -731,3 +731,194 @@
     padding: var(--space-4);
   }
 }
+
+/* =
+=======================================
+   DARK MODE DESIGN SYSTEM OVERRIDES
+   ======================================== */
+
+body.dark-mode {
+  /* Override primary colors for dark mode */
+  --primary-bg: #0f172a;
+  --primary-surface: #1e293b;
+  --primary-surface-elevated: #334155;
+  --primary-border: #475569;
+  --primary-text: #f1f5f9;
+  --secondary-text: #cbd5e1;
+  --tertiary-text: #94a3b8;
+  --muted-text: #64748b;
+  
+  /* Dark mode specific colors */
+  --dark-bg-primary: #0f172a;
+  --dark-bg-secondary: #1e293b;
+  --dark-bg-tertiary: #334155;
+  --dark-border: #475569;
+  --dark-border-light: #334155;
+  --dark-text-primary: #f1f5f9;
+  --dark-text-secondary: #e2e8f0;
+  --dark-text-tertiary: #cbd5e1;
+  --dark-text-muted: #94a3b8;
+  
+  /* Accent colors for dark mode */
+  --accent-purple: #8b5cf6;
+  --accent-purple-light: #a78bfa;
+  --accent-purple-dark: #7c3aed;
+  --accent-pink: #ec4899;
+  --accent-blue: #3b82f6;
+  --accent-green: #10b981;
+  --accent-yellow: #f59e0b;
+  --accent-red: #ef4444;
+}
+
+/* Global dark mode utilities */
+body.dark-mode * {
+  border-color: var(--dark-border-light);
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+  color: var(--dark-text-primary) !important;
+}
+
+body.dark-mode p {
+  color: var(--dark-text-tertiary) !important;
+}
+
+body.dark-mode a {
+  color: var(--accent-purple-light) !important;
+}
+
+body.dark-mode a:hover {
+  color: var(--accent-purple) !important;
+}
+
+/* Component base styles for dark mode */
+body.dark-mode .container,
+body.dark-mode .wrapper,
+body.dark-mode .section {
+  background-color: transparent !important;
+}
+
+body.dark-mode .card,
+body.dark-mode .panel,
+body.dark-mode .box {
+  background-color: var(--dark-bg-secondary) !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text-primary) !important;
+}
+
+body.dark-mode .modal,
+body.dark-mode .dialog,
+body.dark-mode .popup {
+  background-color: var(--dark-bg-secondary) !important;
+  border-color: var(--dark-border) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .overlay,
+body.dark-mode .backdrop {
+  background-color: rgba(15, 23, 42, 0.8) !important;
+}
+
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+  background-color: var(--dark-bg-tertiary) !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text-primary) !important;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: var(--dark-text-muted) !important;
+}
+
+body.dark-mode button {
+  background-color: var(--dark-bg-tertiary) !important;
+  color: var(--dark-text-secondary) !important;
+  border-color: var(--dark-border) !important;
+}
+
+body.dark-mode button.primary,
+body.dark-mode button.btn-primary {
+  background: linear-gradient(135deg, var(--accent-purple-dark), var(--accent-purple)) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+body.dark-mode button.secondary,
+body.dark-mode button.btn-secondary {
+  background-color: var(--dark-bg-tertiary) !important;
+  color: var(--dark-text-secondary) !important;
+}
+
+body.dark-mode .divider,
+body.dark-mode hr {
+  border-color: var(--dark-border-light) !important;
+}
+
+body.dark-mode .badge,
+body.dark-mode .tag,
+body.dark-mode .chip {
+  background-color: var(--dark-bg-tertiary) !important;
+  color: var(--dark-text-secondary) !important;
+  border-color: var(--dark-border) !important;
+}
+
+body.dark-mode .alert,
+body.dark-mode .notification {
+  background-color: var(--dark-bg-secondary) !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text-primary) !important;
+}
+
+body.dark-mode .tooltip {
+  background-color: var(--dark-bg-tertiary) !important;
+  color: var(--dark-text-primary) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .dropdown,
+body.dark-mode .menu {
+  background-color: var(--dark-bg-secondary) !important;
+  border-color: var(--dark-border) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .dropdown-item,
+body.dark-mode .menu-item {
+  color: var(--dark-text-secondary) !important;
+}
+
+body.dark-mode .dropdown-item:hover,
+body.dark-mode .menu-item:hover {
+  background-color: rgba(139, 92, 246, 0.2) !important;
+  color: var(--accent-purple-light) !important;
+}
+
+body.dark-mode table {
+  background-color: var(--dark-bg-secondary) !important;
+  color: var(--dark-text-primary) !important;
+}
+
+body.dark-mode thead {
+  background-color: var(--dark-bg-tertiary) !important;
+}
+
+body.dark-mode tbody tr {
+  border-bottom-color: var(--dark-border-light) !important;
+}
+
+body.dark-mode tbody tr:hover {
+  background-color: rgba(139, 92, 246, 0.1) !important;
+}
+
+body.dark-mode td,
+body.dark-mode th {
+  border-color: var(--dark-border-light) !important;
+  color: var(--dark-text-secondary) !important;
+}

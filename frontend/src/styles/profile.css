@@ -969,3 +969,89 @@ html {
   max-width: 800px;
   margin: 2rem auto;
 }
+
+/* 
+========================================
+   DARK MODE STYLES FOR PROFILE
+   ======================================== */
+
+body.dark-mode .profile-container {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .profile-header {
+  background: linear-gradient(135deg, #1e1b4b, #312e81, #4f46e5) !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .profile-card {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .profile-name {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .profile-bio {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .profile-stats {
+  background-color: transparent !important;
+}
+
+body.dark-mode .profile-stat {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .profile-stat-value {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .profile-stat-label {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .profile-tabs {
+  background-color: #1e293b !important;
+  border-bottom-color: #334155 !important;
+}
+
+body.dark-mode .profile-tab {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .profile-tab:hover {
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .profile-tab.active {
+  color: #a78bfa !important;
+  border-bottom-color: #8b5cf6 !important;
+}
+
+body.dark-mode .profile-content {
+  background-color: transparent !important;
+}
+
+body.dark-mode .profile-button {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .profile-button:hover {
+  background-color: #475569 !important;
+}
+
+body.dark-mode .profile-button-primary {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .profile-button-primary:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed) !important;
+}

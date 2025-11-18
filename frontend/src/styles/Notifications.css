@@ -650,3 +650,110 @@ dge Styles */
   background: #ef4444;
   color: white;
 }
+
+
+/* ========================================
+   DARK MODE STYLES FOR NOTIFICATIONS
+   ======================================== */
+
+body.dark-mode .notifications-container {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .notifications-header {
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+  color: #f1f5f9 !important;
+  border-bottom-color: #334155 !important;
+}
+
+body.dark-mode .notifications-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .notifications-list {
+  background-color: transparent !important;
+}
+
+body.dark-mode .notification-item {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .notification-item:hover {
+  background-color: rgba(139, 92, 246, 0.1) !important;
+}
+
+body.dark-mode .notification-item.unread {
+  background-color: rgba(139, 92, 246, 0.15) !important;
+  border-left-color: #8b5cf6 !important;
+}
+
+body.dark-mode .notification-icon {
+  background-color: #334155 !important;
+  color: #a78bfa !important;
+}
+
+body.dark-mode .notification-content {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .notification-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .notification-message {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .notification-time {
+  color: #64748b !important;
+}
+
+body.dark-mode .notification-actions {
+  background-color: transparent !important;
+}
+
+body.dark-mode .notification-button {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .notification-button:hover {
+  background-color: #475569 !important;
+}
+
+body.dark-mode .notification-mark-read {
+  color: #8b5cf6 !important;
+}
+
+body.dark-mode .notification-mark-read:hover {
+  color: #a78bfa !important;
+}
+
+body.dark-mode .notifications-empty {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .notifications-empty-icon {
+  color: #475569 !important;
+}
+
+body.dark-mode .notifications-filter {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .notifications-filter-button {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .notifications-filter-button.active {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+  border: none !important;
+}

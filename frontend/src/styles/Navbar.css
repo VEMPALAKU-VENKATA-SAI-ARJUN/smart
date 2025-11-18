@@ -56,12 +56,13 @@
 }
 
 .logo-icon {
+  color: #f7d275;
   font-size: 1.75rem;
   display: inline-block;
 }
 
 .logo-text {
-  background: linear-gradient(135deg, #fbbf24, #fff);
+  background: linear-gradient(135deg, #f6ca5a, #fff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -600,4 +601,342 @@
     top: -4px;
     right: -4px;
   }
+}
+
+
+/* ========================================
+   DARK MODE STYLES FOR NAVBAR
+   ======================================== */
+
+body.dark-mode .navbar {
+  background: linear-gradient(135deg, #1e1b4b, #312e81) !important;
+  border-bottom: 1px solid #334155 !important;
+}
+
+body.dark-mode .navbar-brand,
+body.dark-mode .nav-link,
+body.dark-mode .navbar a {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .nav-link:hover,
+body.dark-mode .navbar a:hover {
+  color: #a78bfa !important;
+}
+
+body.dark-mode .navbar button {
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+  background-color: transparent !important;
+}
+
+body.dark-mode .navbar button:hover {
+  background-color: rgba(139, 92, 246, 0.2) !important;
+  border-color: #8b5cf6 !important;
+}
+
+body.dark-mode .navbar .btn-primary {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+body.dark-mode .navbar .btn-primary:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed) !important;
+}
+
+body.dark-mode .navbar-toggler {
+  border-color: #475569 !important;
+}
+
+body.dark-mode .navbar-toggler-icon {
+  filter: invert(1);
+}
+
+body.dark-mode .dropdown-menu {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .dropdown-item {
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .dropdown-item:hover {
+  background-color: rgba(139, 92, 246, 0.2) !important;
+  color: #a78bfa !important;
+}
+
+
+/* ========================================
+   ROLE-BASED NAVIGATION ENHANCEMENTS
+   ======================================== */
+
+/* User Details with Role Badge */
+.user-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.user-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* Role Badges */
+.role-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.role-badge-small {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.role-badge-mobile {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Role Badge Colors */
+.badge-admin {
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  color: #ffffff;
+}
+
+.badge-moderator {
+  background: linear-gradient(135deg, #d97706, #f59e0b);
+  color: #ffffff;
+}
+
+.badge-reviewer {
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: #ffffff;
+}
+
+.badge-artist {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+  color: #ffffff;
+}
+
+.badge-buyer {
+  background: linear-gradient(135deg, #0284c7, #0ea5e9);
+  color: #ffffff;
+}
+
+/* Dropdown Header */
+.dropdown-header {
+  padding: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px 8px 0 0;
+  margin: -0.5rem -0.5rem 0 -0.5rem;
+}
+
+.dropdown-user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-avatar-large {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.dropdown-user-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.dropdown-badge {
+  display: inline-block;
+  background: #ef4444;
+  color: #ffffff;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-left: auto;
+}
+
+/* Mobile Sections */
+.mobile-section {
+  margin-bottom: 1.5rem;
+}
+
+.mobile-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #94a3b8;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.mobile-user-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.mobile-user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mobile-user-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.user-avatar-mobile {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.mobile-badge {
+  display: inline-block;
+  background: #ef4444;
+  color: #ffffff;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-left: auto;
+}
+
+/* Dark Mode Support for Role Badges */
+body.dark-mode .dropdown-header {
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+}
+
+body.dark-mode .mobile-user-header {
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+}
+
+body.dark-mode .mobile-section-title {
+  color: #64748b;
+}
+
+body.dark-mode .user-avatar-large,
+body.dark-mode .user-avatar-mobile {
+  background: rgba(139, 92, 246, 0.3);
+  border-color: rgba(139, 92, 246, 0.5);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .user-details {
+    display: none;
+  }
+  
+  .role-badge {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-section {
+    display: none;
+  }
+}
+
+/* Improved Dropdown Menu */
+.dropdown-menu {
+  min-width: 280px;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: rgba(102, 126, 234, 0.1);
+  padding-left: 1.25rem;
+}
+
+.dropdown-divider {
+  margin: 0.5rem 0;
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .dropdown-divider {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Animation for Role Badges */
+.role-badge,
+.role-badge-small,
+.role-badge-mobile {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Hover Effects for Role Badges */
+.role-badge:hover,
+.role-badge-small:hover,
+.role-badge-mobile:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
 }

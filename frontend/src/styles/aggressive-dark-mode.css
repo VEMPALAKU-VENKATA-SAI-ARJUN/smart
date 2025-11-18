@@ -1,0 +1,1150 @@
+/* ========================================
+   AGGRESSIVE DARK MODE - CATCHES EVERYTHING
+   ======================================== */
+
+/* Force dark mode on ALL elements with white/light backgrounds */
+body.dark-mode,
+body.dark-mode * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+/* Override ALL white backgrounds */
+body.dark-mode [style*="background: white"],
+body.dark-mode [style*="background: #fff"],
+body.dark-mode [style*="background: #ffffff"],
+body.dark-mode [style*="background-color: white"],
+body.dark-mode [style*="background-color: #fff"],
+body.dark-mode [style*="background-color: #ffffff"],
+body.dark-mode [style*="background-color: rgb(255, 255, 255)"],
+body.dark-mode [class*="bg-white"],
+body.dark-mode [class*="bg-gray-50"],
+body.dark-mode [class*="bg-gray-100"],
+body.dark-mode [class*="bg-slate-50"],
+body.dark-mode [class*="bg-slate-100"] {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+/* Profile page specific */
+body.dark-mode [class*="profile"],
+body.dark-mode [class*="Profile"] {
+  background-color: #0f172a !important;
+}
+
+/* Gallery page specific */
+body.dark-mode [class*="gallery"],
+body.dark-mode [class*="Gallery"] {
+  background-color: #0f172a !important;
+}
+
+/* Review queue specific */
+body.dark-mode [class*="review"],
+body.dark-mode [class*="Review"] {
+  background-color: #0f172a !important;
+}
+
+/* Notifications specific */
+body.dark-mode [class*="notification"],
+body.dark-mode [class*="Notification"] {
+  background-color: #0f172a !important;
+}
+
+/* Following page specific */
+body.dark-mode [class*="following"],
+body.dark-mode [class*="Following"] {
+  background-color: #0f172a !important;
+}
+
+/* Upload page specific */
+body.dark-mode [class*="upload"],
+body.dark-mode [class*="Upload"] {
+  background-color: #0f172a !important;
+}
+
+/* Auth page specific */
+body.dark-mode [class*="auth"],
+body.dark-mode [class*="Auth"] {
+  background-color: #0f172a !important;
+}
+
+/* Modal/Dialog backgrounds */
+body.dark-mode [class*="modal"],
+body.dark-mode [class*="Modal"],
+body.dark-mode [class*="dialog"],
+body.dark-mode [class*="Dialog"],
+body.dark-mode [role="dialog"],
+body.dark-mode [role="alertdialog"] {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+/* Card backgrounds */
+body.dark-mode [class*="card"],
+body.dark-mode [class*="Card"],
+body.dark-mode [class*="panel"],
+body.dark-mode [class*="Panel"],
+body.dark-mode [class*="box"],
+body.dark-mode [class*="Box"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+
+/* Container backgrounds */
+body.dark-mode [class*="container"],
+body.dark-mode [class*="Container"],
+body.dark-mode [class*="wrapper"],
+body.dark-mode [class*="Wrapper"],
+body.dark-mode [class*="content"],
+body.dark-mode [class*="Content"] {
+  background-color: transparent !important;
+}
+
+/* Main content areas */
+body.dark-mode main,
+body.dark-mode [role="main"],
+body.dark-mode section,
+body.dark-mode article {
+  background-color: transparent !important;
+  color: #f1f5f9 !important;
+}
+
+/* Override Tailwind utility classes */
+body.dark-mode .bg-white {
+  background-color: #1e293b !important;
+}
+
+body.dark-mode .bg-gray-50,
+body.dark-mode .bg-gray-100 {
+  background-color: #334155 !important;
+}
+
+body.dark-mode .bg-slate-50,
+body.dark-mode .bg-slate-100 {
+  background-color: #334155 !important;
+}
+
+body.dark-mode .bg-zinc-50,
+body.dark-mode .bg-zinc-100 {
+  background-color: #334155 !important;
+}
+
+body.dark-mode .text-black,
+body.dark-mode .text-gray-900,
+body.dark-mode .text-gray-800,
+body.dark-mode .text-gray-700 {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .text-gray-600,
+body.dark-mode .text-gray-500 {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .text-gray-400 {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .border-gray-200,
+body.dark-mode .border-gray-300 {
+  border-color: #334155 !important;
+}
+
+/* Input fields */
+body.dark-mode input:not([type="checkbox"]):not([type="radio"]),
+body.dark-mode textarea,
+body.dark-mode select {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* Buttons */
+body.dark-mode button:not([class*="btn-primary"]):not([class*="primary"]) {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode button:hover:not([class*="btn-primary"]):not([class*="primary"]) {
+  background-color: #475569 !important;
+}
+
+/* Links */
+body.dark-mode a {
+  color: #a78bfa !important;
+}
+
+body.dark-mode a:hover {
+  color: #c4b5fd !important;
+}
+
+/* Headings */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+  color: #f1f5f9 !important;
+}
+
+/* Paragraphs */
+body.dark-mode p {
+  color: #cbd5e1 !important;
+}
+
+/* Spans */
+body.dark-mode span {
+  color: inherit !important;
+}
+
+/* Dividers */
+body.dark-mode hr,
+body.dark-mode .divider {
+  border-color: #334155 !important;
+}
+
+/* Shadows */
+body.dark-mode .shadow,
+body.dark-mode .shadow-sm,
+body.dark-mode .shadow-md,
+body.dark-mode .shadow-lg,
+body.dark-mode .shadow-xl {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Empty states */
+body.dark-mode [class*="empty"],
+body.dark-mode [class*="Empty"],
+body.dark-mode [class*="no-data"],
+body.dark-mode [class*="noData"] {
+  background-color: #1e293b !important;
+  color: #94a3b8 !important;
+}
+
+/* Loading states */
+body.dark-mode [class*="loading"],
+body.dark-mode [class*="Loading"],
+body.dark-mode [class*="skeleton"],
+body.dark-mode [class*="Skeleton"] {
+  background-color: #334155 !important;
+}
+
+/* Tabs */
+body.dark-mode [role="tab"],
+body.dark-mode [class*="tab"]:not([class*="table"]) {
+  color: #94a3b8 !important;
+  border-bottom-color: transparent !important;
+}
+
+body.dark-mode [role="tab"][aria-selected="true"],
+body.dark-mode [class*="tab"][class*="active"]:not([class*="table"]) {
+  color: #a78bfa !important;
+  border-bottom-color: #8b5cf6 !important;
+  background-color: rgba(139, 92, 246, 0.15) !important;
+}
+
+/* Badges */
+body.dark-mode [class*="badge"],
+body.dark-mode [class*="Badge"],
+body.dark-mode [class*="tag"],
+body.dark-mode [class*="Tag"] {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+/* Alerts */
+body.dark-mode [class*="alert"],
+body.dark-mode [class*="Alert"],
+body.dark-mode [role="alert"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+
+/* Tooltips */
+body.dark-mode [class*="tooltip"],
+body.dark-mode [class*="Tooltip"],
+body.dark-mode [role="tooltip"] {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+  border-color: #475569 !important;
+}
+
+/* Dropdowns */
+body.dark-mode [class*="dropdown"],
+body.dark-mode [class*="Dropdown"],
+body.dark-mode [class*="menu"],
+body.dark-mode [class*="Menu"]:not([class*="menubar"]) {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* List items */
+body.dark-mode li {
+  color: #cbd5e1 !important;
+}
+
+/* Tables */
+body.dark-mode table {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode thead {
+  background-color: #334155 !important;
+}
+
+body.dark-mode tbody tr {
+  border-bottom-color: #334155 !important;
+}
+
+body.dark-mode tbody tr:hover {
+  background-color: rgba(139, 92, 246, 0.1) !important;
+}
+
+body.dark-mode td,
+body.dark-mode th {
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+/* Scrollbars */
+body.dark-mode ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+body.dark-mode ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 6px;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* Selection */
+body.dark-mode ::selection {
+  background-color: rgba(139, 92, 246, 0.4);
+  color: #ffffff;
+}
+
+/* Focus states */
+body.dark-mode :focus {
+  outline-color: #8b5cf6 !important;
+}
+
+body.dark-mode :focus-visible {
+  outline-color: #8b5cf6 !important;
+  outline-offset: 2px;
+}
+
+/* Specific page overrides */
+
+/* Profile Page */
+body.dark-mode [class*="profile-header"],
+body.dark-mode [class*="profileHeader"] {
+  background: linear-gradient(135deg, #1e1b4b, #312e81, #4f46e5) !important;
+}
+
+/* Gallery Page */
+body.dark-mode [class*="gallery-container"],
+body.dark-mode [class*="galleryContainer"] {
+  background-color: #0f172a !important;
+}
+
+/* Review Queue */
+body.dark-mode [class*="review-queue"],
+body.dark-mode [class*="reviewQueue"] {
+  background-color: #0f172a !important;
+}
+
+/* Notifications */
+body.dark-mode [class*="notifications-container"],
+body.dark-mode [class*="notificationsContainer"] {
+  background-color: #0f172a !important;
+}
+
+/* Following Page */
+body.dark-mode [class*="following-container"],
+body.dark-mode [class*="followingContainer"] {
+  background-color: #0f172a !important;
+}
+
+/* Upload Page */
+body.dark-mode [class*="upload-container"],
+body.dark-mode [class*="uploadContainer"] {
+  background-color: #0f172a !important;
+}
+
+/* Auth Page */
+body.dark-mode [class*="auth-container"],
+body.dark-mode [class*="authContainer"] {
+  background: linear-gradient(135deg, #0f172a, #1e1b4b, #312e81) !important;
+}
+
+/* Artwork Modal */
+body.dark-mode [class*="artwork-modal"],
+body.dark-mode [class*="artworkModal"] {
+  background-color: #1e293b !important;
+}
+
+/* Artist Card */
+body.dark-mode [class*="artist-card"],
+body.dark-mode [class*="artistCard"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* Artwork Card */
+body.dark-mode [class*="artwork-card"],
+body.dark-mode [class*="artworkCard"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* Stats */
+body.dark-mode [class*="stat"],
+body.dark-mode [class*="Stat"] {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+}
+
+/* Filters */
+body.dark-mode [class*="filter"],
+body.dark-mode [class*="Filter"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* Search */
+body.dark-mode [class*="search"],
+body.dark-mode [class*="Search"] {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+/* Override any remaining white backgrounds */
+body.dark-mode div[style*="background"],
+body.dark-mode section[style*="background"],
+body.dark-mode article[style*="background"] {
+  background-color: transparent !important;
+}
+
+/* Force dark on specific Tailwind classes that might be missed */
+body.dark-mode .rounded,
+body.dark-mode .rounded-lg,
+body.dark-mode .rounded-xl,
+body.dark-mode .rounded-2xl {
+  background-color: inherit;
+}
+
+/* Ensure proper text contrast */
+body.dark-mode [class*="text-"] {
+  color: inherit;
+}
+
+/* Override any light colored text on dark backgrounds */
+body.dark-mode .text-white {
+  color: #f1f5f9 !important;
+}
+
+/* Ensure buttons with gradients keep their styling */
+body.dark-mode button[class*="gradient"],
+body.dark-mode button[class*="primary"],
+body.dark-mode .btn-primary,
+body.dark-mode [class*="btn-primary"] {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+body.dark-mode button[class*="gradient"]:hover,
+body.dark-mode button[class*="primary"]:hover,
+body.dark-mode .btn-primary:hover,
+body.dark-mode [class*="btn-primary"]:hover {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed) !important;
+}
+
+/* Success buttons */
+body.dark-mode button[class*="success"],
+body.dark-mode .btn-success,
+body.dark-mode [class*="btn-success"] {
+  background: linear-gradient(135deg, #059669, #10b981) !important;
+  color: #ffffff !important;
+}
+
+/* Danger buttons */
+body.dark-mode button[class*="danger"],
+body.dark-mode .btn-danger,
+body.dark-mode [class*="btn-danger"] {
+  background: linear-gradient(135deg, #dc2626, #ef4444) !important;
+  color: #ffffff !important;
+}
+
+/* Warning buttons */
+body.dark-mode button[class*="warning"],
+body.dark-mode .btn-warning,
+body.dark-mode [class*="btn-warning"] {
+  background: linear-gradient(135deg, #d97706, #f59e0b) !important;
+  color: #ffffff !important;
+}
+
+
+/* ========================================
+   ULTRA AGGRESSIVE OVERRIDES
+   Force dark mode on EVERYTHING
+   ======================================== */
+
+/* Force body and html to be dark */
+html.dark-mode,
+html.dark-mode body {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+/* Force ALL divs, sections, and main elements to have dark or transparent backgrounds */
+body.dark-mode div:not([class*="gradient"]):not([class*="hero"]),
+body.dark-mode section:not([class*="gradient"]):not([class*="hero"]),
+body.dark-mode main {
+  background-color: transparent !important;
+}
+
+/* Specifically target the Gallery page container */
+body.dark-mode div[class*="gallery"],
+body.dark-mode div[class*="Gallery"],
+body.dark-mode section[class*="gallery"],
+body.dark-mode section[class*="Gallery"] {
+  background-color: #0f172a !important;
+}
+
+/* Force the main content area to be dark */
+body.dark-mode > div,
+body.dark-mode #root,
+body.dark-mode #root > div,
+body.dark-mode .app,
+body.dark-mode [class*="app"],
+body.dark-mode [class*="App"] {
+  background-color: #0f172a !important;
+}
+
+/* Target any element with a light background color */
+body.dark-mode [style*="background-color: rgb(255, 255, 255)"],
+body.dark-mode [style*="background-color: #fff"],
+body.dark-mode [style*="background-color: white"],
+body.dark-mode [style*="background: rgb(255, 255, 255)"],
+body.dark-mode [style*="background: #fff"],
+body.dark-mode [style*="background: white"],
+body.dark-mode [style*="backgroundColor: white"],
+body.dark-mode [style*="backgroundColor: #fff"] {
+  background-color: #0f172a !important;
+}
+
+/* Target light gray backgrounds */
+body.dark-mode [style*="background-color: rgb(248, 250, 252)"],
+body.dark-mode [style*="background-color: #f8fafc"],
+body.dark-mode [style*="background: rgb(248, 250, 252)"],
+body.dark-mode [style*="background: #f8fafc"],
+body.dark-mode [class*="bg-gray-50"],
+body.dark-mode [class*="bg-slate-50"] {
+  background-color: #0f172a !important;
+}
+
+/* Force ALL Tailwind background utilities to dark */
+body.dark-mode .bg-white,
+body.dark-mode .bg-gray-50,
+body.dark-mode .bg-gray-100,
+body.dark-mode .bg-gray-200,
+body.dark-mode .bg-slate-50,
+body.dark-mode .bg-slate-100,
+body.dark-mode .bg-slate-200,
+body.dark-mode .bg-zinc-50,
+body.dark-mode .bg-zinc-100,
+body.dark-mode .bg-neutral-50,
+body.dark-mode .bg-neutral-100 {
+  background-color: #0f172a !important;
+}
+
+/* Gallery specific - force everything */
+body.dark-mode [class*="gallery-container"],
+body.dark-mode [class*="galleryContainer"],
+body.dark-mode [class*="gallery-wrapper"],
+body.dark-mode [class*="galleryWrapper"],
+body.dark-mode [class*="gallery-content"],
+body.dark-mode [class*="galleryContent"],
+body.dark-mode [class*="gallery-main"],
+body.dark-mode [class*="galleryMain"] {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+/* Gallery grid and items */
+body.dark-mode [class*="gallery-grid"],
+body.dark-mode [class*="galleryGrid"],
+body.dark-mode [class*="artwork-grid"],
+body.dark-mode [class*="artworkGrid"] {
+  background-color: transparent !important;
+}
+
+/* Gallery cards */
+body.dark-mode [class*="gallery-card"],
+body.dark-mode [class*="galleryCard"],
+body.dark-mode [class*="gallery-item"],
+body.dark-mode [class*="galleryItem"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* Search and filter areas */
+body.dark-mode [class*="search"],
+body.dark-mode [class*="Search"],
+body.dark-mode [class*="filter"],
+body.dark-mode [class*="Filter"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* Profile page - force everything */
+body.dark-mode [class*="profile-container"],
+body.dark-mode [class*="profileContainer"],
+body.dark-mode [class*="profile-wrapper"],
+body.dark-mode [class*="profileWrapper"],
+body.dark-mode [class*="profile-content"],
+body.dark-mode [class*="profileContent"],
+body.dark-mode [class*="profile-main"],
+body.dark-mode [class*="profileMain"] {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+/* Upload page - force everything */
+body.dark-mode [class*="upload-container"],
+body.dark-mode [class*="uploadContainer"],
+body.dark-mode [class*="upload-wrapper"],
+body.dark-mode [class*="uploadWrapper"],
+body.dark-mode [class*="upload-content"],
+body.dark-mode [class*="uploadContent"],
+body.dark-mode [class*="upload-main"],
+body.dark-mode [class*="uploadMain"] {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+/* Following page - force everything */
+body.dark-mode [class*="following-container"],
+body.dark-mode [class*="followingContainer"],
+body.dark-mode [class*="following-wrapper"],
+body.dark-mode [class*="followingWrapper"],
+body.dark-mode [class*="following-content"],
+body.dark-mode [class*="followingContent"],
+body.dark-mode [class*="following-main"],
+body.dark-mode [class*="followingMain"] {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+/* Notifications page - force everything */
+body.dark-mode [class*="notifications-container"],
+body.dark-mode [class*="notificationsContainer"],
+body.dark-mode [class*="notifications-wrapper"],
+body.dark-mode [class*="notificationsWrapper"],
+body.dark-mode [class*="notifications-content"],
+body.dark-mode [class*="notificationsContent"],
+body.dark-mode [class*="notifications-main"],
+body.dark-mode [class*="notificationsMain"] {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+/* Review queue - force everything */
+body.dark-mode [class*="review-container"],
+body.dark-mode [class*="reviewContainer"],
+body.dark-mode [class*="review-wrapper"],
+body.dark-mode [class*="reviewWrapper"],
+body.dark-mode [class*="review-content"],
+body.dark-mode [class*="reviewContent"],
+body.dark-mode [class*="review-main"],
+body.dark-mode [class*="reviewMain"] {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+/* Messages page - force everything */
+body.dark-mode [class*="messages-container"],
+body.dark-mode [class*="messagesContainer"],
+body.dark-mode [class*="messages-wrapper"],
+body.dark-mode [class*="messagesWrapper"],
+body.dark-mode [class*="messages-content"],
+body.dark-mode [class*="messagesContent"],
+body.dark-mode [class*="messages-main"],
+body.dark-mode [class*="messagesMain"] {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+/* Auth page - force everything */
+body.dark-mode [class*="auth-container"],
+body.dark-mode [class*="authContainer"],
+body.dark-mode [class*="auth-wrapper"],
+body.dark-mode [class*="authWrapper"],
+body.dark-mode [class*="auth-content"],
+body.dark-mode [class*="authContent"],
+body.dark-mode [class*="auth-main"],
+body.dark-mode [class*="authMain"] {
+  background: linear-gradient(135deg, #0f172a, #1e1b4b, #312e81) !important;
+  color: #f1f5f9 !important;
+}
+
+/* Force text colors */
+body.dark-mode .text-black,
+body.dark-mode .text-gray-900,
+body.dark-mode .text-gray-800,
+body.dark-mode .text-gray-700,
+body.dark-mode .text-slate-900,
+body.dark-mode .text-slate-800,
+body.dark-mode .text-slate-700 {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .text-gray-600,
+body.dark-mode .text-gray-500,
+body.dark-mode .text-slate-600,
+body.dark-mode .text-slate-500 {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .text-gray-400,
+body.dark-mode .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+/* Force border colors */
+body.dark-mode .border-gray-200,
+body.dark-mode .border-gray-300,
+body.dark-mode .border-slate-200,
+body.dark-mode .border-slate-300 {
+  border-color: #334155 !important;
+}
+
+/* Override any remaining light backgrounds with extreme prejudice */
+body.dark-mode * {
+  scrollbar-color: #475569 #1e293b;
+}
+
+/* Ensure proper layering */
+body.dark-mode {
+  background: #0f172a !important;
+}
+
+body.dark-mode::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #0f172a;
+  z-index: -9999;
+  pointer-events: none;
+}
+
+/* Target React root */
+body.dark-mode #root {
+  background-color: #0f172a !important;
+  min-height: 100vh;
+}
+
+/* Target any page wrapper */
+body.dark-mode [class*="page"],
+body.dark-mode [class*="Page"] {
+  background-color: transparent !important;
+}
+
+/* Ensure cards stay visible */
+body.dark-mode [class*="card"]:not([class*="navbar"]):not([class*="nav"]) {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* Fix any white panels or boxes */
+body.dark-mode [class*="panel"],
+body.dark-mode [class*="Panel"],
+body.dark-mode [class*="box"],
+body.dark-mode [class*="Box"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+
+/* ========================================
+   SPECIFIC FIXES FOR REMAINING WHITE AREAS
+   ======================================== */
+
+/* MODERATION QUEUE - All white areas */
+body.dark-mode .moderation-stats-container,
+body.dark-mode [class*="moderation-stats-container"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .moderation-stats-header,
+body.dark-mode [class*="moderation-stats-header"] {
+  background-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .moderation-controls,
+body.dark-mode [class*="moderation-controls"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .controls-layout,
+body.dark-mode [class*="controls-layout"] {
+  background-color: transparent !important;
+}
+
+body.dark-mode .artwork-list-container,
+body.dark-mode [class*="artwork-list-container"] {
+  background-color: transparent !important;
+}
+
+body.dark-mode .artwork-grid,
+body.dark-mode [class*="artwork-grid"] {
+  background-color: transparent !important;
+}
+
+/* REVIEW QUEUE - Everything */
+body.dark-mode .review-queue-container,
+body.dark-mode [class*="review-queue-container"] {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode .reviewer-artwork-card,
+body.dark-mode [class*="reviewer-artwork-card"],
+body.dark-mode [class*="review-card"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* ARTWORK MODAL - White background fix */
+body.dark-mode .artwork-modal,
+body.dark-mode [class*="artwork-modal"],
+body.dark-mode [class*="artworkModal"] {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .artwork-modal-content,
+body.dark-mode [class*="modal-content"] {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .artwork-modal-header,
+body.dark-mode [class*="modal-header"] {
+  background-color: #334155 !important;
+  border-bottom-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .artwork-modal-body,
+body.dark-mode [class*="modal-body"] {
+  background-color: #1e293b !important;
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .artwork-modal-footer,
+body.dark-mode [class*="modal-footer"] {
+  background-color: transparent !important;
+  border-top-color: #334155 !important;
+}
+
+/* AI Analysis Scores section */
+body.dark-mode [class*="analysis"],
+body.dark-mode [class*="Analysis"],
+body.dark-mode [class*="scores"],
+body.dark-mode [class*="Scores"] {
+  background-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+
+/* Flagged Issues section */
+body.dark-mode [class*="flagged"],
+body.dark-mode [class*="Flagged"],
+body.dark-mode [class*="issues"],
+body.dark-mode [class*="Issues"] {
+  background-color: rgba(239, 68, 68, 0.2) !important;
+  border-color: #ef4444 !important;
+  color: #fca5a5 !important;
+}
+
+/* ARTWORK DETAILS PAGE */
+body.dark-mode .artwork-container,
+body.dark-mode [class*="artwork-container"],
+body.dark-mode [class*="artworkContainer"] {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode .artwork-details,
+body.dark-mode [class*="artwork-details"],
+body.dark-mode [class*="artworkDetails"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .artwork-info,
+body.dark-mode [class*="artwork-info"],
+body.dark-mode [class*="artworkInfo"] {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .artwork-sidebar,
+body.dark-mode [class*="artwork-sidebar"],
+body.dark-mode [class*="artworkSidebar"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* UPLOAD PAGE */
+body.dark-mode .upload-page,
+body.dark-mode [class*="upload-page"],
+body.dark-mode [class*="uploadPage"] {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode .upload-container,
+body.dark-mode [class*="upload-container"],
+body.dark-mode [class*="uploadContainer"] {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode .upload-form,
+body.dark-mode [class*="upload-form"],
+body.dark-mode [class*="uploadForm"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* Upload drag and drop area */
+body.dark-mode .upload-dropzone,
+body.dark-mode [class*="dropzone"],
+body.dark-mode [class*="Dropzone"],
+body.dark-mode [class*="drag-drop"],
+body.dark-mode [class*="dragDrop"] {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  border-style: dashed !important;
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .upload-dropzone:hover,
+body.dark-mode [class*="dropzone"]:hover {
+  border-color: #8b5cf6 !important;
+  background-color: rgba(139, 92, 246, 0.1) !important;
+}
+
+/* Upload text */
+body.dark-mode .upload-text,
+body.dark-mode [class*="upload-text"],
+body.dark-mode [class*="uploadText"] {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .upload-hint,
+body.dark-mode [class*="upload-hint"],
+body.dark-mode [class*="uploadHint"] {
+  color: #64748b !important;
+}
+
+/* MESSAGES PAGE */
+body.dark-mode .message-area,
+body.dark-mode [class*="message-area"],
+body.dark-mode [class*="messageArea"],
+body.dark-mode [class*="chat-area"],
+body.dark-mode [class*="chatArea"] {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode .message-input-area,
+body.dark-mode [class*="message-input"],
+body.dark-mode [class*="messageInput"],
+body.dark-mode [class*="chat-input"],
+body.dark-mode [class*="chatInput"] {
+  background-color: #1e293b !important;
+  border-top-color: #334155 !important;
+}
+
+body.dark-mode .message-input,
+body.dark-mode [class*="message-input"] input,
+body.dark-mode [class*="message-input"] textarea {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .message-input::placeholder,
+body.dark-mode [class*="message-input"] input::placeholder,
+body.dark-mode [class*="message-input"] textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* PROFILE PAGE */
+body.dark-mode .stat-item,
+body.dark-mode [class*="stat-item"],
+body.dark-mode [class*="statItem"] {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .stats-bar,
+body.dark-mode [class*="stats-bar"],
+body.dark-mode [class*="statsBar"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .section-title,
+body.dark-mode [class*="section-title"],
+body.dark-mode [class*="sectionTitle"] {
+  color: #f1f5f9 !important;
+  background-color: transparent !important;
+}
+
+body.dark-mode .purchase-scroll,
+body.dark-mode [class*="purchase-scroll"],
+body.dark-mode [class*="purchaseScroll"],
+body.dark-mode [class*="purchases"],
+body.dark-mode [class*="Purchases"] {
+  background-color: transparent !important;
+}
+
+body.dark-mode .purchase-item,
+body.dark-mode [class*="purchase-item"],
+body.dark-mode [class*="purchaseItem"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* FOLLOWING PAGE */
+body.dark-mode .following-page,
+body.dark-mode [class*="following-page"],
+body.dark-mode [class*="followingPage"] {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode .following-container,
+body.dark-mode [class*="following-container"],
+body.dark-mode [class*="followingContainer"] {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode .following-content,
+body.dark-mode [class*="following-content"],
+body.dark-mode [class*="followingContent"] {
+  background-color: transparent !important;
+}
+
+body.dark-mode .following-card,
+body.dark-mode [class*="following-card"],
+body.dark-mode [class*="followingCard"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* AUTH PAGE - Sign In/Sign Up */
+body.dark-mode .auth-page,
+body.dark-mode [class*="auth-page"],
+body.dark-mode [class*="authPage"] {
+  background: linear-gradient(135deg, #0f172a, #1e1b4b, #312e81) !important;
+}
+
+body.dark-mode .auth-form-container,
+body.dark-mode [class*="auth-form"],
+body.dark-mode [class*="authForm"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .auth-tabs,
+body.dark-mode [class*="auth-tabs"],
+body.dark-mode [class*="authTabs"] {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .auth-tab,
+body.dark-mode [class*="auth-tab"]:not([class*="table"]) {
+  background-color: transparent !important;
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .auth-tab.active,
+body.dark-mode [class*="auth-tab"].active:not([class*="table"]) {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+/* ALL PAGE BACKGROUNDS - Nuclear option */
+body.dark-mode [class*="-page"],
+body.dark-mode [class*="Page"] {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode [class*="-container"]:not([class*="card"]):not([class*="modal"]) {
+  background-color: transparent !important;
+}
+
+/* Ensure all white text on dark backgrounds */
+body.dark-mode [class*="title"],
+body.dark-mode [class*="Title"],
+body.dark-mode [class*="heading"],
+body.dark-mode [class*="Heading"] {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode [class*="description"],
+body.dark-mode [class*="Description"],
+body.dark-mode [class*="text"],
+body.dark-mode [class*="Text"]:not([class*="textarea"]) {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode [class*="label"],
+body.dark-mode [class*="Label"] {
+  color: #e2e8f0 !important;
+}
+
+/* Fix any remaining white boxes */
+body.dark-mode [style*="background-color: white"],
+body.dark-mode [style*="background-color: #ffffff"],
+body.dark-mode [style*="background-color: #fff"],
+body.dark-mode [style*="background: white"],
+body.dark-mode [style*="background: #ffffff"],
+body.dark-mode [style*="background: #fff"] {
+  background-color: #1e293b !important;
+}
+
+/* Fix light gray boxes */
+body.dark-mode [style*="background-color: #f8fafc"],
+body.dark-mode [style*="background-color: #f1f5f9"],
+body.dark-mode [style*="background: #f8fafc"],
+body.dark-mode [style*="background: #f1f5f9"] {
+  background-color: #1e293b !important;
+}

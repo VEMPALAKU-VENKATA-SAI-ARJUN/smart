@@ -168,10 +168,14 @@ const ProfilePage = () => {
                 className={`profile-tab-1 ${activeTab === TABS.DRAFTS ? 'active' : ''}`}
                 onClick={() => setActiveTab(TABS.DRAFTS)}
               >Drafts</button>
-              <button
+             {/* <button
                 className={`profile-tab-1 ${activeTab === TABS.ANALYTICS ? 'active' : ''}`}
                 onClick={() => setActiveTab(TABS.ANALYTICS)}
-              >Analytics</button>
+              >Analytics</button>*/}
+              <button
+                className="profile-tab-1 dashboard-btn"
+                onClick={() => navigate('/dashboard')}
+              >📊 Dashboard</button>
             </div>
           )}
         </div>

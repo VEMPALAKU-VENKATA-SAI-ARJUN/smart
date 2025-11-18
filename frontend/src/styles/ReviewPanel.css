@@ -246,3 +246,89 @@
     font-size: 1.75rem;
   }
 }
+
+
+/* ========================================
+   DARK MODE STYLES FOR REVIEW PANEL
+   ======================================== */
+
+body.dark-mode .review-panel {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .review-panel-header {
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+  color: #f1f5f9 !important;
+  border-bottom-color: #334155 !important;
+}
+
+body.dark-mode .review-panel-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .review-panel-body {
+  background-color: #1e293b !important;
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .review-panel-section {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .review-panel-label {
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .review-panel-value {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .review-panel-textarea {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .review-panel-textarea::placeholder {
+  color: #64748b !important;
+}
+
+body.dark-mode .review-panel-textarea:focus {
+  border-color: #8b5cf6 !important;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2) !important;
+}
+
+body.dark-mode .review-panel-actions {
+  background-color: transparent !important;
+  border-top-color: #334155 !important;
+}
+
+body.dark-mode .review-panel-button-approve {
+  background: linear-gradient(135deg, #059669, #10b981) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .review-panel-button-approve:hover {
+  background: linear-gradient(135deg, #047857, #059669) !important;
+}
+
+body.dark-mode .review-panel-button-reject {
+  background: linear-gradient(135deg, #dc2626, #ef4444) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .review-panel-button-reject:hover {
+  background: linear-gradient(135deg, #b91c1c, #dc2626) !important;
+}
+
+body.dark-mode .review-panel-button-cancel {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .review-panel-button-cancel:hover {
+  background-color: #475569 !important;
+}
